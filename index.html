@@ -121,8 +121,8 @@ nav{position:fixed;top:0;inset-inline:0;height:64px;z-index:500;display:flex;ali
 .co-g{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .co-c{background:var(--bg2);border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid var(--line);transition:all .2s}
 .co-c:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.6);border-color:rgba(212,168,67,.22)}
-.co-th{height:170px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.co-bg{position:absolute;inset:0;background-size:cover;background-position:center center;transition:transform .4s}
+.co-th{height:150px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.co-bg{position:absolute;inset:0;background-size:cover;background-position:center center;background-repeat:no-repeat;transition:transform .4s}
 .co-c:hover .co-bg{transform:scale(1.06)}
 .co-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(0,0,0,.85))}
 .co-em{position:relative;z-index:1;font-size:3.2rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
@@ -1286,28 +1286,18 @@ async function submitTicket(){
     if(!data.supportTickets)data.supportTickets=[];
     data.supportTickets.push({id:Date.now(),title,message:msg,created_at:new Date().toISOString(),is_read:false});
     const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
-    const up=await fetch(SB_URL+'/storage/v1/object/'+BUCKET+'/'+CFG_PATH,{
-      method:'POST',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json','x-upsert':'true'},body:blob
-    });
+    const uploadUrl = SB_URL+'/storage/v1/object/'+BUCKET+'?name='+encodeURIComponent(CFG_PATH)+'&upsert=true';
+    const up=await fetch(uploadUrl,{method:'POST',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json'},body:blob});
     if(!up.ok){
-      const up2=await fetch(SB_URL+'/storage/v1/object/'+BUCKET+'/'+CFG_PATH,{
-        method:'PUT',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json','x-upsert':'true'},body:blob
-      });
+      const up2=await fetch(uploadUrl,{method:'PUT',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json'},body:blob});
       if(!up2.ok)throw new Error('Upload failed');
     }
-    showToast('✅ تم إرسال التذكرة بنجاح');closeTicketModal();
+    showToast('✅ تم إرسال التذكرة: '+title);
+    closeTicketModal();
     document.getElementById('ticket-title').value='';document.getElementById('ticket-msg').value='';
-  }catch(e){showToast('❌ فشل الإرسال: '+e.message);}
-}
-
-/* ══ ACTIVE SESSION TRACKING ══ */
-(function(){try{
-  let sid=localStorage.getItem('basha_session_id');
-  if(!sid){sid=crypto.randomUUID();localStorage.setItem('basha_session_id',sid);}
-  async function ping(){
-    try{
-      const r=await fetch(CFG_URL+'?t='+Date.now());const data=await r.json();
-      if(!data.activeSessions)data.activeSessions={};
+  }catch(e){
+    showToast('❌ فشل الإرسال: '+e.message);
+  }
       data.activeSessions[sid]=new Date().toISOString();
       const fiveMinAgo=Date.now()-5*60*1000;
       Object.keys(data.activeSessions).forEach(k=>{if(new Date(data.activeSessions[k]).getTime()<fiveMinAgo)delete data.activeSessions[k];});

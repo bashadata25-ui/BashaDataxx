@@ -729,6 +729,7 @@ const SB_URL   = 'https://imqjrudcxbrauhkqrfnr.supabase.co';
 const SB_KEY   = 'sb_publishable_N6KQlCXY60wJ_PuCf7UvhA_nwH8V2n2';
 const BUCKET   = 'site-bucket';
 const SITE_BUCKET = 'site-bucket';
+const IMAGE_BUCKET = 'site-bucket';
 const CFG_PATH = 'config/site.json';
 const CFG_URL = `${SB_URL}/storage/v1/object/public/${SITE_BUCKET}/${CFG_PATH}`;
 
@@ -901,7 +902,20 @@ function renderAll(){renderDash();renderHeroForm();renderMaintForm();renderTheme
 
 function renderDash(){
   const g=document.getElementById('sgrid');
-  if(g)g.innerHTML=[{ico:'📂',v:(SD.categories||[]).length,l:'قسم'},{ico:'🎬',v:(SD.products||[]).filter(p=>p.productType!=='hard'&&p.productType!=='data').length,l:'منتج'},{ico:'🖼',v:(SD.banners||[]).length,l:'بنر'},{ico:SD.maintenance?'🔴':'🟢',v:SD.maintenance?'صيانة':'يعمل',l:'الموقع'},{ico:'👥',v:SD.visitors||0,l:'زائر'}].map(s=>`<div class="sc"><span class="scico">${s.ico}</span><div><div class="scv">${s.v}</div><div class="scl">${s.l}</div></div></div>`).join('');
+  if(g){
+    const normalCount=(SD.products||[]).filter(p=>p.productType!=='hard'&&p.productType!=='data').length;
+    const hardCount=(SD.hards||[]).length;
+    const dataCount=(SD.data||[]).length;
+    g.innerHTML=[
+      {ico:'📂',v:(SD.categories||[]).length,l:'قسم'},
+      {ico:'🎬',v:normalCount,l:'منتج'},
+      {ico:'💾',v:hardCount,l:'هاردات'},
+      {ico:'📊',v:dataCount,l:'داتا'},
+      {ico:'🖼',v:(SD.banners||[]).length,l:'بنر'},
+      {ico:SD.maintenance?'🔴':'🟢',v:SD.maintenance?'صيانة':'يعمل',l:'الموقع'},
+      {ico:'👥',v:SD.visitors||0,l:'زائر'}
+    ].map(s=>`<div class="sc"><span class="scico">${s.ico}</span><div><div class="scv">${s.v}</div><div class="scl">${s.l}</div></div></div>`).join('');
+  }
   const ss=document.getElementById('site-stat');
   if(ss)ss.innerHTML=`<div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div style="width:8px;height:8px;border-radius:50%;background:${SD.maintenance?'var(--red)':'var(--green)'}"></div><span style="font-size:.85rem">${SD.maintenance?'⚠️ وضع الصيانة':'✅ يعمل بشكل طبيعي'}</span></div><div style="font-size:.78rem;color:var(--muted)">Supabase: <b style="color:${sbOnline?'var(--green)':'var(--red)'}">${sbOnline?'متصل ✓':'غير متصل'}</b> | الثيم: <b style="color:var(--gold)">${SD.theme||'dark'}</b></div>`;
 }
@@ -992,7 +1006,7 @@ function confirmYes(){if(!confirmCallback)return;const cb=confirmCallback;confir
 function confirmNo(){closeConfirmModal();}
 
 /* PRODUCTS */
-const DEFAULT_PRODUCT_PLACEHOLDER_HTML='<div style="display:flex;align-items:center;justify-content:center;width:32px;height:46px;border-radius:5px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font-size:.7rem;font-weight:900;text-align:center;line-height:1.1; padding:4px;">🎬 BASHA DATA</div>';
+const DEFAULT_PRODUCT_PLACEHOLDER_HTML='<div style="display:flex;align-items:center;justify-content:center;width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;font-size:.8rem;font-weight:900;text-align:center;line-height:1.1; padding:4px;">🎬 BASHA DATA</div>';
 let _prodFiles={}; let prodPage=1; const PROD_PAGE_SIZE=50; let confirmCallback=null; let _prodImageDelete=false;
 function handleProdImg(inp,prevId,urlId){_prodImageDelete=false;const file=inp.files[0];if(!file)return;_prodFiles[urlId]=file;const r=new FileReader();r.onload=e=>{const b=document.getElementById(prevId);if(b)b.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:6px"/>`;const u=document.getElementById(urlId);if(u)u.value='[صورة محلية ✓]';};r.readAsDataURL(file);}
 function prevFromUrl(url,prevId){_prodImageDelete=false;if(!url||url.includes('['))return;const b=document.getElementById(prevId);if(!b)return;b.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:6px" onerror="this.parentNode.innerHTML=DEFAULT_PRODUCT_PLACEHOLDER_HTML"/>`;}
@@ -1005,11 +1019,20 @@ async function addProd(){
   const price=document.getElementById('pp').value.trim();const icon='🖼';const productType=document.getElementById('ptype')?.value||'';
   const desc=document.getElementById('pd').value.trim();const isNew=document.getElementById('pnew').checked;const isFeatured=document.getElementById('pfeatured')?.checked||false;const season=document.getElementById('pseason')?.value||'';const gb=parseFloat(document.getElementById('pgb')?.value)||0;const sizeInMB=normalizeSizeInput(gb);
   const posterUrl=await getPosterUrl('pu','');
-  if(!SD.nextProdId)SD.nextProdId=1;
-  SD.products=[...(SD.products||[]),{id:SD.nextProdId++,name:n,categoryId:catId,catId,price:price||'مجاني',icon,posterUrl,poster:posterUrl,desc,isNew,isFeatured,season,productType,gb:sizeInMB}];
+  const item={name:n,categoryId:catId,catId,price:price||'مجاني',icon,posterUrl,poster:posterUrl,desc,isNew,isFeatured,season,productType,gb:sizeInMB};
+  if(productType==='hard'){
+    if(!SD.nextHardId)SD.nextHardId=1;
+    SD.hards=[...(SD.hards||[]),{id:SD.nextHardId++,...item}];
+  } else if(productType==='data'){
+    if(!SD.nextDataId)SD.nextDataId=1;
+    SD.data=[...(SD.data||[]),{id:SD.nextDataId++,...item}];
+  } else {
+    if(!SD.nextProdId)SD.nextProdId=1;
+    SD.products=[...(SD.products||[]),{id:SD.nextProdId++,...item}];
+  }
   ['pn','pp','pi','pd','pu'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
   document.getElementById('pnew').checked=false;document.getElementById('pfeatured').checked=false;document.getElementById('pseason').value='';document.getElementById('ptype').value='';document.getElementById('pgb').value='';document.getElementById('prod-add-prev').innerHTML=DEFAULT_PRODUCT_PLACEHOLDER_HTML;
-  await save();renderProdTable();renderCatTable();renderDash();showToast('✅ تم إضافة المنتج');
+  await save();renderProdTable();renderHardsTable();renderDataTable();renderCatTable();renderDash();showToast('✅ تم إضافة المنتج');
 }
 async function delProd(id){
   askConfirm('هل أنت متأكد من حذف هذا المنتج؟', async ()=>{
@@ -1059,7 +1082,7 @@ function renderProdTable(){
   const total=prods.length;const pages=Math.max(1,Math.ceil(total/PROD_PAGE_SIZE));if(prodPage>pages)prodPage=pages;
   const start=(prodPage-1)*PROD_PAGE_SIZE;const pageItems=prods.slice(start,start+PROD_PAGE_SIZE);
   if(!pageItems.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:24px">لا توجد منتجات</td></tr>';renderProductPages(pages,prodPage);return;}
-  tb.innerHTML=pageItems.map(p=>{const cat=cats.find(c=>c.id===(p.categoryId||p.catId));const placeholder=DEFAULT_PRODUCT_PLACEHOLDER_HTML;const img=placeholder;const typeLabel=p.productType==='hard'?'<span class="badge bb">💾 هارد</span>':p.productType==='data'?'<span class="badge bg">📊 داتا</span>':'<span class="badge bgrn">عادي</span>';return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td>${typeLabel}</td><td>${formatSizeLabel(p.gb)}</td><td><span class="badge ${p.price&&p.price!=='مجاني'?'bg':'bgrn'}">${p.price||'مجاني'}</span></td><td>${p.season?'<span class="badge bg">'+p.season+'</span>':'—'}</td><td>${p.isNew?'<span class="badge br">جديد</span>':''} ${p.isFeatured?'<span class="badge bg">⭐</span>':''}</td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id})">🗑</button></div></td></tr>`;}).join('');
+  tb.innerHTML=pageItems.map(p=>{const cat=cats.find(c=>c.id===(p.categoryId||p.catId));const poster=p.posterUrl||p.poster;const img=poster?`<img src="${poster}" style="width:80px;height:80px;border-radius:10px;object-fit:cover" onerror="this.src='https://via.placeholder.com/80x80?text=NO+IMG'"/>`:DEFAULT_PRODUCT_PLACEHOLDER_HTML;const typeLabel=p.productType==='hard'?'<span class="badge bb">💾 هارد</span>':p.productType==='data'?'<span class="badge bg">📊 داتا</span>':'<span class="badge bgrn">عادي</span>';return `<tr><td style="width:90px;min-width:90px">${img}</td><td>${p.name}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td>${typeLabel}</td><td>${formatSizeLabel(p.gb)}</td><td><span class="badge ${p.price&&p.price!=='مجاني'?'bg':'bgrn'}">${p.price||'مجاني'}</span></td><td>${p.season?'<span class="badge bg">'+p.season+'</span>':'—'}</td><td>${p.isNew?'<span class="badge br">جديد</span>':''} ${p.isFeatured?'<span class="badge bg">⭐</span>':''}</td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id})">🗑</button></div></td></tr>`;}).join('');
   renderProductPages(pages,prodPage);
 }
 function renderProductPages(pages,active){const pager=document.getElementById('prod-pages');if(!pager)return;if(pages<=1){pager.innerHTML='';return;}pager.innerHTML=Array.from({length:pages},(_,i)=>`<button class="${i+1===active?'on':''}" onclick="prodPage=${i+1};renderProdTable()">${i+1}</button>`).join('');}
@@ -1087,7 +1110,7 @@ function renderHardsTable(){
   tb.innerHTML=hards.map(p=>{
     const cat=cats.find(c=>c.id===(p.categoryId||p.catId));const poster=p.posterUrl||p.poster;
     const img=poster?`<img src="${poster}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'"/>`:'<span style="font-size:1.3rem">💾</span>';
-    return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td>${p.season?`<span class="badge bg">${p.season}</span>`:'—'}</td><td><span class="badge bg">${p.price||'مجاني'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="delHard(${p.id});renderHardsTable()">🗑</button></div></td></tr>`;
+    return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td>${p.season?`<span class="badge bg">${p.season}</span>`:'—'}</td><td><span class="badge bg">${p.price||'مجاني'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="delHard(${p.id})">🗑</button></div></td></tr>`;
   }).join('');
 }
 
@@ -1114,7 +1137,7 @@ function renderDataTable(){
   tb.innerHTML=data.map(p=>{
     const cat=cats.find(c=>c.id===(p.categoryId||p.catId));const poster=p.posterUrl||p.poster;
     const img=poster?`<img src="${poster}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'"/>`:'<span style="font-size:1.3rem">📊</span>';
-    return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td>${p.season?`<span class="badge bg">${p.season}</span>`:'—'}</td><td><span class="badge bg">${p.price||'مجاني'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-r btn-sm" type="button" onclick="delData(${p.id});renderDataTable()">🗑</button></div></td></tr>`;
+    return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td>${p.season?`<span class="badge bg">${p.season}</span>`:'—'}</td><td><span class="badge bg">${p.price||'مجاني'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-r btn-sm" type="button" onclick="delData(${p.id})">🗑</button></div></td></tr>`;
   }).join('');
 }
 
@@ -1308,18 +1331,31 @@ async function saveMarqueeSpeed(){
   await save();showToast('✅ تم حفظ السرعة');
 }
 
+function getAllProductsForMarquee(){
+  return [
+    ...(SD.products||[]).map(p=>({source:'prod',...p})),
+    ...(SD.hards||[]).map(p=>({source:'hard',...p})),
+    ...(SD.data||[]).map(p=>({source:'data',...p}))
+  ];
+}
 function updateMarqueeSelect(){
   const sel=document.getElementById('mq-prod-select');if(!sel)return;
-  const prods=SD.products||[];
+  const prods=getAllProductsForMarquee();
   sel.innerHTML='<option value="">-- اختر منتج --</option>'+prods.map(p=>{
-    const typeIcon=p.productType==='hard'?'💾':p.productType==='data'?'📊':'🎬';
-    return `<option value="${p.id}">${typeIcon} ${p.name}${p.season?' - م'+p.season:''} — ${p.price||'مجاني'}</option>`;
+    const typeIcon=p.source==='hard'?'💾':p.source==='data'?'📊':'🎬';
+    return `<option value="${p.source}:${p.id}">${typeIcon} ${p.name}${p.season?' - م'+p.season:''} — ${p.price||'مجاني'}</option>`;
   }).join('');
 }
 async function addMarqueeProd(){
   const sel=document.getElementById('mq-prod-select');
-  const prodId=parseInt(sel.value);if(!prodId){showToast('❌ اختر منتج',true);return;}
-  const p=(SD.products||[]).find(x=>x.id===prodId);if(!p)return;
+  const rawValue=sel.value; if(!rawValue){showToast('❌ اختر منتج',true);return;}
+  const [source,idStr]=rawValue.split(':');
+  const prodId=parseInt(idStr); if(!source||isNaN(prodId)){showToast('❌ اختر منتج صحيح',true);return;}
+  let p=null;
+  if(source==='prod') p=(SD.products||[]).find(x=>x.id===prodId);
+  else if(source==='hard') p=(SD.hards||[]).find(x=>x.id===prodId);
+  else if(source==='data') p=(SD.data||[]).find(x=>x.id===prodId);
+  if(!p){showToast('❌ المنتج غير موجود',true);return;}
   if(!SD.featuredMarquee)SD.featuredMarquee=[];
   SD.featuredMarquee.push({type:'product',prodId:p.id,text:p.name+(p.season?' - م'+p.season:''),price:p.price||'مجاني',poster:p.posterUrl||p.poster||'',productType:p.productType||''});
   sel.value='';

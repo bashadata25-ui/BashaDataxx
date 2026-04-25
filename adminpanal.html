@@ -725,36 +725,36 @@ tr:hover td{background:rgba(255,255,255,.012)}
 <script>
 'use strict';
 const ADMIN_PW = '661990';
-const SB_URL   = 'https://epvplqmjclnhjmsfeajw.supabase.co';
-const SB_ANON  = 'sb_publishable_DsZu99KFEcdT-XCmWXWb5A_Z-8uk74O'; // ✅ استخدم ده فقط
+const SB_URL   = 'https://imqjrudcxbrauhkqrfnr.supabase.co';
+const SB_KEY   = 'sb_publishable_N6KQlCXY60wJ_PuCf7UvhA_nwH8V2n2';
 const BUCKET   = 'site-bucket';
 const SITE_BUCKET = 'site-bucket';
 const CFG_PATH = 'config/site.json';
 const CFG_URL = `${SB_URL}/storage/v1/object/public/${SITE_BUCKET}/${CFG_PATH}`;
 
-const sb = window.supabase.createClient(SB_URL, SB_ANON);
+const sb = window.supabase.createClient(SB_URL, SB_KEY);
 let sbStatus = 'loading'; // loading | ok | err
 let sbOnline = false;
 
 async function checkConn(){
-  setStatus('loading');
+  try{
+    setStatus('loading');
 
-  try {
     const { error } = await sb.storage.from(BUCKET).list('', { limit: 1 });
 
-    if (error) {
+    if(error){
       setStatus('err');
-    } else {
+    }else{
       setStatus('ok');
     }
 
-  } catch (e) {
+  }catch(e){
     setStatus('err');
   }
 }
 
 checkConn();
-setInterval(checkConn, 15000);
+setInterval(checkConn,15000);
 window.addEventListener('DOMContentLoaded', preloadConfig);
 
 async function preloadConfig(){
@@ -764,34 +764,38 @@ async function preloadConfig(){
 // 🔥 التحكم في الحالة
 function setStatus(status){
   sbStatus = status;
-  sbOnline = status === 'ok';
 
-  const isOk  = status === 'ok';
-  const isErr = status === 'err';
-
-  // النقاط (الدوائر)
+  // تحديث الدوائر
   ['lconn-dot','conn-dot'].forEach(id=>{
     const el = document.getElementById(id);
     if(!el) return;
 
-    el.classList.remove('ok','err','loading');
-
-    if(status === 'ok') el.classList.add('ok');
-    else if(status === 'err') el.classList.add('err');
-    else el.classList.add('loading');
+    el.className = el.className.replace(/\s*(ok|err|loading)/g,'');
+    el.className += ' ' + status;
   });
 
   // النصوص
-  const text =
-    status === 'loading' ? '⏳ جاري الاتصال بـ Supabase...' :
-    status === 'ok'      ? '🟢 متصل بـ Supabase' :
-                          '🔴 غير متصل بـ Supabase';
+  let text = '';
+
+  if(status === 'loading'){
+    text = '⏳ جاري الاتصال بـ Supabase...';
+  }else if(status === 'ok'){
+    text = '🟢 متصل بـ Supabase';
+  }else{
+    text = '🔴 غير متصل بـ Supabase';
+  }
 
   const lt = document.getElementById('lconn-txt');
-  const ct = document.getElementById('conn-txt');
-
   if(lt) lt.textContent = text;
+
+  const ct = document.getElementById('conn-txt');
   if(ct) ct.textContent = text;
+}
+
+function updConn(isConnected){
+  sbOnline = !!isConnected;
+  setStatus(sbOnline ? 'ok' : 'err');
+  if(typeof renderDash === 'function') renderDash();
 }
 
 async function fetchJSON(url){const r=await fetch(url+'?t='+Date.now());if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}

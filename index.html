@@ -801,9 +801,9 @@ function renderCollections(){
   if(!cats.length){g.innerHTML='<div style="color:var(--muted);grid-column:1/-1;text-align:center;padding:40px">لا توجد أقسام حتى الآن</div>';return;}
   g.innerHTML=cats.map(c=>{
     const catImg=c.posterImg||c.bg||'';
-    const cnt=prods.filter(p=>(p.categoryId||p.catId)===c.id).length;
+    const cnt=prods.filter(p=>String(p.categoryId||p.catId)===String(c.id)).length;
     const bgStyle=catImg?`background-image:url('${catImg}');background-size:cover;background-position:center`:`background:linear-gradient(${c.gradient||'135deg,#111,#222'})`;
-    return `<div class="co-c" onclick="setFilter(${c.id})">
+    return `<div class="co-c" onclick="setFilter(${JSON.stringify(c.id)})">
       <div class="co-th"><div class="co-bg" style="${bgStyle}"></div><div class="co-ov"></div>${cnt>0?`<span class="co-badge">${cnt} عنصر</span>`:''}</div>
       <div class="co-body"><div class="co-n">${c.name}</div><div class="co-m"><span>📦 ${cnt} منتج</span><span style="color:var(--muted2)">·</span><span style="color:${c.color||'var(--gold)'}">●</span></div><div class="co-more">تصفح الآن ›</div></div>
     </div>`;
@@ -816,7 +816,7 @@ function setFilter(id){activeFilter=id;prodPage=0;renderTabBar();renderProds();i
 function renderTabBar(){
   const bar=document.getElementById('tabbar');
   bar.innerHTML=`<button class="tab${activeFilter===null?' on':''}" onclick="setFilter(null)">🏠 الكل</button>`
-    +(SD.categories||[]).map(c=>`<button class="tab${activeFilter===c.id?' on':''}" onclick="setFilter(${c.id})">${c.icon||'📁'} ${c.name}</button>`).join('');
+    +(SD.categories||[]).map(c=>`<button class="tab${String(activeFilter)===String(c.id)?' on':''}" onclick="setFilter(${JSON.stringify(c.id)})">${c.icon||'📁'} ${c.name}</button>`).join('');
 }
 
 /* ══ PRODUCTS ══ */
@@ -825,8 +825,8 @@ function renderProds(){
   const g=document.getElementById('prg');const title=document.getElementById('ptitle');const pag=document.getElementById('pr-pag');const cats=SD.categories||[];
   let prods=(SD.products||[]).filter(p=>!p.productType||p.productType==='');
   if(activeFilter!==null){
-    prods=prods.filter(p=>(p.categoryId||p.catId)===activeFilter);
-    const cat=cats.find(c=>c.id===activeFilter);
+    prods=prods.filter(p=>String(p.categoryId||p.catId)===String(activeFilter));
+    const cat=cats.find(c=>String(c.id)===String(activeFilter));
     title.textContent=cat?`${cat.icon||'📁'} ${cat.name}`:'المنتجات';
   }else title.textContent='المحتوى المتاح';
   if(!prods.length){g.innerHTML=`<div class="empty-s"><div class="ei">🎬</div><p>لا توجد منتجات في هذا القسم حتى الآن</p></div>`;if(pag)pag.innerHTML='';return;}
@@ -836,15 +836,16 @@ function renderProds(){
   const start=prodPage*PRODS_PER_PAGE;
   const pageProds=prods.slice(start,start+PRODS_PER_PAGE);
   g.innerHTML=pageProds.map(p=>{
-    const catId=p.categoryId||p.catId;const cat=cats.find(c=>c.id===catId);
+    const catId=String(p.categoryId||p.catId);
+    const cat=cats.find(c=>String(c.id)===catId);
     const poster=getPoster(p);
     const bg=poster?`url('${poster}')`:`linear-gradient(${cat?.gradient||'135deg,#111,#222'})`;
     const isNew=p.isNew||(p.badgeType==='new');
-    return `<div class="pr-c" onclick="goToProduct(${p.id},'${p.productType||''}')">
+    return `<div class="pr-c" onclick="goToProduct(${JSON.stringify(p.id)},${JSON.stringify(p.productType||'')})">
       <div class="pr-poster">
         <div class="pr-inn" style="background:${bg};background-size:cover;background-position:center top">${poster?'':p.icon||cat?.icon||'🎬'}</div>
         <div class="pr-ov"></div>
-        <div class="pr-act"><button class="pr-abtn" onclick="addToCart(${p.id},event)">🛒 أضف للسلة</button></div>
+        <div class="pr-act"><button class="pr-abtn" onclick="addToCart(${JSON.stringify(p.id)},event)">🛒 أضف للسلة</button></div>
         ${isNew?'<span class="pr-nb">جديد</span>':''}
       </div>
       <div class="pr-name" title="${p.name}">${p.name}${p.season?' - '+p.season:''}</div>
@@ -889,11 +890,11 @@ let cart=[];
 function toggleCart(){document.getElementById('cdrw').classList.toggle('on');document.getElementById('cback').classList.toggle('on');}
 function addToCart(id,ev){
   if(ev)ev.stopPropagation();
-  const p=(SD.products||[]).find(x=>x.id===id);if(!p)return;
-  const ex=cart.find(x=>x.id===id);
+  const p=(SD.products||[]).find(x=>String(x.id)===String(id));if(!p)return;
+  const ex=cart.find(x=>String(x.id)===String(id));
   if(ex)ex.qty++;
   else{
-    const catId=p.categoryId||p.catId;const cat=(SD.categories||[]).find(c=>c.id===catId);
+    const catId=String(p.categoryId||p.catId);const cat=(SD.categories||[]).find(c=>String(c.id)===catId);
     cart.push({id,name:p.name,price:p.price||'مجاني',icon:p.icon||cat?.icon||'🎬',posterUrl:getPoster(p),qty:1,gb:p.gb||0});
   }
   renderCart();showToast(`✅ تم إضافة "${p.name}"`);
@@ -1037,7 +1038,7 @@ function renderHards(){
   const cats=SD.categories||[];
   if(!hards.length){grid.innerHTML='<div style="text-align:center;color:var(--muted);padding:40px">لا توجد هاردات حالياً</div>';return;}
   grid.innerHTML=hards.map(p=>{
-    const catId=p.categoryId||p.catId;const cat=cats.find(c=>c.id===catId);
+    const catId=String(p.categoryId||p.catId);const cat=cats.find(c=>String(c.id)===catId);
     const poster=getPoster(p);
     const topBg=poster?`<img src="${poster}" onerror="this.style.display='none'"/>`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a0f00,#2d1c00);display:flex;align-items:center;justify-content:center"><span class="hd-icon">💾</span></div>`;
     return `<div class="hd-card">
@@ -1064,7 +1065,7 @@ function renderDataSec(){
   if(!data.length){grid.innerHTML='<div style="text-align:center;color:var(--muted);padding:40px">لا توجد باقات داتا حالياً</div>';return;}
   const cats=SD.categories||[];
   grid.innerHTML=data.map(p=>{
-    const catId=p.categoryId||p.catId;const cat=cats.find(c=>c.id===catId);
+    const catId=String(p.categoryId||p.catId);const cat=cats.find(c=>String(c.id)===catId);
     const poster=getPoster(p);
     const topBg=poster?`<img src="${poster}" onerror="this.style.display='none'"/>`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#000a1a,#001530);display:flex;align-items:center;justify-content:center"><span class="hd-icon">📊</span></div>`;
     return `<div class="hd-card hd-card-data">
@@ -1092,7 +1093,7 @@ function renderFeaturedStrip(){
   sec.style.display='block';if(div)div.style.display='block';
   strip.innerHTML=featured.map(p=>{
     const poster=getPoster(p);
-    const cat=(SD.categories||[]).find(c=>c.id===(p.categoryId||p.catId));
+    const cat=(SD.categories||[]).find(c=>String(c.id)===String(p.categoryId||p.catId));
     return `<div class="banner-card" onclick="addToCart(${p.id},event)" style="min-width:160px;cursor:pointer">
       ${poster?`<img class="banner-img" src="${poster}" style="height:200px;width:160px"/>`:`<div style="height:200px;width:160px;background:linear-gradient(${cat?.gradient||'135deg,#111,#222'});display:flex;align-items:center;justify-content:center;font-size:2.5rem">${p.icon||'🆕'}</div>`}
       <div class="banner-label">${p.isNew?'🆕 ':''} ${p.name}${p.season?' - '+p.season:''}</div>
@@ -1195,10 +1196,10 @@ function handleSearch(inp){
   const results=allProds.filter(p=>p.name.toLowerCase().includes(searchQuery)).slice(0,10);
   if(!results.length){box.innerHTML='<div class="sr-empty">🔍 لا توجد نتائج</div>';box.classList.add('open');return;}
   box.innerHTML=results.map(p=>{
-    const cat=cats.find(c=>c.id===(p.categoryId||p.catId));
+    const cat=cats.find(c=>String(c.id)===String(p.categoryId||p.catId));
     const poster=getPoster(p);
     const typeLabel=String(p.productType||'').toLowerCase()==='hard'?'💾 هارد':String(p.productType||'').toLowerCase()==='data'?'📊 داتا':'🎬';
-    return `<div class="sr-item" onclick="goToProduct(${p.id},'${p.productType||''}')">
+    return `<div class="sr-item" onclick="goToProduct(${JSON.stringify(p.id)},${JSON.stringify(p.productType||'')})">
       <div class="sr-img">${poster?`<img src="${poster}" onerror="this.outerHTML='🎬'"/>`:typeLabel}</div>
       <div class="sr-info"><div class="sr-name">${p.name}${p.season?' - '+p.season:''}</div><div class="sr-meta"><span>${cat?cat.name:'—'}${p.gb?' · '+p.gb+'GB':''}</span><span class="sr-price">${p.price||'مجاني'}</span></div></div>
     </div>`;
@@ -1213,9 +1214,9 @@ function clearSearch(){
 }
 function goToProduct(id,type){
   clearSearch();
-  const p=(SD.products||[]).find(x=>x.id===id);if(!p)return;
+  const p=(SD.products||[]).find(x=>String(x.id)===String(id));if(!p)return;
   const cats=SD.categories||[];
-  const cat=cats.find(c=>c.id===(p.categoryId||p.catId));
+  const cat=cats.find(c=>String(c.id)===String(p.categoryId||p.catId));
   const poster=getPoster(p);
   const imgEl=document.getElementById('pm-img');
   if(poster)imgEl.innerHTML=`<img src="${poster}" onerror="this.outerHTML='🎬'"/>`;

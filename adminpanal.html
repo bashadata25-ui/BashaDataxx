@@ -725,42 +725,73 @@ tr:hover td{background:rgba(255,255,255,.012)}
 <script>
 'use strict';
 const ADMIN_PW = '661990';
+const SB_URL   = 'https://epvplqmjclnhjmsfeajw.supabase.co';
+const SB_ANON  = 'sb_publishable_DsZu99KFEcdT-XCmWXWb5A_Z-8uk74O'; // ✅ استخدم ده فقط
+const BUCKET   = 'site-bucket';
 const SITE_BUCKET = 'site-bucket';
 const CFG_PATH = 'config/site.json';
 const CFG_URL = `${SB_URL}/storage/v1/object/public/${SITE_BUCKET}/${CFG_PATH}`;
 
-const sb = supabase; // Supabase client من supabaseClient.js
+const sb = window.supabase.createClient(SB_URL, SB_ANON);
+let sbStatus = 'loading'; // loading | ok | err
 let sbOnline = false;
 
 async function checkConn(){
-  console.log('Checking Supabase connection...');
-  if (!isSupabaseClientReady()) {
-    console.log('Supabase client not ready, waiting...');
-    // انتظر قليلاً حتى يتم تحميل supabaseClient.js
-    await new Promise(resolve => setTimeout(resolve, 500));
-    if (!isSupabaseClientReady()) {
-      console.log('Supabase client still not ready');
-      updConn(false, 'Supabase client غير جاهز');
-      return;
+  setStatus('loading');
+
+  try {
+    const { error } = await sb.storage.from(BUCKET).list('', { limit: 1 });
+
+    if (error) {
+      setStatus('err');
+    } else {
+      setStatus('ok');
     }
+
+  } catch (e) {
+    setStatus('err');
   }
-  console.log('Supabase client ready, testing connection...');
-  const result = await testSupabaseConnection();
-  console.log('Connection result:', result);
-  sbOnline = result.connected;
-  updConn(result.connected, result.error);
 }
-checkConn();setInterval(checkConn,15000);
+
+checkConn();
+setInterval(checkConn, 15000);
 window.addEventListener('DOMContentLoaded', preloadConfig);
 
 async function preloadConfig(){
   try{const d=await fetchJSON(CFG_URL);if(d)SD={...SD,...d};}catch(e){}
 }
 
-function updConn(ok,error){
-  ['lconn-dot','conn-dot'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.className=el.className.replace(/\s*(ok|err)/g,'')+(ok?' ok':' err');});
-  const lt=document.getElementById('lconn-txt');if(lt)lt.textContent=ok?'🟢 متصل بـ Supabase':'🔴 غير متصل بـ Supabase';
-  const ct=document.getElementById('conn-txt');if(ct)ct.textContent=ok?('🟢 متصل بـ Supabase'):(error?`🔴 غير متصل: ${error}`:'🔴 غير متصل بـ Supabase');
+// 🔥 التحكم في الحالة
+function setStatus(status){
+  sbStatus = status;
+  sbOnline = status === 'ok';
+
+  const isOk  = status === 'ok';
+  const isErr = status === 'err';
+
+  // النقاط (الدوائر)
+  ['lconn-dot','conn-dot'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+
+    el.classList.remove('ok','err','loading');
+
+    if(status === 'ok') el.classList.add('ok');
+    else if(status === 'err') el.classList.add('err');
+    else el.classList.add('loading');
+  });
+
+  // النصوص
+  const text =
+    status === 'loading' ? '⏳ جاري الاتصال بـ Supabase...' :
+    status === 'ok'      ? '🟢 متصل بـ Supabase' :
+                          '🔴 غير متصل بـ Supabase';
+
+  const lt = document.getElementById('lconn-txt');
+  const ct = document.getElementById('conn-txt');
+
+  if(lt) lt.textContent = text;
+  if(ct) ct.textContent = text;
 }
 
 async function fetchJSON(url){const r=await fetch(url+'?t='+Date.now());if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}

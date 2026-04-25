@@ -733,11 +733,20 @@ const sb = supabase; // Supabase client من supabaseClient.js
 let sbOnline = false;
 
 async function checkConn(){
+  console.log('Checking Supabase connection...');
   if (!isSupabaseClientReady()) {
-    updConn(false, 'Supabase client غير جاهز');
-    return;
+    console.log('Supabase client not ready, waiting...');
+    // انتظر قليلاً حتى يتم تحميل supabaseClient.js
+    await new Promise(resolve => setTimeout(resolve, 500));
+    if (!isSupabaseClientReady()) {
+      console.log('Supabase client still not ready');
+      updConn(false, 'Supabase client غير جاهز');
+      return;
+    }
   }
+  console.log('Supabase client ready, testing connection...');
   const result = await testSupabaseConnection();
+  console.log('Connection result:', result);
   sbOnline = result.connected;
   updConn(result.connected, result.error);
 }

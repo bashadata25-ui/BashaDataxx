@@ -374,7 +374,7 @@ tr:hover td{background:rgba(255,255,255,.012)}
       </div>
       <div class="card">
         <div class="ctitle">📋 الهاردات الحالية</div>
-        <div class="twrap"><table><thead><tr><th>الصورة</th><th>الاسم</th><th>القسم</th><th>السعر</th><th>إجراءات</th></tr></thead><tbody id="hd-tbody"></tbody></table></div>
+        <div class="twrap"><table><thead><tr><th>الصورة</th><th>الاسم</th><th>القسم</th><th>الموسم</th><th>السعر</th><th>إجراءات</th></tr></thead><tbody id="hd-tbody"></tbody></table></div>
       </div>
     </div>
 
@@ -408,7 +408,7 @@ tr:hover td{background:rgba(255,255,255,.012)}
       </div>
       <div class="card">
         <div class="ctitle">📋 باقات الداتا الحالية</div>
-        <div class="twrap"><table><thead><tr><th>الصورة</th><th>الاسم</th><th>القسم</th><th>السعر</th><th>إجراءات</th></tr></thead><tbody id="dt-tbody"></tbody></table></div>
+        <div class="twrap"><table><thead><tr><th>الصورة</th><th>الاسم</th><th>القسم</th><th>الموسم</th><th>السعر</th><th>إجراءات</th></tr></thead><tbody id="dt-tbody"></tbody></table></div>
       </div>
     </div>
 
@@ -733,9 +733,13 @@ const sb = supabase; // Supabase client من supabaseClient.js
 let sbOnline = false;
 
 async function checkConn(){
-  const ok = await testSupabaseConnection();
-  sbOnline = ok;
-  updConn(ok);
+  if (!isSupabaseClientReady()) {
+    updConn(false, 'Supabase client غير جاهز');
+    return;
+  }
+  const result = await testSupabaseConnection();
+  sbOnline = result.connected;
+  updConn(result.connected, result.error);
 }
 checkConn();setInterval(checkConn,15000);
 window.addEventListener('DOMContentLoaded', preloadConfig);
@@ -744,10 +748,10 @@ async function preloadConfig(){
   try{const d=await fetchJSON(CFG_URL);if(d)SD={...SD,...d};}catch(e){}
 }
 
-function updConn(ok){
+function updConn(ok,error){
   ['lconn-dot','conn-dot'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.className=el.className.replace(/\s*(ok|err)/g,'')+(ok?' ok':' err');});
   const lt=document.getElementById('lconn-txt');if(lt)lt.textContent=ok?'🟢 متصل بـ Supabase':'🔴 غير متصل بـ Supabase';
-  const ct=document.getElementById('conn-txt');if(ct)ct.textContent=ok?'🟢 متصل بـ Supabase':'🔴 غير متصل بـ Supabase';
+  const ct=document.getElementById('conn-txt');if(ct)ct.textContent=ok?('🟢 متصل بـ Supabase'):(error?`🔴 غير متصل: ${error}`:'🔴 غير متصل بـ Supabase');
 }
 
 async function fetchJSON(url){const r=await fetch(url+'?t='+Date.now());if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}
@@ -1036,7 +1040,7 @@ function renderHardsTable(){
   tb.innerHTML=hards.map(p=>{
     const cat=cats.find(c=>c.id===(p.categoryId||p.catId));const poster=p.posterUrl||p.poster;
     const img=poster?`<img src="${poster}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'"/>`:'<span style="font-size:1.3rem">💾</span>';
-    return `<tr><td>${img}</td><td>${p.name}${p.season?' <span class="badge bg">م'+p.season+'</span>':''}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td><span class="badge bg">${p.price||'مجاني'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="delHard(${p.id});renderHardsTable()">🗑</button></div></td></tr>`;
+    return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td>${p.season?`<span class="badge bg">${p.season}</span>`:'—'}</td><td><span class="badge bg">${p.price||'مجاني'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="delHard(${p.id});renderHardsTable()">🗑</button></div></td></tr>`;
   }).join('');
 }
 
@@ -1063,7 +1067,7 @@ function renderDataTable(){
   tb.innerHTML=data.map(p=>{
     const cat=cats.find(c=>c.id===(p.categoryId||p.catId));const poster=p.posterUrl||p.poster;
     const img=poster?`<img src="${poster}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'"/>`:'<span style="font-size:1.3rem">📊</span>';
-    return `<tr><td>${img}</td><td>${p.name}${p.season?' <span class="badge bg">م'+p.season+'</span>':''}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td><span class="badge bg">${p.price||'مجاني'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-r btn-sm" type="button" onclick="delData(${p.id});renderDataTable()">🗑</button></div></td></tr>`;
+    return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat?cat.name:'—'}</span></td><td>${p.season?`<span class="badge bg">${p.season}</span>`:'—'}</td><td><span class="badge bg">${p.price||'مجاني'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-r btn-sm" type="button" onclick="delData(${p.id});renderDataTable()">🗑</button></div></td></tr>`;
   }).join('');
 }
 

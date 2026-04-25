@@ -790,6 +790,9 @@ function setStatus(status){
 
   const ct = document.getElementById('conn-txt');
   if(ct) ct.textContent = text;
+
+  const ss = document.getElementById('site-stat');
+  if(ss) ss.innerHTML = `<div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div style="width:8px;height:8px;border-radius:50%;background:${SD.maintenance?'var(--red)':'var(--green)'}"></div><span style="font-size:.85rem">${SD.maintenance?'⚠️ وضع الصيانة':'✅ يعمل بشكل طبيعي'}</span></div><div style="font-size:.78rem;color:var(--muted)">Supabase: <b style="color:${status==='ok'?'var(--green)':'var(--red)'}">${status==='ok'?'متصل ✓':'غير متصل'}</b> | الثيم: <b style="color:var(--gold)">${SD.theme||'dark'}</b></div>`;
 }
 
 function updConn(isConnected){

@@ -6,6 +6,7 @@
 <title>Basha Data — الأدمن</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabaseClient.js"></script>
 <style>
 :root{--bg:#0b0f18;--bg2:#111827;--bg3:#1a2233;--bg4:#222d40;--line:rgba(255,255,255,0.07);--line2:rgba(255,255,255,0.12);--text:#f0f4ff;--muted:#8a95b0;--muted2:#55607a;--gold:#f59e0b;--gold2:#fbbf24;--blue:#3b82f6;--red:#ef4444;--green:#22c55e;--sidebar:260px;--font:'Cairo',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -723,19 +724,18 @@ tr:hover td{background:rgba(255,255,255,.012)}
 
 <script>
 'use strict';
-const SB_URL   = 'https://imqjrudcxbrauhkqrfnr.supabase.co';
-const SB_ANON  = 'sb_publishable_gbcUqQv11Ce8VsLtmThrog_MSH7CiJx';
-const BUCKET   = 'site-bucket';
-const CFG_PATH = 'config/site.json';
-const CFG_URL  = SB_URL+'/storage/v1/object/public/'+BUCKET+'/'+CFG_PATH;
 const ADMIN_PW = '661990';
+const SITE_BUCKET = 'site-bucket';
+const CFG_PATH = 'config/site.json';
+const CFG_URL = `${SB_URL}/storage/v1/object/public/${SITE_BUCKET}/${CFG_PATH}`;
 
-const sb = window.supabase.createClient(SB_URL, SB_ANON); // فقط مفتاح ANون العام
+const sb = supabase; // Supabase client من supabaseClient.js
 let sbOnline = false;
 
 async function checkConn(){
-  try{await fetchJSON(CFG_URL);sbOnline=true;}catch(e){sbOnline=false;}
-  updConn(sbOnline);
+  const ok = await testSupabaseConnection();
+  sbOnline = ok;
+  updConn(ok);
 }
 checkConn();setInterval(checkConn,15000);
 window.addEventListener('DOMContentLoaded', preloadConfig);
@@ -746,14 +746,14 @@ async function preloadConfig(){
 
 function updConn(ok){
   ['lconn-dot','conn-dot'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.className=el.className.replace(/\s*(ok|err)/g,'')+(ok?' ok':' err');});
-  const lt=document.getElementById('lconn-txt');if(lt)lt.textContent=ok?'Supabase متصل ✓':'غير متصل';
-  const ct=document.getElementById('conn-txt');if(ct)ct.textContent=ok?'Supabase متصل ✓':'وضع غير متصل';
+  const lt=document.getElementById('lconn-txt');if(lt)lt.textContent=ok?'🟢 متصل بـ Supabase':'🔴 غير متصل بـ Supabase';
+  const ct=document.getElementById('conn-txt');if(ct)ct.textContent=ok?'🟢 متصل بـ Supabase':'🔴 غير متصل بـ Supabase';
 }
 
 async function fetchJSON(url){const r=await fetch(url+'?t='+Date.now());if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}
 async function saveJSON(path,data){
   const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
-  const{error}=await sb.storage.from(BUCKET).upload(path,blob,{upsert:true,contentType:'application/json'});
+  const{error}=await sb.storage.from(SITE_BUCKET).upload(path,blob,{upsert:true,contentType:'application/json'});
   if(error)throw error;
 }
 
@@ -792,8 +792,10 @@ function attachSizeInfo(){
   });
 }
 async function delFile(url){
-  if(!url||!url.includes(BUCKET))return;
-  try{const p=url.split('/'+BUCKET+'/')[1];if(p)await sb.storage.from(BUCKET).remove([p]);}catch(e){}
+  if(!url)return;
+  const bucket = url.includes(`/${IMAGE_BUCKET}/`) ? IMAGE_BUCKET : url.includes(`/${SITE_BUCKET}/`) ? SITE_BUCKET : null;
+  if(!bucket) return;
+  try{const p=url.split('/'+bucket+'/')[1];if(p)await sb.storage.from(bucket).remove([p]);}catch(e){}
 }
 
 let SD={
@@ -861,9 +863,9 @@ async function uploadFile(file,path,label){
   try{
     const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
     const fp=path+'_'+Date.now()+'_'+safe;
-    const{data,error}=await sb.storage.from(BUCKET).upload(fp,file,{upsert:true,contentType:file.type});
+    const{data,error}=await sb.storage.from(IMAGE_BUCKET).upload(fp,file,{upsert:true,contentType:file.type});
     clearInterval(iv);setUplProg(100);if(error)throw error;
-    const{data:u}=sb.storage.from(BUCKET).getPublicUrl(fp);
+    const{data:u}=sb.storage.from(IMAGE_BUCKET).getPublicUrl(fp);
     await new Promise(r=>setTimeout(r,300));showUpl(false);return u.publicUrl;
   }catch(e){clearInterval(iv);showUpl(false);showToast('❌ فشل الرفع: '+e.message+'\nتأكد من Storage Policies في Supabase',true);return null;}
 }

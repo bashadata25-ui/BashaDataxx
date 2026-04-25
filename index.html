@@ -72,7 +72,7 @@ nav{position:fixed;top:0;inset-inline:0;height:64px;z-index:500;display:flex;ali
 .hero{position:relative;height:88vh;min-height:560px;max-height:860px;display:flex;align-items:flex-end;overflow:hidden;z-index:1}
 .h-bg{position:absolute;inset:0;background-size:cover;background-position:center top}
 .h-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(12,12,14,.25) 0%,rgba(12,12,14,.05) 25%,rgba(12,12,14,.55) 60%,var(--bg) 100%),linear-gradient(to right,rgba(12,12,14,.85) 0%,rgba(12,12,14,.4) 50%,transparent 100%)}
-.h-body{position:relative;z-index:2;padding:0 60px 72px;max-width:560px}
+.h-body{position:relative;z-index:2;padding:0 60px 72px;max-width:680px}
 .h-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(212,168,67,.1);border:1px solid rgba(212,168,67,.22);padding:5px 14px;border-radius:20px;font-size:.7rem;font-weight:600;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px}
 .h-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:bl 1.5s ease-in-out infinite}
 @keyframes bl{0%,100%{opacity:1}50%{opacity:.25}}
@@ -89,7 +89,7 @@ nav{position:fixed;top:0;inset-inline:0;height:64px;z-index:500;display:flex;ali
 .hsn{font-size:1.4rem;font-weight:900;color:var(--gold);line-height:1}
 .hsl{font-size:.63rem;color:var(--muted);margin-top:2px}
 .sec{padding:54px 0;position:relative;z-index:1}
-.wrap{max-width:1140px;margin:0 auto;padding:0 40px}
+.wrap{max-width:1340px;margin:0 auto;padding:0 40px}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
 .st{font-size:1.12rem;font-weight:700;display:flex;align-items:center;gap:10px;color:var(--text)}
 .st::before{content:'';display:inline-block;width:3px;height:20px;background:var(--gold);border-radius:2px}
@@ -118,24 +118,24 @@ nav{position:fixed;top:0;inset-inline:0;height:64px;z-index:500;display:flex;ali
 .banner-img{width:150px;height:225px;object-fit:cover;display:block}
 .banners-main .banner-img{width:100%;height:auto;aspect-ratio:2560/423}
 .banner-label{padding:7px 10px;font-size:.72rem;font-weight:600;color:var(--muted);text-align:center;background:var(--bg2)}
-.co-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-.co-c{background:var(--bg2);border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid var(--line);transition:all .2s}
+.co-g{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.co-c{background:var(--bg2);border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid var(--line);transition:all .2s}
 .co-c:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.6);border-color:rgba(212,168,67,.22)}
 .co-th{height:130px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.co-bg{position:absolute;inset:0;background-size:cover;background-position:center center;background-repeat:no-repeat;transition:transform .4s}
+.co-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .4s}
 .co-c:hover .co-bg{transform:scale(1.06)}
 .co-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(0,0,0,.85))}
-.co-em{position:relative;z-index:1;font-size:3.2rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.co-em{position:relative;z-index:1;font-size:3rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
 .co-badge{position:absolute;top:10px;inset-inline-end:10px;background:var(--accent);color:#fff;font-size:.6rem;font-weight:700;padding:3px 7px;border-radius:4px;z-index:2}
-.co-body{padding:14px 16px 16px}
-.co-n{font-size:.95rem;font-weight:700;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.co-m{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:7px;margin-bottom:9px}
-.co-more{font-size:.75rem;color:var(--gold);font-weight:600;padding-top:8px;border-top:1px solid var(--line)}
+.co-body{padding:12px 14px 14px}
+.co-n{font-size:.88rem;font-weight:700;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.co-m{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.co-more{font-size:.7rem;color:var(--gold);font-weight:600;padding-top:7px;border-top:1px solid var(--line)}
 .tab-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px}
 .tab{padding:6px 15px;border-radius:20px;border:1px solid var(--line2);background:none;color:var(--muted);font-size:.76rem;font-weight:600;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s}
 .tab:hover{border-color:rgba(212,168,67,.4);color:var(--text)}
 .tab.on{background:rgba(212,168,67,.12);border-color:var(--gold);color:var(--gold)}
-.pr-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.pr-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
 
 .pr-pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px}
 .pr-pagination button{background:var(--bg3);border:1px solid var(--line2);color:var(--text);padding:8px 14px;border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.82rem;transition:all .2s}
@@ -146,8 +146,8 @@ nav{position:fixed;top:0;inset-inline:0;height:64px;z-index:500;display:flex;ali
 
 .pr-c{cursor:pointer;transition:transform .2s}
 .pr-c:hover{transform:translateY(-4px)}
-.pr-poster{position:relative;padding-bottom:82%;border-radius:10px;overflow:hidden;background:var(--bg3);margin-bottom:10px}
-.pr-inn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.3rem;background-size:cover;background-position:center center;transition:transform .4s}
+.pr-poster{position:relative;padding-bottom:75%;border-radius:8px;overflow:hidden;background:var(--bg3);margin-bottom:6px}
+.pr-inn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;background-size:cover;background-position:center top;transition:transform .4s}
 .pr-c:hover .pr-inn{transform:scale(1.04)}
 .pr-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.15) 50%,transparent 100%);opacity:0;transition:opacity .3s}
 .pr-c:hover .pr-ov{opacity:1}
@@ -156,11 +156,10 @@ nav{position:fixed;top:0;inset-inline:0;height:64px;z-index:500;display:flex;ali
 .pr-abtn{background:var(--gold);color:#000;border:none;padding:8px 14px;border-radius:7px;font-size:.73rem;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s}
 .pr-abtn:hover{background:var(--gold2);transform:scale(1.05)}
 .pr-nb{position:absolute;top:7px;inset-inline-start:7px;background:var(--accent);color:#fff;font-size:.58rem;font-weight:700;padding:3px 7px;border-radius:4px;z-index:2}
-.pr-name{font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
-.pr-meta{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center}
-.pr-cat{font-size:.86rem;color:var(--text);font-weight:700;line-height:1.4;letter-spacing:.2px}
-.pr-size{font-size:.78rem;color:var(--muted);line-height:1.4;margin-block-start:2px}
-.pr-price{font-size:.92rem;font-weight:900;color:var(--gold)}
+.pr-name{font-size:.72rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.pr-meta{display:flex;align-items:center;justify-content:space-between}
+.pr-cat{font-size:.6rem;color:var(--muted)}
+.pr-price{font-size:.68rem;font-weight:700;color:var(--gold)}
 .empty-s{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--muted)}
 .empty-s .ei{font-size:2.8rem;margin-bottom:12px;opacity:.3}
 .owner-sec{padding:56px 0;background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;z-index:1}
@@ -235,17 +234,17 @@ footer{background:var(--bg2);border-top:1px solid var(--line);padding:36px 0 20p
 .sr-meta{font-size:.68rem;color:var(--muted);display:flex;gap:8px;margin-top:2px}
 .sr-price{color:var(--gold);font-weight:700}
 .sr-empty{padding:20px;text-align:center;color:var(--muted);font-size:.82rem}
-.hd-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
-.hd-card{background:var(--bg2);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:all .3s}
-.hd-card:hover{border-color:rgba(212,168,67,.35);transform:translateY(-4px);box-shadow:0 18px 48px rgba(0,0,0,.35)}
-.hd-card-top{height:240px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.hd-card-top img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;border-radius:0;border:2px solid rgba(212,168,67,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
-.hd-card-top .hd-icon{font-size:3rem;position:relative;z-index:1}
-.hd-card-body{padding:20px}
-.hd-card-name{font-size:1rem;font-weight:800;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hd-card-info{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-bottom:12px}
-.hd-card-cat{font-size:.72rem;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
-.hd-card-size{font-size:.7rem;padding:5px 10px;border-radius:12px;background:rgba(212,168,67,.1);color:var(--gold);font-weight:600}
+.hd-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.hd-card{background:var(--bg2);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:all .3s}
+.hd-card:hover{border-color:rgba(212,168,67,.3);transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.5)}
+.hd-card-top{height:100px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hd-card-top img{width:100%;height:100%;object-fit:cover}
+.hd-card-top .hd-icon{font-size:2.5rem;position:relative;z-index:1}
+.hd-card-body{padding:16px}
+.hd-card-name{font-size:.92rem;font-weight:700;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hd-card-info{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.hd-card-cat{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px}
+.hd-card-size{font-size:.7rem;padding:3px 8px;border-radius:12px;background:rgba(212,168,67,.1);color:var(--gold);font-weight:600}
 .hd-card-price{font-size:1.1rem;font-weight:900;color:var(--gold);margin-bottom:10px}
 .hd-card-btn{width:100%;background:linear-gradient(135deg,var(--gold),#d97706);color:#000;border:none;padding:10px;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s}
 .hd-card-btn:hover{opacity:.9;transform:translateY(-1px)}
@@ -254,6 +253,9 @@ footer{background:var(--bg2);border-top:1px solid var(--line);padding:36px 0 20p
 .hd-sec-header p{font-size:.82rem;color:var(--muted)}
 .hd-sec-hard{background:linear-gradient(180deg,rgba(212,168,67,.03) 0%,transparent 100%);border-top:2px solid rgba(212,168,67,.15);padding:48px 0}
 .hd-sec-data{background:linear-gradient(180deg,rgba(59,130,246,.03) 0%,transparent 100%);border-top:2px solid rgba(59,130,246,.15);padding:48px 0}
+.hd-card-data .hd-card-price{color:#4599ff}
+.hd-card-data .hd-card-size{background:rgba(59,130,246,.1);color:#4599ff}
+.hd-card-data .hd-card-btn{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff}
 @media(max-width:768px){
 .nav-links{display:none!important}
 nav{padding:0 8px;height:50px}
@@ -275,7 +277,6 @@ nav{padding:0 8px;height:50px}
 .gc-time{font-size:.55rem;letter-spacing:.5px}
 .gc-date{font-size:.4rem}
 .hero{height:50vh;min-height:280px;max-height:420px}
-.hd-card-top{height:140px}
 .h-body{padding:0 14px 28px;max-width:100%}
 .h-tag{font-size:.52rem;padding:3px 8px;margin-bottom:8px}
 .h-title{font-size:1.1rem!important}
@@ -654,7 +655,6 @@ nav{padding:0 8px;height:50px}
 'use strict';
 /* ══ HELPERS ══ */
 function formatSize(gb){if(!gb||gb<=0)return'';if(gb>=1)return gb%1===0?gb+' جيجا':gb.toFixed(2)+' جيجا';return Math.round(gb*1024)+' ميجا';}
-function getPoster(item){return item.posterUrl||item.poster||item.imageUrl||item.imgUrl||item.img||'';}
 
 /* ══ CONFIG — غيّر هذا بعد إنشاء Supabase ══ */
 const SB_URL = 'https://epvplqmjclnhjmsfeajw.supabase.co';
@@ -801,9 +801,9 @@ function renderCollections(){
   if(!cats.length){g.innerHTML='<div style="color:var(--muted);grid-column:1/-1;text-align:center;padding:40px">لا توجد أقسام حتى الآن</div>';return;}
   g.innerHTML=cats.map(c=>{
     const catImg=c.posterImg||c.bg||'';
-    const cnt=prods.filter(p=>String(p.categoryId||p.catId)===String(c.id)).length;
+    const cnt=prods.filter(p=>(p.categoryId||p.catId)===c.id).length;
     const bgStyle=catImg?`background-image:url('${catImg}');background-size:cover;background-position:center`:`background:linear-gradient(${c.gradient||'135deg,#111,#222'})`;
-    return `<div class="co-c" onclick="setFilter(${JSON.stringify(c.id)})">
+    return `<div class="co-c" onclick="setFilter(${c.id})">
       <div class="co-th"><div class="co-bg" style="${bgStyle}"></div><div class="co-ov"></div>${cnt>0?`<span class="co-badge">${cnt} عنصر</span>`:''}</div>
       <div class="co-body"><div class="co-n">${c.name}</div><div class="co-m"><span>📦 ${cnt} منتج</span><span style="color:var(--muted2)">·</span><span style="color:${c.color||'var(--gold)'}">●</span></div><div class="co-more">تصفح الآن ›</div></div>
     </div>`;
@@ -816,7 +816,7 @@ function setFilter(id){activeFilter=id;prodPage=0;renderTabBar();renderProds();i
 function renderTabBar(){
   const bar=document.getElementById('tabbar');
   bar.innerHTML=`<button class="tab${activeFilter===null?' on':''}" onclick="setFilter(null)">🏠 الكل</button>`
-    +(SD.categories||[]).map(c=>`<button class="tab${String(activeFilter)===String(c.id)?' on':''}" onclick="setFilter(${JSON.stringify(c.id)})">${c.icon||'📁'} ${c.name}</button>`).join('');
+    +(SD.categories||[]).map(c=>`<button class="tab${activeFilter===c.id?' on':''}" onclick="setFilter(${c.id})">${c.icon||'📁'} ${c.name}</button>`).join('');
 }
 
 /* ══ PRODUCTS ══ */
@@ -825,8 +825,8 @@ function renderProds(){
   const g=document.getElementById('prg');const title=document.getElementById('ptitle');const pag=document.getElementById('pr-pag');const cats=SD.categories||[];
   let prods=(SD.products||[]).filter(p=>!p.productType||p.productType==='');
   if(activeFilter!==null){
-    prods=prods.filter(p=>String(p.categoryId||p.catId)===String(activeFilter));
-    const cat=cats.find(c=>String(c.id)===String(activeFilter));
+    prods=prods.filter(p=>(p.categoryId||p.catId)===activeFilter);
+    const cat=cats.find(c=>c.id===activeFilter);
     title.textContent=cat?`${cat.icon||'📁'} ${cat.name}`:'المنتجات';
   }else title.textContent='المحتوى المتاح';
   if(!prods.length){g.innerHTML=`<div class="empty-s"><div class="ei">🎬</div><p>لا توجد منتجات في هذا القسم حتى الآن</p></div>`;if(pag)pag.innerHTML='';return;}
@@ -836,21 +836,20 @@ function renderProds(){
   const start=prodPage*PRODS_PER_PAGE;
   const pageProds=prods.slice(start,start+PRODS_PER_PAGE);
   g.innerHTML=pageProds.map(p=>{
-    const catId=String(p.categoryId||p.catId);
-    const cat=cats.find(c=>String(c.id)===catId);
-    const poster=getPoster(p);
+    const catId=p.categoryId||p.catId;const cat=cats.find(c=>c.id===catId);
+    const poster=p.posterUrl||p.poster||'';
     const bg=poster?`url('${poster}')`:`linear-gradient(${cat?.gradient||'135deg,#111,#222'})`;
     const isNew=p.isNew||(p.badgeType==='new');
-    return `<div class="pr-c" onclick="goToProduct(${JSON.stringify(p.id)},${JSON.stringify(p.productType||'')})">
+    return `<div class="pr-c" onclick="goToProduct(${p.id},'${p.productType||''}')">
       <div class="pr-poster">
         <div class="pr-inn" style="background:${bg};background-size:cover;background-position:center top">${poster?'':p.icon||cat?.icon||'🎬'}</div>
         <div class="pr-ov"></div>
-        <div class="pr-act"><button class="pr-abtn" onclick="addToCart(${JSON.stringify(p.id)},event)">🛒 أضف للسلة</button></div>
+        <div class="pr-act"><button class="pr-abtn" onclick="addToCart(${p.id},event)">🛒 أضف للسلة</button></div>
         ${isNew?'<span class="pr-nb">جديد</span>':''}
       </div>
       <div class="pr-name" title="${p.name}">${p.name}${p.season?' - '+p.season:''}</div>
       ${p.desc?'<div class="pr-desc" style="font-size:.65rem;color:var(--muted);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+p.desc+'</div>':''}
-      <div class="pr-meta"><div><span class="pr-cat">${cat?cat.name:'—'}</span>${p.gb?`<div class="pr-size">${formatSize(p.gb)}</div>`:''}</div><span class="pr-price">${p.price||'مجاني'}</span></div>
+      <div class="pr-meta"><span class="pr-cat">${cat?cat.name:'—'}${p.gb?' · '+formatSize(p.gb):''}</span><span class="pr-price">${p.price||'مجاني'}</span></div>
     </div>`;
   }).join('');
   if(pag&&totalPages>1){
@@ -890,12 +889,12 @@ let cart=[];
 function toggleCart(){document.getElementById('cdrw').classList.toggle('on');document.getElementById('cback').classList.toggle('on');}
 function addToCart(id,ev){
   if(ev)ev.stopPropagation();
-  const p=(SD.products||[]).find(x=>String(x.id)===String(id));if(!p)return;
-  const ex=cart.find(x=>String(x.id)===String(id));
+  const p=(SD.products||[]).find(x=>x.id===id);if(!p)return;
+  const ex=cart.find(x=>x.id===id);
   if(ex)ex.qty++;
   else{
-    const catId=String(p.categoryId||p.catId);const cat=(SD.categories||[]).find(c=>String(c.id)===catId);
-    cart.push({id,name:p.name,price:p.price||'مجاني',icon:p.icon||cat?.icon||'🎬',posterUrl:getPoster(p),qty:1,gb:p.gb||0});
+    const catId=p.categoryId||p.catId;const cat=(SD.categories||[]).find(c=>c.id===catId);
+    cart.push({id,name:p.name,price:p.price||'مجاني',icon:p.icon||cat?.icon||'🎬',posterUrl:p.posterUrl||p.poster||'',qty:1,gb:p.gb||0});
   }
   renderCart();showToast(`✅ تم إضافة "${p.name}"`);
 }
@@ -945,7 +944,6 @@ function renderOwner(){
       <div class="owner-title-txt">${SD.ownerTitleTxt||''}</div>
       <div class="owner-details">
         ${SD.ownerPhone?`<div class="owner-detail"><span class="owner-detail-icon">📞</span><span>${SD.ownerPhone}</span></div>`:''}
-        ${SD.ownerPhone2?`<div class="owner-detail"><span class="owner-detail-icon">📞</span><span>${SD.ownerPhone2}</span></div>`:''}
         ${SD.ownerAddress?`<div class="owner-detail"><span class="owner-detail-icon">📍</span><span>${SD.ownerAddress}</span></div>`:''}
         ${SD.ownerHours?`<div class="owner-detail"><span class="owner-detail-icon">🕐</span><span>${SD.ownerHours}</span></div>`:''}
       </div>
@@ -1033,13 +1031,12 @@ function openHardsModal(){renderHards();document.getElementById('hards-modal').c
 function openDataModal(){renderDataSec();document.getElementById('data-modal').classList.add('on');}
 function renderHards(){
   const grid=document.getElementById('hards-grid');
-  const hardsArray=(SD.hards&&SD.hards.length)?SD.hards:(SD.products||[]);
-  const hards=(hardsArray||[]).filter(p=>String(p.productType||'').toLowerCase()==='hard');
+  const hards=(SD.products||[]).filter(p=>p.productType==='hard');
   const cats=SD.categories||[];
   if(!hards.length){grid.innerHTML='<div style="text-align:center;color:var(--muted);padding:40px">لا توجد هاردات حالياً</div>';return;}
   grid.innerHTML=hards.map(p=>{
-    const catId=String(p.categoryId||p.catId);const cat=cats.find(c=>String(c.id)===catId);
-    const poster=getPoster(p);
+    const catId=p.categoryId||p.catId;const cat=cats.find(c=>c.id===catId);
+    const poster=p.posterUrl||p.poster||'';
     const topBg=poster?`<img src="${poster}" onerror="this.style.display='none'"/>`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a0f00,#2d1c00);display:flex;align-items:center;justify-content:center"><span class="hd-icon">💾</span></div>`;
     return `<div class="hd-card">
       <div class="hd-card-top">${topBg}</div>
@@ -1060,13 +1057,12 @@ function renderHards(){
 /* ══ DATA SECTION ══ */
 function renderDataSec(){
   const grid=document.getElementById('data-grid');
-  const dataArray=(SD.data&&SD.data.length)?SD.data:(SD.products||[]);
-  const data=(dataArray||[]).filter(p=>String(p.productType||'').toLowerCase()==='data');
+  const data=(SD.products||[]).filter(p=>p.productType==='data');
   if(!data.length){grid.innerHTML='<div style="text-align:center;color:var(--muted);padding:40px">لا توجد باقات داتا حالياً</div>';return;}
   const cats=SD.categories||[];
   grid.innerHTML=data.map(p=>{
-    const catId=String(p.categoryId||p.catId);const cat=cats.find(c=>String(c.id)===catId);
-    const poster=getPoster(p);
+    const catId=p.categoryId||p.catId;const cat=cats.find(c=>c.id===catId);
+    const poster=p.posterUrl||p.poster||'';
     const topBg=poster?`<img src="${poster}" onerror="this.style.display='none'"/>`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#000a1a,#001530);display:flex;align-items:center;justify-content:center"><span class="hd-icon">📊</span></div>`;
     return `<div class="hd-card hd-card-data">
       <div class="hd-card-top">${topBg}</div>
@@ -1092,8 +1088,8 @@ function renderFeaturedStrip(){
   if(!featured.length){sec.style.display='none';if(div)div.style.display='none';return;}
   sec.style.display='block';if(div)div.style.display='block';
   strip.innerHTML=featured.map(p=>{
-    const poster=getPoster(p);
-    const cat=(SD.categories||[]).find(c=>String(c.id)===String(p.categoryId||p.catId));
+    const poster=p.posterUrl||p.poster;
+    const cat=(SD.categories||[]).find(c=>c.id===(p.categoryId||p.catId));
     return `<div class="banner-card" onclick="addToCart(${p.id},event)" style="min-width:160px;cursor:pointer">
       ${poster?`<img class="banner-img" src="${poster}" style="height:200px;width:160px"/>`:`<div style="height:200px;width:160px;background:linear-gradient(${cat?.gradient||'135deg,#111,#222'});display:flex;align-items:center;justify-content:center;font-size:2.5rem">${p.icon||'🆕'}</div>`}
       <div class="banner-label">${p.isNew?'🆕 ':''} ${p.name}${p.season?' - '+p.season:''}</div>
@@ -1196,10 +1192,10 @@ function handleSearch(inp){
   const results=allProds.filter(p=>p.name.toLowerCase().includes(searchQuery)).slice(0,10);
   if(!results.length){box.innerHTML='<div class="sr-empty">🔍 لا توجد نتائج</div>';box.classList.add('open');return;}
   box.innerHTML=results.map(p=>{
-    const cat=cats.find(c=>String(c.id)===String(p.categoryId||p.catId));
-    const poster=getPoster(p);
-    const typeLabel=String(p.productType||'').toLowerCase()==='hard'?'💾 هارد':String(p.productType||'').toLowerCase()==='data'?'📊 داتا':'🎬';
-    return `<div class="sr-item" onclick="goToProduct(${JSON.stringify(p.id)},${JSON.stringify(p.productType||'')})">
+    const cat=cats.find(c=>c.id===(p.categoryId||p.catId));
+    const poster=p.posterUrl||p.poster||'';
+    const typeLabel=p.productType==='hard'?'💾 هارد':p.productType==='data'?'📊 داتا':'🎬';
+    return `<div class="sr-item" onclick="goToProduct(${p.id},'${p.productType||''}')">
       <div class="sr-img">${poster?`<img src="${poster}" onerror="this.outerHTML='🎬'"/>`:typeLabel}</div>
       <div class="sr-info"><div class="sr-name">${p.name}${p.season?' - '+p.season:''}</div><div class="sr-meta"><span>${cat?cat.name:'—'}${p.gb?' · '+p.gb+'GB':''}</span><span class="sr-price">${p.price||'مجاني'}</span></div></div>
     </div>`;
@@ -1214,10 +1210,10 @@ function clearSearch(){
 }
 function goToProduct(id,type){
   clearSearch();
-  const p=(SD.products||[]).find(x=>String(x.id)===String(id));if(!p)return;
+  const p=(SD.products||[]).find(x=>x.id===id);if(!p)return;
   const cats=SD.categories||[];
-  const cat=cats.find(c=>String(c.id)===String(p.categoryId||p.catId));
-  const poster=getPoster(p);
+  const cat=cats.find(c=>c.id===(p.categoryId||p.catId));
+  const poster=p.posterUrl||p.poster||'';
   const imgEl=document.getElementById('pm-img');
   if(poster)imgEl.innerHTML=`<img src="${poster}" onerror="this.outerHTML='🎬'"/>`;
   else imgEl.innerHTML=p.productType==='hard'?'💾':p.productType==='data'?'📊':'🎬';
@@ -1287,18 +1283,28 @@ async function submitTicket(){
     if(!data.supportTickets)data.supportTickets=[];
     data.supportTickets.push({id:Date.now(),title,message:msg,created_at:new Date().toISOString(),is_read:false});
     const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
-    const uploadUrl = SB_URL+'/storage/v1/object/'+BUCKET+'?name='+encodeURIComponent(CFG_PATH)+'&upsert=true';
-    const up=await fetch(uploadUrl,{method:'POST',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json'},body:blob});
+    const up=await fetch(SB_URL+'/storage/v1/object/'+BUCKET+'/'+CFG_PATH,{
+      method:'POST',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json','x-upsert':'true'},body:blob
+    });
     if(!up.ok){
-      const up2=await fetch(uploadUrl,{method:'PUT',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json'},body:blob});
+      const up2=await fetch(SB_URL+'/storage/v1/object/'+BUCKET+'/'+CFG_PATH,{
+        method:'PUT',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json','x-upsert':'true'},body:blob
+      });
       if(!up2.ok)throw new Error('Upload failed');
     }
-    showToast('✅ تم إرسال التذكرة: '+title);
-    closeTicketModal();
+    showToast('✅ تم إرسال التذكرة بنجاح');closeTicketModal();
     document.getElementById('ticket-title').value='';document.getElementById('ticket-msg').value='';
-  }catch(e){
-    showToast('❌ فشل الإرسال: '+e.message);
-  }
+  }catch(e){showToast('❌ فشل الإرسال: '+e.message);}
+}
+
+/* ══ ACTIVE SESSION TRACKING ══ */
+(function(){try{
+  let sid=localStorage.getItem('basha_session_id');
+  if(!sid){sid=crypto.randomUUID();localStorage.setItem('basha_session_id',sid);}
+  async function ping(){
+    try{
+      const r=await fetch(CFG_URL+'?t='+Date.now());const data=await r.json();
+      if(!data.activeSessions)data.activeSessions={};
       data.activeSessions[sid]=new Date().toISOString();
       const fiveMinAgo=Date.now()-5*60*1000;
       Object.keys(data.activeSessions).forEach(k=>{if(new Date(data.activeSessions[k]).getTime()<fiveMinAgo)delete data.activeSessions[k];});

@@ -656,12 +656,12 @@ nav{padding:0 8px;height:50px}
 /* ══ HELPERS ══ */
 function formatSize(gb){if(!gb||gb<=0)return'';if(gb>=1)return gb%1===0?gb+' جيجا':gb.toFixed(2)+' جيجا';return Math.round(gb*1024)+' ميجا';}
 
-/* ══ CONFIG — غيّر هذا بعد إنشاء Supabase ══ */
-const SB_URL = 'https://epvplqmjclnhjmsfeajw.supabase.co';
-const SB_KEY = 'sb_secret_SMCP4A6nmME43NofaU9MJw_ykZ6pPJM';
-const BUCKET  = 'site-bucket';
-const CFG_PATH = 'config/site.json';
-const CFG_URL = SB_URL + '/storage/v1/object/public/' + BUCKET + '/' + CFG_PATH;
+/* ══ CONFIG — Appwrite ══ */
+const APP_ENDPOINT = 'https://cloud.appwrite.io/v1'; 
+const APP_PROJECT  = '69f667fb002691943837';
+const BUCKET_ID    = 'site-bucket';
+const CFG_PATH = 'config';
+const CFG_URL = `${APP_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${CFG_PATH}/view?project=${APP_PROJECT}`;
 
 /* ══ DEFAULT DATA ══ */
 let SD={
@@ -1035,19 +1035,32 @@ function renderHards(){
   const cats=SD.categories||[];
   if(!hards.length){grid.innerHTML='<div style="text-align:center;color:var(--muted);padding:40px">لا توجد هاردات حالياً</div>';return;}
   grid.innerHTML=hards.map(p=>{
-    const catId=p.categoryId||p.catId;const cat=cats.find(c=>c.id===catId);
     const poster=p.posterUrl||p.poster||'';
     const topBg=poster?`<img src="${poster}" onerror="this.style.display='none'"/>`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a0f00,#2d1c00);display:flex;align-items:center;justify-content:center"><span class="hd-icon">💾</span></div>`;
-    return `<div class="hd-card">
+    
+    let priceHtml=`<div class="hd-card-price">${p.price||'مجاني'}</div>`;
+    let offerBadge='';
+    if(p.offerPrice){
+      const today = new Date().toISOString().split('T')[0];
+      if(!p.offerExp || p.offerExp >= today){
+        priceHtml=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div class="hd-card-price" style="text-decoration:line-through;color:var(--muted);font-size:0.9rem;margin:0">${p.price||'مجاني'}</div>
+          <div class="hd-card-price" style="color:#ff4757;font-size:1.1rem;margin:0">${p.offerPrice}</div>
+        </div>`;
+        offerBadge=`<div style="position:absolute;top:10px;right:10px;background:#ff4757;color:#fff;padding:4px 8px;border-radius:4px;font-size:0.75rem;font-weight:bold;z-index:2">عرض خاص ${p.offerExp?'ينتهي '+p.offerExp:''}</div>`;
+      }
+    }
+
+    return `<div class="hd-card" style="position:relative">
+      ${offerBadge}
       <div class="hd-card-top">${topBg}</div>
       <div class="hd-card-body">
-        <div class="hd-card-name" title="${p.name}">${p.name}${p.season?' - '+p.season:''}</div>
+        <div class="hd-card-name" title="${p.name}">${p.name}</div>
         ${p.desc?'<div style="font-size:.68rem;color:var(--muted);margin-bottom:6px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">'+p.desc+'</div>':''}
-        <div class="hd-card-info">
-          <span class="hd-card-cat">${cat?cat.name:'هارد'}</span>
+        <div class="hd-card-info" style="min-height:16px">
           ${p.gb?`<span class="hd-card-size">${formatSize(p.gb)}</span>`:''}
         </div>
-        <div class="hd-card-price">${p.price||'مجاني'}</div>
+        ${priceHtml}
         <button class="hd-card-btn" onclick="addToCart(${p.id},event)">🛒 أضف للسلة</button>
       </div>
     </div>`;
@@ -1061,19 +1074,32 @@ function renderDataSec(){
   if(!data.length){grid.innerHTML='<div style="text-align:center;color:var(--muted);padding:40px">لا توجد باقات داتا حالياً</div>';return;}
   const cats=SD.categories||[];
   grid.innerHTML=data.map(p=>{
-    const catId=p.categoryId||p.catId;const cat=cats.find(c=>c.id===catId);
     const poster=p.posterUrl||p.poster||'';
     const topBg=poster?`<img src="${poster}" onerror="this.style.display='none'"/>`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#000a1a,#001530);display:flex;align-items:center;justify-content:center"><span class="hd-icon">📊</span></div>`;
-    return `<div class="hd-card hd-card-data">
+    
+    let priceHtml=`<div class="hd-card-price">${p.price||'مجاني'}</div>`;
+    let offerBadge='';
+    if(p.offerPrice){
+      const today = new Date().toISOString().split('T')[0];
+      if(!p.offerExp || p.offerExp >= today){
+        priceHtml=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div class="hd-card-price" style="text-decoration:line-through;color:var(--muted);font-size:0.9rem;margin:0">${p.price||'مجاني'}</div>
+          <div class="hd-card-price" style="color:#ff4757;font-size:1.1rem;margin:0">${p.offerPrice}</div>
+        </div>`;
+        offerBadge=`<div style="position:absolute;top:10px;right:10px;background:#ff4757;color:#fff;padding:4px 8px;border-radius:4px;font-size:0.75rem;font-weight:bold;z-index:2">عرض خاص ${p.offerExp?'ينتهي '+p.offerExp:''}</div>`;
+      }
+    }
+
+    return `<div class="hd-card hd-card-data" style="position:relative">
+      ${offerBadge}
       <div class="hd-card-top">${topBg}</div>
       <div class="hd-card-body">
-        <div class="hd-card-name" title="${p.name}">${p.name}${p.season?' - '+p.season:''}</div>
+        <div class="hd-card-name" title="${p.name}">${p.name}</div>
         ${p.desc?'<div style="font-size:.68rem;color:var(--muted);margin-bottom:6px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">'+p.desc+'</div>':''}
-        <div class="hd-card-info">
-          <span class="hd-card-cat">${cat?cat.name:'داتا'}</span>
+        <div class="hd-card-info" style="min-height:16px">
           ${p.gb?`<span class="hd-card-size">${formatSize(p.gb)}</span>`:''}
         </div>
-        <div class="hd-card-price">${p.price||'مجاني'}</div>
+        ${priceHtml}
         <button class="hd-card-btn" onclick="addToCart(${p.id},event)">🛒 أضف للسلة</button>
       </div>
     </div>`;
@@ -1278,21 +1304,12 @@ async function submitTicket(){
   const msg=document.getElementById('ticket-msg').value.trim();
   if(!title||!msg){showToast('❌ أدخل العنوان والرسالة');return;}
   try{
-    const r=await fetch(CFG_URL+'?t='+Date.now());
-    const data=await r.json();
-    if(!data.supportTickets)data.supportTickets=[];
-    data.supportTickets.push({id:Date.now(),title,message:msg,created_at:new Date().toISOString(),is_read:false});
-    const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
-    const up=await fetch(SB_URL+'/storage/v1/object/'+BUCKET+'/'+CFG_PATH,{
-      method:'POST',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json','x-upsert':'true'},body:blob
-    });
-    if(!up.ok){
-      const up2=await fetch(SB_URL+'/storage/v1/object/'+BUCKET+'/'+CFG_PATH,{
-        method:'PUT',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json','x-upsert':'true'},body:blob
-      });
-      if(!up2.ok)throw new Error('Upload failed');
-    }
-    showToast('✅ تم إرسال التذكرة بنجاح');closeTicketModal();
+    /* 
+    Appwrite does not support anonymous writes to storage buckets easily without a function or SDK.
+    Disabling ticket submission for now.
+    */
+    showToast('❌ ميزة التذاكر غير متوفرة حالياً');
+    closeTicketModal();
     document.getElementById('ticket-title').value='';document.getElementById('ticket-msg').value='';
   }catch(e){showToast('❌ فشل الإرسال: '+e.message);}
 }
@@ -1302,19 +1319,12 @@ async function submitTicket(){
   let sid=localStorage.getItem('basha_session_id');
   if(!sid){sid=crypto.randomUUID();localStorage.setItem('basha_session_id',sid);}
   async function ping(){
-    try{
-      const r=await fetch(CFG_URL+'?t='+Date.now());const data=await r.json();
-      if(!data.activeSessions)data.activeSessions={};
-      data.activeSessions[sid]=new Date().toISOString();
-      const fiveMinAgo=Date.now()-5*60*1000;
-      Object.keys(data.activeSessions).forEach(k=>{if(new Date(data.activeSessions[k]).getTime()<fiveMinAgo)delete data.activeSessions[k];});
-      const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
-      await fetch(SB_URL+'/storage/v1/object/'+BUCKET+'/'+CFG_PATH,{method:'POST',headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':'application/json','x-upsert':'true'},body:blob});
-    }catch(e){}
+    // pinging disabled for Appwrite since it requires write permissions
   }
   ping();setInterval(ping,60000);
 }catch(e){}})();
 
 </script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

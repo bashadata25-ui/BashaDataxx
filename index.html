@@ -1070,8 +1070,8 @@
 
     .pr-g {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 10px
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px
     }
 
     .pr-pagination {
@@ -1208,12 +1208,16 @@
     }
 
     .pr-name {
-      font-size: .72rem;
-      font-weight: 600;
-      white-space: nowrap;
+      font-size: 1rem;
+      font-weight: 800;
+      white-space: normal;
+      line-height: 1.4;
       overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 2px
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-bottom: 6px;
+      margin-top: 4px;
     }
 
     .pr-meta {
@@ -1222,15 +1226,39 @@
       justify-content: space-between
     }
 
-    .pr-cat {
-      font-size: .6rem;
-      color: var(--muted)
+    .pr-size {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.15);
+      color: #4599ff;
+      font-size: 0.9rem;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .pr-cat-ribbon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, rgba(212, 168, 67, 0.95), rgba(217, 119, 6, 0.95));
+      color: #000;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 5px 0;
+      z-index: 2;
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .pr-price {
-      font-size: .68rem;
-      font-weight: 700;
-      color: var(--gold)
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 4px;
     }
 
     .empty-s {
@@ -3434,7 +3462,7 @@
 
     /* ══ FILTER & TABS ══ */
     let activeFilter = null;
-    function setFilter(id) { activeFilter = id; prodPage = 0; renderTabBar(); renderProds(); if (id !== null) scrollToEl('prods-sec'); }
+    function setFilter(id) { activeFilter = id; renderTabBar(); renderProds(); if (id !== null) scrollToEl('prods-sec'); }
     function renderTabBar() {
       const bar = document.getElementById('tabbar');
       bar.innerHTML = `<button class="tab${activeFilter === null ? ' on' : ''}" onclick="setFilter(null)">🏠 الكل</button>`
@@ -3442,7 +3470,6 @@
     }
 
     /* ══ PRODUCTS ══ */
-    let prodPage = 0; const PRODS_PER_PAGE = 30;
     function renderProds() {
       const g = document.getElementById('prg'); const title = document.getElementById('ptitle'); const pag = document.getElementById('pr-pag'); const cats = SD.categories || [];
       let prods = (SD.products || []).filter(p => !p.productType || p.productType === '');
@@ -3452,45 +3479,28 @@
         title.textContent = cat ? `${cat.icon || '📁'} ${cat.name}` : 'المنتجات';
       } else title.textContent = 'المحتوى المتاح';
       if (!prods.length) { g.innerHTML = `<div class="empty-s"><div class="ei">🎬</div><p>لا توجد منتجات في هذا القسم حتى الآن</p></div>`; if (pag) pag.innerHTML = ''; return; }
-      const totalPages = Math.ceil(prods.length / PRODS_PER_PAGE);
-      if (prodPage >= totalPages) prodPage = totalPages - 1;
-      if (prodPage < 0) prodPage = 0;
-      const start = prodPage * PRODS_PER_PAGE;
-      const pageProds = prods.slice(start, start + PRODS_PER_PAGE);
-      g.innerHTML = pageProds.map(p => {
+      
+      // Removed pagination limit to show all products
+      g.innerHTML = prods.map(p => {
         const catId = p.categoryId || p.catId; const cat = cats.find(c => c.id === catId);
         const poster = p.posterUrl || p.poster || '';
         const bg = poster ? `url('${poster}')` : `linear-gradient(${cat?.gradient || '135deg,#111,#222'})`;
         const isNew = p.isNew || (p.badgeType === 'new');
         return `<div class="pr-c" onclick="goToProduct(${p.id},'${p.productType || ''}')">
       <div class="pr-poster">
-        <div class="pr-inn" style="background:${bg};background-size:cover;background-position:center top">${poster ? '' : p.icon || cat?.icon || '🎬'}</div>
+        ${cat ? '<div class="pr-cat-ribbon">' + cat.name + '</div>' : ''}
+        <div class="pr-inn" style="background:${bg};background-size:contain;background-repeat:no-repeat;background-position:center">${poster ? '' : p.icon || cat?.icon || '🎬'}</div>
         <div class="pr-ov"></div>
         <div class="pr-act"><button class="pr-abtn" onclick="addToCart(${p.id},event)">🛒 أضف للسلة</button></div>
-        ${isNew ? '<span class="pr-nb">جديد</span>' : ''}
+        ${isNew ? '<span class="pr-nb" style="top:34px">جديد</span>' : ''}
       </div>
       <div class="pr-name" title="${p.name}">${p.name}${p.season ? ' - ' + p.season : ''}</div>
-      ${p.desc ? '<div class="pr-desc" style="font-size:.65rem;color:var(--muted);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + p.desc + '</div>' : ''}
-      <div class="pr-meta"><span class="pr-cat">${cat ? cat.name : '—'}${p.gb ? ' · ' + formatSize(p.gb) : ''}</span><span class="pr-price">${p.price || 'مجاني'}</span></div>
+      ${p.desc ? '<div class="pr-desc" style="font-size:.7rem;color:var(--muted);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + p.desc + '</div>' : ''}
+      ${p.gb ? '<div class="pr-size">' + formatSize(p.gb) + '</div>' : ''}
+      <div class="pr-meta"><span class="pr-price">${p.price || 'مجاني'}</span></div>
     </div>`;
       }).join('');
-      if (pag && totalPages > 1) {
-        let buttonsHtml = '';
-        for (let i = 0; i < totalPages; i++) {
-          buttonsHtml += `<button class="${i === prodPage ? 'on' : ''}" onclick="changeProdPage(0, ${i})">${i + 1}</button>`;
-        }
-        pag.innerHTML = `
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-            <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;">
-                ${buttonsHtml}
-            </div>
-        </div>
-    `;
-      } else if (pag) pag.innerHTML = '';
-    }
-    function changeProdPage(dir, page) {
-      if (page !== undefined) prodPage = page; else prodPage += dir;
-      renderProds(); scrollToEl('prods-sec');
+      if (pag) pag.innerHTML = '';
     }
 
     /* ══ CART ══ */

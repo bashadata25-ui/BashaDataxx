@@ -315,20 +315,25 @@
       color: var(--muted)
     }
 
+    @keyframes cartPulse {
+      0% { box-shadow: 0 0 10px rgba(212, 168, 67, 0.4), inset 0 0 5px rgba(212, 168, 67, 0.2); transform: scale(1); }
+      100% { box-shadow: 0 0 20px var(--gold), inset 0 0 10px rgba(212, 168, 67, 0.4); transform: scale(1.05); }
+    }
+
     .cart-pill {
       position: relative;
       background: none;
       border: 1px solid var(--line2);
-      border-radius: 8px;
-      width: 42px;
-      height: 36px;
+      border-radius: 12px;
+      width: 52px;
+      height: 44px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1.4rem;
       color: var(--text);
-      transition: all .2s
+      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .cart-pill:hover {
@@ -336,21 +341,28 @@
       color: var(--gold)
     }
 
+    .cart-pill.glowing {
+      border-color: var(--gold);
+      color: var(--gold);
+      animation: cartPulse 1.2s infinite alternate;
+    }
+
     .cbadge {
       position: absolute;
-      top: -7px;
-      inset-inline-start: -7px;
+      top: -8px;
+      inset-inline-start: -8px;
       background: var(--accent);
       color: #fff;
       border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      font-size: .6rem;
-      font-weight: 700;
+      width: 22px;
+      height: 22px;
+      font-size: .75rem;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid var(--bg)
+      border: 2px solid var(--bg);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
     }
 
     .browse-btn {
@@ -3024,8 +3036,9 @@
       .hd-card-grid {
         grid-template-columns: 1fr !important
       }
+    }
 
-      .promo-modal-bg {
+    .promo-modal-bg {
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.85);
@@ -3198,7 +3211,6 @@
         box-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366;
         transform: translateY(-2px);
       }
-    }
   </style>
 </head>
 
@@ -3711,7 +3723,10 @@
     function removeFromCart(id) { cart = cart.filter(x => x.id !== id); renderCart(); }
     function renderCart() {
       const body = document.getElementById('cdb'); const foot = document.getElementById('cdf'); const badge = document.getElementById('cbadge');
-      badge.textContent = cart.reduce((s, i) => s + i.qty, 0);
+      const count = cart.reduce((s, i) => s + i.qty, 0);
+      badge.textContent = count;
+      const cartBtn = document.querySelector('.cart-pill');
+      if (cartBtn) cartBtn.classList.toggle('glowing', count > 0);
       if (!cart.length) { body.innerHTML = '<div class="cde"><div style="font-size:2.5rem;margin-bottom:10px">🛒</div><p>السلة فارغة</p></div>'; foot.style.display = 'none'; return; }
       body.innerHTML = cart.map(i => `<div class="ci">
     <div class="cip">${i.posterUrl ? `<img src="${i.posterUrl}" onerror="this.style.display='none'"/>` : `<span>${i.icon}</span>`}</div>
@@ -4172,14 +4187,14 @@
           document.getElementById('promo-price').style.display = 'none';
         }
 
-        setTimeout(() => {
-          document.getElementById('promo-modal-bg').classList.add('on');
-        }, 1500);
+        document.getElementById('promo-modal-bg').classList.add('on');
+        document.body.style.overflow = 'hidden';
       }
     }
 
     function closePromo() {
       document.getElementById('promo-modal-bg').classList.remove('on');
+      document.body.style.overflow = '';
       sessionStorage.setItem('basha_promo_closed', 'true');
     }
 

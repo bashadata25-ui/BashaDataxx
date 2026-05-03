@@ -3508,7 +3508,9 @@
 
     /* ══ FILTER & TABS ══ */
     let activeFilter = null;
-    function setFilter(id) { activeFilter = id; renderTabBar(); renderProds(); if (id !== null) scrollToEl('prods-sec'); }
+    let currentProdPage = 0;
+    const PRODS_PER_PAGE = 30;
+    function setFilter(id) { activeFilter = id; currentProdPage = 0; renderTabBar(); renderProds(); if (id !== null) scrollToEl('prods-sec'); }
     function renderTabBar() {
       const bar = document.getElementById('tabbar');
       bar.innerHTML = `<button class="tab${activeFilter === null ? ' on' : ''}" onclick="setFilter(null)">🏠 الكل</button>`
@@ -3526,8 +3528,13 @@
       } else title.textContent = 'المحتوى المتاح';
       if (!prods.length) { g.innerHTML = `<div class="empty-s"><div class="ei">🎬</div><p>لا توجد منتجات في هذا القسم حتى الآن</p></div>`; if (pag) pag.innerHTML = ''; return; }
 
-      // Removed pagination limit to show all products
-      g.innerHTML = prods.map(p => {
+      const totalPages = Math.ceil(prods.length / PRODS_PER_PAGE);
+      if (currentProdPage >= totalPages) currentProdPage = 0;
+      
+      const startIdx = currentProdPage * PRODS_PER_PAGE;
+      const pageProds = prods.slice(startIdx, startIdx + PRODS_PER_PAGE);
+
+      g.innerHTML = pageProds.map(p => {
         const catId = p.categoryId || p.catId; const cat = cats.find(c => c.id === catId);
         const poster = p.posterUrl || p.poster || '';
         const bg = poster ? `url('${poster}')` : `linear-gradient(${cat?.gradient || '135deg,#111,#222'})`;
@@ -3546,7 +3553,17 @@
       <div class="pr-meta"><span class="pr-price">${p.price || 'مجاني'}</span></div>
     </div>`;
       }).join('');
-      if (pag) pag.innerHTML = '';
+      
+      if (totalPages > 1) {
+        let pagHtml = `<div style="display:flex;gap:5px;justify-content:center;margin-top:20px;flex-wrap:wrap">`;
+        for (let i = 0; i < totalPages; i++) {
+           pagHtml += `<button class="tab ${i === currentProdPage ? 'on' : ''}" onclick="currentProdPage=${i};renderProds();scrollToEl('prods-sec')" style="padding:5px 12px;font-size:1rem">${i + 1}</button>`;
+        }
+        pagHtml += `</div>`;
+        if (pag) pag.innerHTML = pagHtml;
+      } else {
+        if (pag) pag.innerHTML = '';
+      }
     }
 
     /* ══ CART ══ */

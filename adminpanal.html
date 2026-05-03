@@ -1028,6 +1028,7 @@
       <div class="sn" onclick="showPg('maint',this)"><span class="ico">🔧</span>الصيانة</div>
       <div class="sn" onclick="showPg('themes',this)"><span class="ico">🎨</span>الثيمات</div>
       <div class="snavs">المحتوى</div>
+      <div class="sn" onclick="showPg('promo',this)"><span class="ico">📢</span>إعدادات الإعلان</div>
       <div class="sn" onclick="showPg('bulk',this)"><span class="ico">📤</span>رفع وإضافة منشور</div>
       <div class="sn" onclick="showPg('cats',this)"><span class="ico">📂</span>الأقسام</div>
       <div class="sn" onclick="showPg('prods',this)"><span class="ico">🎬</span>المنتجات</div>
@@ -1166,6 +1167,45 @@
         </div>
       </div>
 
+    <div class="pg" id="pg-promo">
+        <div class="ptitle">📢 إعدادات الإعلان</div>
+        <div class="card">
+          <div class="ctitle">⚙️ تفعيل وتخصيص الإعلان المنبثق</div>
+          <label class="tgl-row" style="margin-bottom:16px">
+            <label class="tgl tgl-g"><input type="checkbox" id="promo-tgl"><span class="tgl-s"></span></label>
+            <span style="font-weight:bold">تفعيل الإعلان للموقع</span>
+          </label>
+          <div class="row2">
+            <div class="ff"><label>عنوان الإعلان أو اسم المنتج</label><input id="promo-name" placeholder="مثال: اشتراك فليكس" /></div>
+            <div class="ff"><label style="color:var(--gold);font-weight:bold">رسالة العرض الجذابة</label><input id="promo-msg" placeholder="مثال: خصم 50% لفترة محدودة!" /></div>
+          </div>
+          <div class="row3">
+            <div class="ff"><label>السعر الأساسي (اختياري)</label><input id="promo-old-price" placeholder="مثال: 100 ج.م" /></div>
+            <div class="ff"><label style="color:var(--green);font-weight:bold">سعر العرض (اختياري)</label><input id="promo-price" placeholder="مثال: 50 ج.م" /></div>
+            <div></div>
+          </div>
+          <div class="row2">
+            <div class="ff"><label style="color:#4599ff;font-weight:bold">بداية العرض (اختياري)</label><input id="promo-start" type="date" /></div>
+            <div class="ff"><label style="color:var(--red);font-weight:bold">انتهاء العرض (اختياري)</label><input id="promo-exp" type="date" /></div>
+          </div>
+          <div class="ff"><label>صورة الإعلان</label>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <div class="prev-box" id="promo-img-prev" style="width:80px;height:120px;border-radius:10px">📢</div>
+              <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:7px">
+                <label class="file-btn"><input type="file" accept="image/*" onchange="handlePromoImg(this)">📁 رفع صورة</label>
+                <input type="text" id="promo-img-url" placeholder="أو رابط صورة https://..." dir="ltr" style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:7px 10px;color:var(--text);font-size:.82rem;outline:none" onchange="prevFromUrl(this.value,'promo-img-prev')" />
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="promo-isNew" style="width:auto;cursor:pointer"/><label for="promo-isNew" style="font-size:.84rem;cursor:pointer">🆕 علامة جديد</label></div>
+            <div style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="promo-isFeatured" style="width:auto;cursor:pointer"/><label for="promo-isFeatured" style="font-size:.84rem;cursor:pointer">⭐ علامة مميز</label></div>
+            <div style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="promo-isExclusive" checked style="width:auto;cursor:pointer"/><label for="promo-isExclusive" style="font-size:.84rem;cursor:pointer">💎 علامة حصري</label></div>
+          </div>
+          <button class="btn btn-g" onclick="savePromo()">💾 حفظ إعدادات الإعلان</button>
+        </div>
+      </div>
+
       <div class="pg" id="pg-cats">
         <div class="ptitle">📂 الأقسام</div>
         <div class="card">
@@ -1230,8 +1270,11 @@
                 step="0.01" placeholder="مثال: 1.82" /></div>
           </div>
           <div class="row3">
-            <div></div>
+            <div class="ff"><label>سعر العرض (اختياري)</label><input id="poffer-price" placeholder="مثال: 30" /></div>
+            <div class="ff"><label style="color:#4599ff;font-weight:bold">بداية العرض (اختياري)</label><input id="poffer-start" type="date" /></div>
+            <div class="ff"><label style="color:var(--red);font-weight:bold">انتهاء العرض (اختياري)</label><input id="poffer-exp" type="date" /></div>
           </div>
+          <div class="ff"><label style="color:var(--gold);font-weight:bold">رسالة العرض (عرض خاص)</label><input id="poffer-msg" placeholder="مثال: عرض خاص لفترة محدودة!" /></div>
           <div class="ff"><label>صورة البوستر</label>
             <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
               <div class="prev-box" id="prod-add-prev">🎬</div>
@@ -1259,9 +1302,9 @@
         <div class="card">
           <div class="ctitle" style="display:flex;justify-content:space-between;align-items:center">
             <span>📋 المنتجات</span>
-            <input id="prod-search" placeholder="بحث باسم المنتج..." oninput="renderProdTable()"
+            <input id="prod-search" placeholder="بحث باسم المنتج..." oninput="renderProdTable(true)"
               style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.78rem;outline:none;margin-inline-end:auto;margin-inline-start:10px;flex:1;max-width:300px" />
-            <select id="prod-filter" onchange="renderProdTable()"
+            <select id="prod-filter" onchange="renderProdTable(true)"
               style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.78rem;outline:none">
               <option value="">الكل</option>
             </select>
@@ -1273,17 +1316,18 @@
                   <th>البوستر</th>
                   <th>الاسم</th>
                   <th>القسم</th>
-                  <th>النوع</th>
                   <th>جيجا</th>
-                  <th>السعر</th>
-                  <th>الموسم</th>
-                  <th>حالة</th>
+                  <th>السعر الأساسي</th>
+                  <th>سعر العرض</th>
+                  <th>رسالة العرض</th>
+                  <th>التاريخ (بداية/نهاية)</th>
                   <th>إجراءات</th>
                 </tr>
               </thead>
               <tbody id="prod-tbody"></tbody>
             </table>
           </div>
+          <div class="pagination" id="prod-pagination" style="display:flex;justify-content:center;gap:5px;margin-top:10px;flex-wrap:wrap"></div>
         </div>
       </div>
 
@@ -1332,7 +1376,7 @@
           <div class="ctitle"
             style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
             <span>📋 الهاردات الحالية</span>
-            <input id="hd-search" placeholder="بحث باسم الهارد..." oninput="renderHardsTable()"
+            <input id="hd-search" placeholder="بحث باسم الهارد..." oninput="renderHardsTable(true)"
               style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.78rem;outline:none;flex:1;max-width:300px" />
           </div>
           <div class="twrap">
@@ -1350,6 +1394,7 @@
               <tbody id="hd-tbody"></tbody>
             </table>
           </div>
+          <div class="pagination" id="hd-pagination" style="display:flex;justify-content:center;gap:5px;margin-top:10px;flex-wrap:wrap"></div>
         </div>
       </div>
 
@@ -1397,7 +1442,7 @@
           <div class="ctitle"
             style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
             <span>📋 باقات الداتا الحالية</span>
-            <input id="dt-search" placeholder="بحث باسم الباقة..." oninput="renderDataTable()"
+            <input id="dt-search" placeholder="بحث باسم الباقة..." oninput="renderDataTable(true)"
               style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.78rem;outline:none;flex:1;max-width:300px" />
           </div>
           <div class="twrap">
@@ -1415,6 +1460,7 @@
               <tbody id="dt-tbody"></tbody>
             </table>
           </div>
+          <div class="pagination" id="dt-pagination" style="display:flex;justify-content:center;gap:5px;margin-top:10px;flex-wrap:wrap"></div>
         </div>
       </div>
 
@@ -1912,10 +1958,12 @@
         <div class="ff"><label>السعر (الأساسي)</label><input id="ep" /></div>
         <div><input type="hidden" id="etype" /></div>
       </div>
-      <div class="row2">
+      <div class="row3">
         <div class="ff"><label>سعر العرض (اختياري)</label><input id="eoffer-price" placeholder="مثال: 50" /></div>
-        <div class="ff"><label>انتهاء العرض (اختياري)</label><input id="eoffer-exp" type="date" /></div>
+        <div class="ff"><label style="color:#4599ff;font-weight:bold">بداية العرض</label><input id="eoffer-start" type="date" /></div>
+        <div class="ff"><label style="color:var(--red);font-weight:bold">انتهاء العرض</label><input id="eoffer-exp" type="date" /></div>
       </div>
+      <div class="ff"><label style="color:var(--gold);font-weight:bold">رسالة العرض (عرض خاص)</label><input id="eoffer-msg" placeholder="مثال: عرض خاص!" /></div>
       <div class="ff"><label>صورة البوستر</label>
         <div style="display:flex;gap:10px;align-items:flex-start">
           <div class="prev-box" id="prod-edit-prev">🎬</div>
@@ -2086,7 +2134,7 @@
 
     function showPg(id, el) { document.querySelectorAll('.pg').forEach(p => p.classList.remove('on')); document.querySelectorAll('.sn').forEach(n => n.classList.remove('on')); document.getElementById('pg-' + id)?.classList.add('on'); if (id.startsWith('customers-')) { document.getElementById('sn-customers-main')?.classList.add('on'); } el?.classList.add('on'); }
 
-    function renderAll() { renderDash(); renderHeroForm(); renderMaintForm(); renderThemeForm(); renderCatTable(); updateCatSelects(); renderProdTable(); renderHardsTable(); renderDataTable(); renderBannersList(); renderVidsForm(); loadMusicForm(); loadOwnerForm(); loadSocialForm(); loadMapForm(); renderMissingList(); loadReviewsForm(); loadVolume(); renderMarqueeList(); loadTickets(); loadActiveVisitors(); renderCustomersFb(); renderCustomersWa(); }
+    function renderAll() { renderDash(); renderHeroForm(); renderMaintForm(); renderThemeForm(); renderPromoForm(); renderCatTable(); updateCatSelects(); renderProdTable(); renderHardsTable(); renderDataTable(); renderBannersList(); renderVidsForm(); loadMusicForm(); loadOwnerForm(); loadSocialForm(); loadMapForm(); renderMissingList(); loadReviewsForm(); loadVolume(); renderMarqueeList(); loadTickets(); loadActiveVisitors(); renderCustomersFb(); renderCustomersWa(); }
 
     function renderDash() {
       const g = document.getElementById('sgrid');
@@ -2132,6 +2180,54 @@
     function renderThemeForm() { _selTheme = SD.theme || 'dark'; document.querySelectorAll('.tc').forEach(c => c.classList.toggle('sel', c.id === 'tc-' + _selTheme)); const tgl = document.getElementById('bg-anim-tgl'); if (tgl) tgl.checked = SD.bgAnimation !== false; }
     function selectTheme(t) { _selTheme = t; document.querySelectorAll('.tc').forEach(c => c.classList.toggle('sel', c.id === 'tc-' + t)); }
     async function saveTheme() { SD.theme = _selTheme; SD.bgAnimation = document.getElementById('bg-anim-tgl').checked; await save(); showToast('✅ تم تطبيق الثيم'); }
+
+    /* PROMO SETTINGS */
+    let _promoFile = null;
+    function handlePromoImg(inp) { _promoFile = inp.files[0]; if (!_promoFile) return; const r = new FileReader(); r.onload = e => { document.getElementById('promo-img-prev').innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:8px"/>`; document.getElementById('promo-img-url').value = '[صورة محلية]'; }; r.readAsDataURL(_promoFile); }
+    
+    function renderPromoForm() {
+      const p = SD.promo || {};
+      const el = (id, val, isChk = false) => { const x = document.getElementById(id); if (!x) return; if (isChk) x.checked = val; else x.value = val || ''; };
+      el('promo-tgl', !!p.enabled, true);
+      el('promo-name', p.name);
+      el('promo-msg', p.msg);
+      el('promo-old-price', p.oldPrice);
+      el('promo-price', p.price);
+      el('promo-start', p.start);
+      el('promo-exp', p.exp);
+      el('promo-isNew', !!p.isNew, true);
+      el('promo-isFeatured', !!p.isFeatured, true);
+      el('promo-isExclusive', p.isExclusive !== false, true);
+      el('promo-img-url', p.img && !p.img.startsWith('data:') ? p.img : '');
+      const prev = document.getElementById('promo-img-prev');
+      if (prev) { if (p.img) prev.innerHTML = `<img src="${p.img}" style="width:100%;height:100%;object-fit:cover;border-radius:8px"/>`; else prev.innerHTML = '📢'; }
+    }
+
+    async function savePromo() {
+      let imgUrl = document.getElementById('promo-img-url').value.trim();
+      if (_promoFile) {
+        const u = await uploadFile(_promoFile, 'promo/img', 'رفع صورة الإعلان...');
+        imgUrl = u || (await readB64(_promoFile));
+        _promoFile = null;
+      } else if (imgUrl === '[صورة محلية]') {
+        imgUrl = SD.promo?.img || '';
+      }
+      SD.promo = {
+        enabled: document.getElementById('promo-tgl').checked,
+        name: document.getElementById('promo-name').value.trim(),
+        msg: document.getElementById('promo-msg').value.trim(),
+        oldPrice: document.getElementById('promo-old-price').value.trim(),
+        price: document.getElementById('promo-price').value.trim(),
+        start: document.getElementById('promo-start').value,
+        exp: document.getElementById('promo-exp').value,
+        isNew: document.getElementById('promo-isNew').checked,
+        isFeatured: document.getElementById('promo-isFeatured').checked,
+        isExclusive: document.getElementById('promo-isExclusive').checked,
+        img: imgUrl
+      };
+      await save();
+      showToast('✅ تم حفظ إعدادات الإعلان');
+    }
 
     /* CATEGORIES */
     let _catFile = null;
@@ -2222,10 +2318,14 @@
       const catId = parseInt(document.getElementById('pc').value); if (!catId) { showToast('❌ اختر القسم', true); return; }
       const price = document.getElementById('pp').value.trim(); const icon = '🎬'; const productType = document.getElementById('ptype')?.value || '';
       const desc = document.getElementById('pd').value.trim(); const isNew = document.getElementById('pnew').checked; const isFeatured = document.getElementById('pfeatured')?.checked || false; const season = document.getElementById('pseason')?.value || ''; const gb = parseFloat(document.getElementById('pgb')?.value) || 0;
+      const offerPrice = document.getElementById('poffer-price')?.value.trim() || '';
+      const offerStart = document.getElementById('poffer-start')?.value || '';
+      const offerExp = document.getElementById('poffer-exp')?.value || '';
+      const offerMsg = document.getElementById('poffer-msg')?.value.trim() || '';
       const posterUrl = await getPosterUrl('pu', '');
       if (!SD.nextProdId) SD.nextProdId = 1;
-      SD.products = [...(SD.products || []), { id: SD.nextProdId++, name: n, categoryId: catId, catId, price: price || 'مجاني', icon, posterUrl, poster: posterUrl, desc, isNew, isFeatured, season, productType, gb }];
-      ['pn', 'pp', 'pi', 'pd', 'pu'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+      SD.products = [...(SD.products || []), { id: SD.nextProdId++, name: n, categoryId: catId, catId, price: price || 'مجاني', offerPrice, offerStart, offerExp, offerMsg, icon, posterUrl, poster: posterUrl, desc, isNew, isFeatured, season, productType, gb }];
+      ['pn', 'pp', 'pi', 'pd', 'pu', 'poffer-price', 'poffer-start', 'poffer-exp', 'poffer-msg'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
       document.getElementById('pnew').checked = false; document.getElementById('pfeatured').checked = false; document.getElementById('pseason').value = ''; document.getElementById('ptype').value = ''; document.getElementById('pgb').value = ''; document.getElementById('prod-add-prev').innerHTML = '🎬';
       await save(); renderProdTable(); renderCatTable(); renderDash(); showToast('✅ تم إضافة المنتج');
     }
@@ -2238,7 +2338,10 @@
     function openEditModal(id) {
       const p = (SD.products || []).find(x => x.id === id); if (!p) return;
       document.getElementById('eid').value = id; document.getElementById('en').value = p.name || ''; document.getElementById('ep').value = p.price || ''; const etype = document.getElementById('etype'); if (etype) etype.value = p.productType || '';
-      document.getElementById('eoffer-price').value = p.offerPrice || ''; document.getElementById('eoffer-exp').value = p.offerExp || '';
+      document.getElementById('eoffer-price').value = p.offerPrice || '';
+      document.getElementById('eoffer-start').value = p.offerStart || '';
+      document.getElementById('eoffer-exp').value = p.offerExp || '';
+      document.getElementById('eoffer-msg').value = p.offerMsg || '';
       document.getElementById('eu').value = p.posterUrl && !p.posterUrl.startsWith('data:') ? p.posterUrl : ''; document.getElementById('ed').value = p.desc || ''; document.getElementById('enew').checked = !!p.isNew; document.getElementById('efeatured').checked = !!p.isFeatured; const eseason = document.getElementById('eseason'); if (eseason) eseason.value = p.season || ''; const egb = document.getElementById('egb'); if (egb) egb.value = p.gb || '';
       const pb = document.getElementById('prod-edit-prev'); if (pb) pb.innerHTML = p.posterUrl ? `<img src="${p.posterUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:6px" onerror="this.parentNode.innerHTML='🎬'"/>` : '🎬';
       updateCatSelects(); document.getElementById('ec').value = p.categoryId || p.catId || '';
@@ -2248,10 +2351,13 @@
     async function saveEdit() {
       const id = parseInt(document.getElementById('eid').value); const idx = (SD.products || []).findIndex(p => p.id === id); if (idx === -1) return;
       const posterUrl = await getPosterUrl('eu', SD.products[idx].posterUrl);
-      SD.products[idx] = { ...SD.products[idx], name: document.getElementById('en').value.trim(), categoryId: parseInt(document.getElementById('ec').value), catId: parseInt(document.getElementById('ec').value), price: document.getElementById('ep').value.trim() || 'مجاني', offerPrice: document.getElementById('eoffer-price').value.trim(), offerExp: document.getElementById('eoffer-exp').value, icon: '🎬', productType: document.getElementById('etype')?.value || '', posterUrl, poster: posterUrl, desc: document.getElementById('ed').value.trim(), isNew: document.getElementById('enew').checked, isFeatured: document.getElementById('efeatured')?.checked || false, season: document.getElementById('eseason')?.value || '', gb: parseFloat(document.getElementById('egb')?.value) || 0 };
+      SD.products[idx] = { ...SD.products[idx], name: document.getElementById('en').value.trim(), categoryId: parseInt(document.getElementById('ec').value), catId: parseInt(document.getElementById('ec').value), price: document.getElementById('ep').value.trim() || 'مجاني', offerPrice: document.getElementById('eoffer-price').value.trim(), offerStart: document.getElementById('eoffer-start').value, offerExp: document.getElementById('eoffer-exp').value, offerMsg: document.getElementById('eoffer-msg').value.trim(), icon: '🎬', productType: document.getElementById('etype')?.value || '', posterUrl, poster: posterUrl, desc: document.getElementById('ed').value.trim(), isNew: document.getElementById('enew').checked, isFeatured: document.getElementById('efeatured')?.checked || false, season: document.getElementById('eseason')?.value || '', gb: parseFloat(document.getElementById('egb')?.value) || 0 };
       await save(); closeEditModal(); renderProdTable(); renderHardsTable(); renderDataTable(); showToast('✅ تم التعديل');
     }
-    function renderProdTable() {
+    let currentProdPage = 0;
+    const PROD_PER_PAGE = 50;
+    function renderProdTable(resetPage = false) {
+      if(resetPage) currentProdPage = 0;
       const tb = document.getElementById('prod-tbody'); if (!tb) return;
       const fcat = document.getElementById('prod-filter')?.value;
       const sq = document.getElementById('prod-search')?.value.toLowerCase().trim() || '';
@@ -2259,14 +2365,37 @@
       prods = prods.filter(p => p.productType !== 'hard' && p.productType !== 'data');
       if (fcat) prods = prods.filter(p => (p.categoryId || p.catId) === parseInt(fcat));
       if (sq) prods = prods.filter(p => (p.name || '').toLowerCase().includes(sq));
-      if (!prods.length) { tb.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:24px">لا توجد منتجات</td></tr>'; return; }
+      if (!prods.length) { tb.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:24px">لا توجد منتجات</td></tr>'; document.getElementById('prod-pagination').innerHTML=''; return; }
+      
+      const totalPages = Math.ceil(prods.length / PROD_PER_PAGE);
+      if(currentProdPage >= totalPages) currentProdPage = Math.max(0, totalPages - 1);
+      const start = currentProdPage * PROD_PER_PAGE;
+      const pageProds = prods.slice(start, start + PROD_PER_PAGE);
+
       const cats = SD.categories || [];
-      tb.innerHTML = prods.map(p => {
+      tb.innerHTML = pageProds.map(p => {
         const cat = cats.find(c => c.id === (p.categoryId || p.catId)); const poster = p.posterUrl || p.poster;
         const img = poster ? `<img src="${poster}" style="width:32px;height:46px;border-radius:5px;object-fit:cover" onerror="this.style.display='none'"/>` : `<span style="font-size:1.3rem">${p.icon || cat?.icon || '🎬'}</span>`;
         const typeLabel = p.productType === 'hard' ? '<span class="badge bb">💾 هارد</span>' : p.productType === 'data' ? '<span class="badge bg">📊 داتا</span>' : '<span class="badge bgrn">عادي</span>';
-        return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat ? cat.name : '—'}</span></td><td>${typeLabel}</td><td>${p.gb ? '<span class="badge bg">' + p.gb + ' جيجا</span>' : '—'}</td><td><span class="badge ${p.price && p.price !== 'مجاني' ? 'bg' : 'bgrn'}">${p.price || 'مجاني'}</span></td><td>${p.season ? '<span class="badge bg">' + p.season + '</span>' : '—'}</td><td>${p.isNew ? '<span class="badge br">جديد</span>' : ''} ${p.isFeatured ? '<span class="badge bg">⭐</span>' : ''}</td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id})">🗑</button></div></td></tr>`;
+        const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '_';
+        const offerPriceDisplay = p.offerPrice ? `<span class="badge br" style="background:var(--red)">${p.offerPrice}</span>` : '—';
+        const msgDisplay = p.offerMsg ? `<span style="font-size:0.7rem;color:var(--gold);max-width:100px;display:inline-block;white-space:normal;font-weight:bold">${p.offerMsg}</span>` : '—';
+        const datesDisplay = (p.offerStart || p.offerExp) ? `<div style="font-size:0.75rem;text-align:center;line-height:1.2;font-weight:bold"><span style="color:#4599ff">${p.offerStart || '—'}</span><br><span style="color:var(--red)">${p.offerExp || '—'}</span></div>` : '—';
+        return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat ? cat.name : '—'}</span></td><td>${p.gb ? '<span class="badge bg">' + p.gb + ' جيجا</span>' : '—'}</td><td>${priceDisplay}</td><td>${offerPriceDisplay}</td><td>${msgDisplay}</td><td>${datesDisplay}</td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id})">🗑</button></div></td></tr>`;
       }).join('');
+
+      const pag = document.getElementById('prod-pagination');
+      if (pag) {
+        if (totalPages > 1) {
+          let btns = '';
+          for(let i=0; i<totalPages; i++) {
+            btns += `<button class="btn btn-sm ${i === currentProdPage ? 'btn-b' : ''}" style="padding:4px 8px;font-size:0.8rem;background:${i === currentProdPage ? 'var(--blue)' : 'var(--bg4)'};color:${i === currentProdPage ? '#fff' : 'var(--text)'};border:none;border-radius:4px;cursor:pointer" onclick="currentProdPage=${i}; renderProdTable()">${i+1}</button>`;
+          }
+          pag.innerHTML = btns;
+        } else {
+          pag.innerHTML = '';
+        }
+      }
     }
 
     /* HARDS MANAGEMENT */
@@ -2284,17 +2413,40 @@
       document.getElementById('hd-gb').value = ''; document.getElementById('hd-prev').innerHTML = '💾';
       await save(); renderHardsTable(); renderDash(); showToast('✅ تم إضافة الهارد');
     }
-    function renderHardsTable() {
+    let currentHdPage = 0;
+    const HD_PER_PAGE = 50;
+    function renderHardsTable(resetPage = false) {
+      if(resetPage) currentHdPage = 0;
       const tb = document.getElementById('hd-tbody'); if (!tb) return;
       const sq = document.getElementById('hd-search')?.value.toLowerCase().trim() || '';
       let hards = (SD.products || []).filter(p => p.productType === 'hard');
       if (sq) hards = hards.filter(p => (p.name || '').toLowerCase().includes(sq));
-      if (!hards.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">لا توجد هاردات</td></tr>'; return; }
-      tb.innerHTML = hards.map(p => {
+      if (!hards.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">لا توجد هاردات</td></tr>'; const pag = document.getElementById('hd-pagination'); if(pag) pag.innerHTML=''; return; }
+
+      const totalPages = Math.ceil(hards.length / HD_PER_PAGE);
+      if(currentHdPage >= totalPages) currentHdPage = Math.max(0, totalPages - 1);
+      const start = currentHdPage * HD_PER_PAGE;
+      const pageHards = hards.slice(start, start + HD_PER_PAGE);
+
+      tb.innerHTML = pageHards.map(p => {
         const poster = p.posterUrl || p.poster;
         const img = poster ? `<img src="${poster}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'"/>` : '<span style="font-size:1.3rem">💾</span>';
-        return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bg">${p.price || 'مجاني'}</span></td><td><span class="badge bgrn">${p.offerPrice || '—'}</span></td><td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${p.offerExp || '—'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id});renderHardsTable()">🗑</button></div></td></tr>`;
+        const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '_';
+        return `<tr><td>${img}</td><td>${p.name}</td><td>${priceDisplay}</td><td><span class="badge bgrn">${p.offerPrice || '—'}</span></td><td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${p.offerExp || '—'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id});renderHardsTable()">🗑</button></div></td></tr>`;
       }).join('');
+
+      const pag = document.getElementById('hd-pagination');
+      if (pag) {
+        if (totalPages > 1) {
+          let btns = '';
+          for(let i=0; i<totalPages; i++) {
+            btns += `<button class="btn btn-sm ${i === currentHdPage ? 'btn-b' : ''}" style="padding:4px 8px;font-size:0.8rem;background:${i === currentHdPage ? 'var(--blue)' : 'var(--bg4)'};color:${i === currentHdPage ? '#fff' : 'var(--text)'};border:none;border-radius:4px;cursor:pointer" onclick="currentHdPage=${i}; renderHardsTable()">${i+1}</button>`;
+          }
+          pag.innerHTML = btns;
+        } else {
+          pag.innerHTML = '';
+        }
+      }
     }
 
     /* DATA MANAGEMENT */
@@ -2312,17 +2464,40 @@
       document.getElementById('dt-gb').value = ''; document.getElementById('dt-prev').innerHTML = '📊';
       await save(); renderDataTable(); renderDash(); showToast('✅ تم إضافة باقة الداتا');
     }
-    function renderDataTable() {
+    let currentDtPage = 0;
+    const DT_PER_PAGE = 50;
+    function renderDataTable(resetPage = false) {
+      if(resetPage) currentDtPage = 0;
       const tb = document.getElementById('dt-tbody'); if (!tb) return;
       const sq = document.getElementById('dt-search')?.value.toLowerCase().trim() || '';
       let data = (SD.products || []).filter(p => p.productType === 'data');
       if (sq) data = data.filter(p => (p.name || '').toLowerCase().includes(sq));
-      if (!data.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">لا توجد باقات داتا</td></tr>'; return; }
-      tb.innerHTML = data.map(p => {
+      if (!data.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">لا توجد باقات داتا</td></tr>'; const pag = document.getElementById('dt-pagination'); if(pag) pag.innerHTML=''; return; }
+
+      const totalPages = Math.ceil(data.length / DT_PER_PAGE);
+      if(currentDtPage >= totalPages) currentDtPage = Math.max(0, totalPages - 1);
+      const start = currentDtPage * DT_PER_PAGE;
+      const pageData = data.slice(start, start + DT_PER_PAGE);
+
+      tb.innerHTML = pageData.map(p => {
         const poster = p.posterUrl || p.poster;
         const img = poster ? `<img src="${poster}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'"/>` : '<span style="font-size:1.3rem">📊</span>';
-        return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bg">${p.price || 'مجاني'}</span></td><td><span class="badge bgrn">${p.offerPrice || '—'}</span></td><td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${p.offerExp || '—'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id});renderDataTable()">🗑</button></div></td></tr>`;
+        const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '_';
+        return `<tr><td>${img}</td><td>${p.name}</td><td>${priceDisplay}</td><td><span class="badge bgrn">${p.offerPrice || '—'}</span></td><td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${p.offerExp || '—'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id});renderDataTable()">🗑</button></div></td></tr>`;
       }).join('');
+
+      const pag = document.getElementById('dt-pagination');
+      if (pag) {
+        if (totalPages > 1) {
+          let btns = '';
+          for(let i=0; i<totalPages; i++) {
+            btns += `<button class="btn btn-sm ${i === currentDtPage ? 'btn-b' : ''}" style="padding:4px 8px;font-size:0.8rem;background:${i === currentDtPage ? 'var(--blue)' : 'var(--bg4)'};color:${i === currentDtPage ? '#fff' : 'var(--text)'};border:none;border-radius:4px;cursor:pointer" onclick="currentDtPage=${i}; renderDataTable()">${i+1}</button>`;
+          }
+          pag.innerHTML = btns;
+        } else {
+          pag.innerHTML = '';
+        }
+      }
     }
 
     /* BANNERS */

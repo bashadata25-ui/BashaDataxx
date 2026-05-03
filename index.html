@@ -1129,7 +1129,7 @@
       padding-bottom: 75%;
       border-radius: 8px;
       overflow: hidden;
-      background: var(--bg3);
+      background: transparent;
       margin-bottom: 6px
     }
 
@@ -3024,52 +3024,180 @@
       .hd-card-grid {
         grid-template-columns: 1fr !important
       }
+
       .promo-modal-bg {
-        position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
-        z-index: 99999; display: flex; align-items: center; justify-content: center;
-        opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      .promo-modal-bg.on { opacity: 1; pointer-events: auto; }
+
+      .promo-modal-bg.on {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
       @keyframes neonPulse {
-        0% { box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(212, 168, 67, 0.5), inset 0 0 15px rgba(212, 168, 67, 0.2); }
-        50% { box-shadow: 0 0 20px var(--gold), 0 0 40px rgba(212, 168, 67, 0.8), inset 0 0 25px rgba(212, 168, 67, 0.4); border-color: #ffd700; }
-        100% { box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(212, 168, 67, 0.5), inset 0 0 15px rgba(212, 168, 67, 0.2); }
+        0% {
+          box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(212, 168, 67, 0.5), inset 0 0 15px rgba(212, 168, 67, 0.2);
+        }
+
+        50% {
+          box-shadow: 0 0 20px var(--gold), 0 0 40px rgba(212, 168, 67, 0.8), inset 0 0 25px rgba(212, 168, 67, 0.4);
+          border-color: #ffd700;
+        }
+
+        100% {
+          box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(212, 168, 67, 0.5), inset 0 0 15px rgba(212, 168, 67, 0.2);
+        }
       }
+
       .promo-box {
-        background: linear-gradient(145deg, #1f1f2e, #12121a); border: 2px solid var(--gold);
-        border-radius: 20px; width: 90%; max-width: 420px; padding: 24px; position: relative;
+        background: linear-gradient(145deg, #1f1f2e, #12121a);
+        border: 2px solid var(--gold);
+        border-radius: 20px;
+        width: 90%;
+        max-width: 420px;
+        padding: 24px;
+        position: relative;
         text-align: center;
-        transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: scale(0.9) translateY(20px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         animation: neonPulse 2s infinite alternate;
       }
-      .promo-modal-bg.on .promo-box { transform: scale(1) translateY(0); }
+
+      .promo-modal-bg.on .promo-box {
+        transform: scale(1) translateY(0);
+      }
+
       .promo-close-x {
-        position: absolute; top: 12px; inset-inline-end: 12px; width: 32px; height: 32px;
-        background: rgba(255,255,255,0.1); color: #fff; border: none; border-radius: 50%;
-        font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        position: absolute;
+        top: 12px;
+        inset-inline-end: 12px;
+        width: 32px;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         transition: all 0.2s;
       }
-      .promo-close-x:hover { background: var(--red); transform: rotate(90deg); }
+
+      .promo-close-x:hover {
+        background: var(--red);
+        transform: rotate(90deg);
+      }
+
       .promo-poster {
-        width: 140px; height: 200px; border-radius: 12px; object-fit: contain;
-        margin: 0 auto 16px; border: 2px solid var(--gold); box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        width: 140px;
+        height: 200px;
+        border-radius: 12px;
+        object-fit: contain;
+        margin: 0 auto 16px;
+        border: 2px solid var(--gold);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         background: var(--bg3);
       }
-      .promo-msg { font-size: 1.4rem; font-weight: 900; color: var(--gold); margin-bottom: 8px; line-height: 1.4; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-      .promo-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 16px; }
-      .promo-badges { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
-      .promo-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; }
-      .pb-exc { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
-      .pb-new { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; }
-      .pb-feat { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; }
-      .promo-dates { display: flex; justify-content: center; gap: 20px; margin-bottom: 16px; font-size: 0.95rem; font-weight: 800; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; }
-      .promo-price { font-size: 1.8rem; font-weight: 900; color: var(--red); margin-bottom: 20px; }
-      .promo-close-btn {
-        background: rgba(255, 51, 102, 0.1); color: #ff3366; border: 2px solid #ff3366; padding: 12px 32px; border-radius: 10px;
-        font-size: 1.1rem; font-weight: 900; cursor: pointer; transition: all 0.3s; width: 100%; font-family: 'Cairo', sans-serif;
-        box-shadow: 0 0 10px rgba(255, 51, 102, 0.3); margin-top: 10px;
+
+      .promo-msg {
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: var(--gold);
+        margin-bottom: 8px;
+        line-height: 1.4;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
       }
-      .promo-close-btn:hover { background: #ff3366; color: #fff; box-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366; transform: translateY(-2px); }
+
+      .promo-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 16px;
+      }
+
+      .promo-badges {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+
+      .promo-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 800;
+      }
+
+      .pb-exc {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff;
+      }
+
+      .pb-new {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: #fff;
+      }
+
+      .pb-feat {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: #fff;
+      }
+
+      .promo-dates {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 16px;
+        font-size: 0.95rem;
+        font-weight: 800;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 10px;
+        border-radius: 12px;
+      }
+
+      .promo-price {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: var(--red);
+        margin-bottom: 20px;
+      }
+
+      .promo-close-btn {
+        background: rgba(255, 51, 102, 0.1);
+        color: #ff3366;
+        border: 2px solid #ff3366;
+        padding: 12px 32px;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 900;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        font-family: 'Cairo', sans-serif;
+        box-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+        margin-top: 10px;
+      }
+
+      .promo-close-btn:hover {
+        background: #ff3366;
+        color: #fff;
+        box-shadow: 0 0 20px #ff3366, 0 0 40px #ff3366;
+        transform: translateY(-2px);
+      }
     }
   </style>
 </head>
@@ -3509,7 +3637,7 @@
     /* ══ FILTER & TABS ══ */
     let activeFilter = null;
     let currentProdPage = 0;
-    const PRODS_PER_PAGE = 30;
+    const PRODS_PER_PAGE = 36;
     function setFilter(id) { activeFilter = id; currentProdPage = 0; renderTabBar(); renderProds(); if (id !== null) scrollToEl('prods-sec'); }
     function renderTabBar() {
       const bar = document.getElementById('tabbar');
@@ -3530,14 +3658,14 @@
 
       const totalPages = Math.ceil(prods.length / PRODS_PER_PAGE);
       if (currentProdPage >= totalPages) currentProdPage = 0;
-      
+
       const startIdx = currentProdPage * PRODS_PER_PAGE;
       const pageProds = prods.slice(startIdx, startIdx + PRODS_PER_PAGE);
 
       g.innerHTML = pageProds.map(p => {
         const catId = p.categoryId || p.catId; const cat = cats.find(c => c.id === catId);
         const poster = p.posterUrl || p.poster || '';
-        const bg = poster ? `url('${poster}')` : `linear-gradient(${cat?.gradient || '135deg,#111,#222'})`;
+        const bg = poster ? `url('${poster}')` : `transparent`;
         const isNew = p.isNew || (p.badgeType === 'new');
         return `<div class="pr-c" onclick="goToProduct(${p.id},'${p.productType || ''}')">
       <div class="pr-poster">
@@ -3553,11 +3681,11 @@
       <div class="pr-meta"><span class="pr-price">${p.price || 'مجاني'}</span></div>
     </div>`;
       }).join('');
-      
+
       if (totalPages > 1) {
         let pagHtml = `<div style="display:flex;gap:5px;justify-content:center;margin-top:20px;flex-wrap:wrap">`;
         for (let i = 0; i < totalPages; i++) {
-           pagHtml += `<button class="tab ${i === currentProdPage ? 'on' : ''}" onclick="currentProdPage=${i};renderProds();scrollToEl('prods-sec')" style="padding:5px 12px;font-size:1rem">${i + 1}</button>`;
+          pagHtml += `<button class="tab ${i === currentProdPage ? 'on' : ''}" onclick="currentProdPage=${i};renderProds();scrollToEl('prods-sec')" style="padding:5px 12px;font-size:1rem">${i + 1}</button>`;
         }
         pagHtml += `</div>`;
         if (pag) pag.innerHTML = pagHtml;
@@ -4024,32 +4152,32 @@
         document.getElementById('promo-img').style.display = p.img ? 'block' : 'none';
         document.getElementById('promo-msg').textContent = p.msg || '';
         document.getElementById('promo-name').textContent = p.name || '';
-        
+
         let badgesHtml = '';
         if (p.isExclusive !== false) badgesHtml += '<span class="promo-badge pb-exc">💎 حصري</span>';
         if (p.isNew) badgesHtml += '<span class="promo-badge pb-new">🆕 جديد</span>';
         if (p.isFeatured) badgesHtml += '<span class="promo-badge pb-feat">⭐ مميز</span>';
         document.getElementById('promo-badges').innerHTML = badgesHtml;
-        
+
         let datesHtml = '';
         if (p.start) datesHtml += `<span style="color:#4599ff">بدأ: ${p.start}</span>`;
         if (p.exp) datesHtml += `<span style="color:var(--red)">ينتهي: ${p.exp}</span>`;
         document.getElementById('promo-dates').innerHTML = datesHtml;
         document.getElementById('promo-dates').style.display = datesHtml ? 'flex' : 'none';
-        
+
         if (p.price) {
           document.getElementById('promo-price').innerHTML = `فقط بـ ${p.price} <span style="font-size:0.9rem;text-decoration:line-through;color:var(--muted);margin-inline-start:8px">${p.oldPrice || ''}</span>`;
           document.getElementById('promo-price').style.display = 'block';
         } else {
           document.getElementById('promo-price').style.display = 'none';
         }
-        
+
         setTimeout(() => {
           document.getElementById('promo-modal-bg').classList.add('on');
         }, 1500);
       }
     }
-    
+
     function closePromo() {
       document.getElementById('promo-modal-bg').classList.remove('on');
       sessionStorage.setItem('basha_promo_closed', 'true');

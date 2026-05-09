@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&display=swap"
     rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
   <style>
     :root {
       --bg: #0b0f18;
@@ -1286,13 +1286,7 @@
           </div>
           <div class="row3">
             <div class="ff"><label>سعر العرض (اختياري)</label><input id="poffer-price" placeholder="مثال: 30" /></div>
-            <div class="ff"><label style="color:#4599ff;font-weight:bold">بداية العرض (اختياري)</label><input
-                id="poffer-start" type="date" /></div>
-            <div class="ff"><label style="color:var(--red);font-weight:bold">انتهاء العرض (اختياري)</label><input
-                id="poffer-exp" type="date" /></div>
           </div>
-          <div class="ff"><label style="color:var(--gold);font-weight:bold">رسالة العرض (عرض خاص)</label><input
-              id="poffer-msg" placeholder="مثال: عرض خاص لفترة محدودة!" /></div>
           <div class="ff"><label>صورة البوستر</label>
             <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
               <div class="prev-box" id="prod-add-prev">🎬</div>
@@ -1318,10 +1312,12 @@
           <button class="btn btn-g" onclick="addProd()">➕ إضافة المنتج</button>
         </div>
         <div class="card">
-          <div class="ctitle" style="display:flex;justify-content:space-between;align-items:center">
+          <div class="ctitle"
+            style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
             <span>📋 المنتجات</span>
+            <button class="btn btn-r btn-sm" onclick="deleteSelectedProducts()">🗑 حذف المحدد</button>
             <input id="prod-search" placeholder="بحث باسم المنتج..." oninput="renderProdTable(true)"
-              style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.78rem;outline:none;margin-inline-end:auto;margin-inline-start:10px;flex:1;max-width:300px" />
+              style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.78rem;outline:none;margin-inline-start:auto;flex:1;max-width:250px" />
             <select id="prod-filter" onchange="renderProdTable(true)"
               style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.78rem;outline:none">
               <option value="">الكل</option>
@@ -1331,14 +1327,14 @@
             <table>
               <thead>
                 <tr>
+                  <th style="width: 40px;text-align: center;"><input type="checkbox" id="selectAllProds"
+                      onclick="toggleSelectAllProds(this.checked)" /></th>
                   <th>البوستر</th>
                   <th>الاسم</th>
                   <th>القسم</th>
                   <th>جيجا</th>
                   <th>السعر الأساسي</th>
                   <th>سعر العرض</th>
-                  <th>رسالة العرض</th>
-                  <th>التاريخ (بداية/نهاية)</th>
                   <th>إجراءات</th>
                 </tr>
               </thead>
@@ -1576,17 +1572,13 @@
       </div>
 
       <div class="pg" id="pg-bulk">
-        <div class="ptitle">📤 استخراج وإضافة جماعية (OCR)</div>
+        <div class="ptitle">🎯 الإضافة الجماعية للأسماء (نص فقط)</div>
 
         <div class="card">
-          <div class="ctitle">📄 رفع صورة أو لصق نصوص</div>
+          <div class="ctitle">📝 أضف الأسماء (كل اسم في سطر)</div>
           <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
             <div style="flex:1;min-width:250px">
-              <label class="file-btn" style="margin-bottom:10px;display:inline-flex"><input type="file" id="bulk-img"
-                  accept="image/*" onchange="extractBulkImage()">📁 رفع صورة وقراءة الأسماء</label>
-              <div id="bulk-ocr-status" style="font-size:0.8rem;color:var(--gold);margin-bottom:10px;font-weight:bold">
-              </div>
-              <textarea id="bulk-text" rows="8" placeholder="الصق قائمة الأسماء هنا (كل اسم في سطر)..."
+              <textarea id="bulk-text" rows="8" placeholder="الصق الأسماء النصية هنا (كل اسم في سطر)..."
                 style="width:100%;background:var(--bg4);border:1px solid var(--line2);border-radius:8px;padding:9px 12px;color:var(--text);font-size:.86rem;outline:none"></textarea>
             </div>
           </div>
@@ -1630,7 +1622,9 @@
                 placeholder="https://facebook.com/..." /></div>
           </div>
           <div class="ff"><label>ملاحظات</label><textarea id="cfb-notes" rows="2"></textarea></div>
+          <div class="ff"><label>تاريخ التعامل</label><input type="date" id="cfb-date" /></div>
           <button class="btn btn-blue" style="background:#1877f2;color:#fff;border:none" onclick="addCustFb()">➕ حفظ
+
             بيانات عميل فيسبوك</button>
         </div>
 
@@ -1641,25 +1635,7 @@
             <input id="cfb-search" placeholder="بحث بالاسم، التليفون، ID، الرابط..." oninput="renderCustomersFb()"
               style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.78rem;outline:none;min-width:250px" />
           </div>
-          <div class="twrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>الاسم</th>
-                  <th>التليفون</th>
-                  <th>ID / الرابط</th>
-                  <th>المدفوع</th>
-                  <th>المتبقي</th>
-                  <th>المنتج</th>
-                  <th>المساحة</th>
-                  <th>تاريخ التعامل</th>
-                  <th>ملاحظات</th>
-                  <th>إجراء</th>
-                </tr>
-              </thead>
-              <tbody id="cfb-tbody"></tbody>
-            </table>
-          </div>
+          <div class="twrap" id="cfb-table-wrap"></div>
         </div>
       </div>
 
@@ -1680,6 +1656,7 @@
             <div class="ff"><label>المتبقي منه</label><input id="cwa-rem" type="number" /></div>
           </div>
           <div class="ff"><label>ملاحظات</label><textarea id="cwa-notes" rows="2"></textarea></div>
+          <div class="ff"><label>تاريخ التعامل</label><input type="date" id="cwa-date" /></div>
           <button class="btn btn-g" style="background:#25d366;color:#fff;border:none" onclick="addCustWa()">➕ حفظ بيانات
             عميل واتساب</button>
         </div>
@@ -1691,24 +1668,7 @@
             <input id="cwa-search" placeholder="بحث بالاسم، التليفون..." oninput="renderCustomersWa()"
               style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:5px 10px;color:var(--text);font-size:.78rem;outline:none;min-width:200px" />
           </div>
-          <div class="twrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>الاسم</th>
-                  <th>التليفون</th>
-                  <th>المدفوع</th>
-                  <th>المتبقي</th>
-                  <th>المنتج</th>
-                  <th>المساحة</th>
-                  <th>تاريخ التعامل</th>
-                  <th>ملاحظات</th>
-                  <th>إجراء</th>
-                </tr>
-              </thead>
-              <tbody id="cwa-tbody"></tbody>
-            </table>
-          </div>
+          <div class="twrap" id="cwa-table-wrap"></div>
         </div>
       </div>
 
@@ -1981,13 +1941,7 @@
       </div>
       <div class="row3">
         <div class="ff"><label>سعر العرض (اختياري)</label><input id="eoffer-price" placeholder="مثال: 50" /></div>
-        <div class="ff"><label style="color:#4599ff;font-weight:bold">بداية العرض</label><input id="eoffer-start"
-            type="date" /></div>
-        <div class="ff"><label style="color:var(--red);font-weight:bold">انتهاء العرض</label><input id="eoffer-exp"
-            type="date" /></div>
       </div>
-      <div class="ff"><label style="color:var(--gold);font-weight:bold">رسالة العرض (عرض خاص)</label><input
-          id="eoffer-msg" placeholder="مثال: عرض خاص!" /></div>
       <div class="ff"><label>صورة البوستر</label>
         <div style="display:flex;gap:10px;align-items:flex-start">
           <div class="prev-box" id="prod-edit-prev">🎬</div>
@@ -2107,9 +2061,9 @@
     let sbOnline = false;
 
     async function checkConn() {
-      try { 
-        await storage.listFiles(BUCKET_ID, [Appwrite.Query.limit(1)]); 
-        sbOnline = true; 
+      try {
+        await storage.listFiles(BUCKET_ID, [Appwrite.Query.limit(1)]);
+        sbOnline = true;
       }
       catch (e) { sbOnline = false; }
       updConn(sbOnline);
@@ -2128,11 +2082,11 @@
       if (ct) ct.textContent = ok ? 'Cloud متصل ✓' : 'وضع غير متصل';
     }
 
-    async function fetchJSON(url) { 
+    async function fetchJSON(url) {
       try {
-        const r = await fetch(url + '&t=' + Date.now()); 
-        if (!r.ok) throw new Error('HTTP ' + r.status); 
-        return r.json(); 
+        const r = await fetch(url + '&t=' + Date.now());
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
       } catch (e) {
         throw e;
       }
@@ -2145,7 +2099,7 @@
         // Since it's Appwrite 14+, we can't update file contents directly, we must delete and recreate.
         await storage.deleteFile(BUCKET_ID, path);
       } catch (e) { } // Ignore if it doesn't exist
-      
+
       await storage.createFile(BUCKET_ID, path, fileInput);
     }
 
@@ -2191,7 +2145,7 @@
         SD.products = prodRes.documents.map(d => {
           let metadata = {};
           if (d.metadata) {
-            try { metadata = JSON.parse(d.metadata); } catch(e){}
+            try { metadata = JSON.parse(d.metadata); } catch (e) { }
           }
           return {
             ...metadata,
@@ -2209,7 +2163,7 @@
 
       renderAll();
     }
-    
+
     async function save() {
       const data = JSON.parse(JSON.stringify(SD));
       // Remove products before saving to site.json, as they are now in the DB
@@ -2237,7 +2191,7 @@
       try {
         const uploadedFile = await storage.createFile(BUCKET_ID, Appwrite.ID.unique(), file);
         clearInterval(iv); setUplProg(100);
-        await new Promise(r => setTimeout(r, 300)); showUpl(false); 
+        await new Promise(r => setTimeout(r, 300)); showUpl(false);
         return getFilePreview(uploadedFile.$id);
       } catch (e) { clearInterval(iv); showUpl(false); showToast('❌ فشل الرفع: ' + e.message, true); return null; }
     }
@@ -2403,13 +2357,10 @@
       const price = document.getElementById('pp').value.trim(); const icon = '🎬'; const productType = document.getElementById('ptype')?.value || '';
       const desc = document.getElementById('pd').value.trim(); const isNew = document.getElementById('pnew').checked; const isFeatured = document.getElementById('pfeatured')?.checked || false; const season = document.getElementById('pseason')?.value || ''; const gb = parseFloat(document.getElementById('pgb')?.value) || 0;
       const offerPrice = document.getElementById('poffer-price')?.value.trim() || '';
-      const offerStart = document.getElementById('poffer-start')?.value || '';
-      const offerExp = document.getElementById('poffer-exp')?.value || '';
-      const offerMsg = document.getElementById('poffer-msg')?.value.trim() || '';
       const posterUrl = await getPosterUrl('pu', '');
-      
-      const newProd = { name: n, categoryId: catId, catId, price: price || 'مجاني', offerPrice, offerStart, offerExp, offerMsg, icon, posterUrl, poster: posterUrl, desc, isNew, isFeatured, season, productType, gb };
-      
+
+      const newProd = { name: n, categoryId: catId, catId, price: price || 'مجاني', offerPrice, icon, posterUrl, poster: posterUrl, desc, isNew, isFeatured, season, productType, gb };
+
       try {
         const doc = await databases.createDocument(DATABASE_ID, COLLECTION_ID, Appwrite.ID.unique(), {
           name: n,
@@ -2419,8 +2370,8 @@
         });
         newProd.id = doc.$id;
         SD.products = [...(SD.products || []), newProd];
-        
-        ['pn', 'pp', 'pi', 'pd', 'pu', 'poffer-price', 'poffer-start', 'poffer-exp', 'poffer-msg'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+
+        ['pn', 'pp', 'pi', 'pd', 'pu', 'poffer-price'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
         document.getElementById('pnew').checked = false; document.getElementById('pfeatured').checked = false; document.getElementById('pseason').value = ''; document.getElementById('ptype').value = ''; document.getElementById('pgb').value = ''; document.getElementById('prod-add-prev').innerHTML = '🎬';
         renderProdTable(); renderCatTable(); renderDash(); showToast('✅ تم إضافة المنتج');
       } catch (e) {
@@ -2444,9 +2395,6 @@
       const p = (SD.products || []).find(x => x.id === id); if (!p) return;
       document.getElementById('eid').value = id; document.getElementById('en').value = p.name || ''; document.getElementById('ep').value = p.price || ''; const etype = document.getElementById('etype'); if (etype) etype.value = p.productType || '';
       document.getElementById('eoffer-price').value = p.offerPrice || '';
-      document.getElementById('eoffer-start').value = p.offerStart || '';
-      document.getElementById('eoffer-exp').value = p.offerExp || '';
-      document.getElementById('eoffer-msg').value = p.offerMsg || '';
       document.getElementById('eu').value = p.posterUrl && !p.posterUrl.startsWith('data:') ? p.posterUrl : ''; document.getElementById('ed').value = p.desc || ''; document.getElementById('enew').checked = !!p.isNew; document.getElementById('efeatured').checked = !!p.isFeatured; const eseason = document.getElementById('eseason'); if (eseason) eseason.value = p.season || ''; const egb = document.getElementById('egb'); if (egb) egb.value = p.gb || '';
       const pb = document.getElementById('prod-edit-prev'); if (pb) pb.innerHTML = p.posterUrl ? `<img src="${p.posterUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:6px" onerror="this.parentNode.innerHTML='🎬'"/>` : '🎬';
       updateCatSelects(); document.getElementById('ec').value = p.categoryId || p.catId || '';
@@ -2456,8 +2404,8 @@
     async function saveEdit() {
       const id = document.getElementById('eid').value; const idx = (SD.products || []).findIndex(p => p.id === id); if (idx === -1) return;
       const posterUrl = await getPosterUrl('eu', SD.products[idx].posterUrl);
-      const updatedProd = { ...SD.products[idx], name: document.getElementById('en').value.trim(), categoryId: parseInt(document.getElementById('ec').value), catId: parseInt(document.getElementById('ec').value), price: document.getElementById('ep').value.trim() || 'مجاني', offerPrice: document.getElementById('eoffer-price').value.trim(), offerStart: document.getElementById('eoffer-start').value, offerExp: document.getElementById('eoffer-exp').value, offerMsg: document.getElementById('eoffer-msg').value.trim(), icon: '🎬', productType: document.getElementById('etype')?.value || '', posterUrl, poster: posterUrl, desc: document.getElementById('ed').value.trim(), isNew: document.getElementById('enew').checked, isFeatured: document.getElementById('efeatured')?.checked || false, season: document.getElementById('eseason')?.value || '', gb: parseFloat(document.getElementById('egb')?.value) || 0 };
-      
+      const updatedProd = { ...SD.products[idx], name: document.getElementById('en').value.trim(), categoryId: parseInt(document.getElementById('ec').value), catId: parseInt(document.getElementById('ec').value), price: document.getElementById('ep').value.trim() || 'مجاني', offerPrice: document.getElementById('eoffer-price').value.trim(), icon: '🎬', productType: document.getElementById('etype')?.value || '', posterUrl, poster: posterUrl, desc: document.getElementById('ed').value.trim(), isNew: document.getElementById('enew').checked, isFeatured: document.getElementById('efeatured')?.checked || false, season: document.getElementById('eseason')?.value || '', gb: parseFloat(document.getElementById('egb')?.value) || 0 };
+
       try {
         await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, {
           name: updatedProd.name,
@@ -2497,9 +2445,7 @@
         const typeLabel = p.productType === 'hard' ? '<span class="badge bb">💾 هارد</span>' : p.productType === 'data' ? '<span class="badge bg">📊 داتا</span>' : '<span class="badge bgrn">عادي</span>';
         const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '_';
         const offerPriceDisplay = p.offerPrice ? `<span class="badge br" style="background:var(--red)">${p.offerPrice}</span>` : '—';
-        const msgDisplay = p.offerMsg ? `<span style="font-size:0.7rem;color:var(--gold);max-width:100px;display:inline-block;white-space:normal;font-weight:bold">${p.offerMsg}</span>` : '—';
-        const datesDisplay = (p.offerStart || p.offerExp) ? `<div style="font-size:0.75rem;text-align:center;line-height:1.2;font-weight:bold"><span style="color:#4599ff">${p.offerStart || '—'}</span><br><span style="color:var(--red)">${p.offerExp || '—'}</span></div>` : '—';
-        return `<tr><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat ? cat.name : '—'}</span></td><td>${p.gb ? '<span class="badge bg">' + p.gb + ' جيجا</span>' : '—'}</td><td>${priceDisplay}</td><td>${offerPriceDisplay}</td><td>${msgDisplay}</td><td>${datesDisplay}</td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id})">🗑</button></div></td></tr>`;
+        return `<tr><td style="text-align:center"><input type="checkbox" class="prod-checkbox" value="${p.id}" /></td><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat ? cat.name : '—'}</span></td><td>${p.gb ? '<span class="badge bg">' + p.gb + ' جيجا</span>' : '—'}</td><td>${priceDisplay}</td><td>${offerPriceDisplay}</td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id})">🗑</button></div></td></tr>`;
       }).join('');
 
       const pag = document.getElementById('prod-pagination');
@@ -2526,7 +2472,7 @@
       const gb = parseFloat(document.getElementById('hd-gb')?.value) || 0;
       const posterUrl = await getPosterUrl('hd-url', '');
       const newProd = { name: n, price: price || 'مجاني', offerPrice, offerExp, icon: '💾', posterUrl, poster: posterUrl, desc, isNew: false, isFeatured: false, productType: 'hard', gb };
-      
+
       try {
         const doc = await databases.createDocument(DATABASE_ID, COLLECTION_ID, Appwrite.ID.unique(), {
           name: n,
@@ -2536,7 +2482,7 @@
         });
         newProd.id = doc.$id;
         SD.products = [...(SD.products || []), newProd];
-        
+
         ['hd-name', 'hd-price', 'hd-offer-price', 'hd-offer-exp', 'hd-url', 'hd-desc'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
         document.getElementById('hd-gb').value = ''; document.getElementById('hd-prev').innerHTML = '💾';
         renderHardsTable(); renderDash(); showToast('✅ تم إضافة الهارد');
@@ -2591,7 +2537,7 @@
       const gb = parseFloat(document.getElementById('dt-gb')?.value) || 0;
       const posterUrl = await getPosterUrl('dt-url', '');
       const newProd = { name: n, price: price || 'مجاني', offerPrice, offerExp, icon: '📊', posterUrl, poster: posterUrl, desc, isNew: false, isFeatured: false, productType: 'data', gb };
-      
+
       try {
         const doc = await databases.createDocument(DATABASE_ID, COLLECTION_ID, Appwrite.ID.unique(), {
           name: n,
@@ -2601,7 +2547,7 @@
         });
         newProd.id = doc.$id;
         SD.products = [...(SD.products || []), newProd];
-        
+
         ['dt-name', 'dt-price', 'dt-offer-price', 'dt-offer-exp', 'dt-url', 'dt-desc'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
         document.getElementById('dt-gb').value = ''; document.getElementById('dt-prev').innerHTML = '📊';
         renderDataTable(); renderDash(); showToast('✅ تم إضافة باقة الداتا');
@@ -2760,7 +2706,6 @@
       });
 
       document.getElementById('bulk-text').value = '';
-      document.getElementById('bulk-ocr-status').textContent = '';
       await save();
       renderProdTable();
       renderDash();
@@ -2794,6 +2739,68 @@
       tb.innerHTML = c.map(x => `<tr><td style="font-weight:700">${x.name}</td><td dir="ltr">${x.phone || '—'}</td><td dir="ltr"><div style="font-size:.75rem;color:var(--muted);margin-bottom:3px">ID: ${x.fbid || '—'}</div><a href="${x.link || '#'}" target="_blank" style="color:#1877f2;text-decoration:none">${x.link ? 'رابط الصفحة ↗' : '—'}</a></td><td><span class="badge bgrn">${x.paid} ج</span></td><td><span class="badge br">${x.rem} ج</span></td><td><span class="badge bb">${x.choice || '—'}</span></td><td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${x.size ? x.size + ' جيجا' : '—'}</span></td><td style="font-size:.78rem;color:var(--muted)">${x.date}</td><td style="font-size:.75rem">${x.notes || '—'}</td><td><button class="btn btn-r btn-sm" onclick="delCustFb(${x.id})">🗑</button></td></tr>`).join('');
     }
 
+    /* CUSTOMERS FACEBOOK */
+    async function addCustFb() {
+      const name = document.getElementById('cfb-name').value.trim(); if (!name) { showToast('❌ أدخل الاسم', true); return; }
+      const phone = document.getElementById('cfb-phone').value.trim();
+      const fbid = document.getElementById('cfb-id').value.trim();
+      const link = document.getElementById('cfb-link').value.trim();
+      const choice = document.getElementById('cfb-choice').value.trim();
+      const size = document.getElementById('cfb-size').value.trim();
+      const paid = document.getElementById('cfb-paid').value.trim() || '0';
+      const rem = document.getElementById('cfb-rem').value.trim() || '0';
+      const notes = document.getElementById('cfb-notes').value.trim();
+      let date = document.getElementById('cfb-date')?.value;
+      if (!date) date = new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG');
+      if (!SD.nextCustFbId) SD.nextCustFbId = 1;
+      SD.customersFb = [...(SD.customersFb || []), { id: SD.nextCustFbId++, name, phone, fbid, link, choice, size, paid, rem, notes, date }];
+      ['cfb-name', 'cfb-phone', 'cfb-id', 'cfb-link', 'cfb-choice', 'cfb-size', 'cfb-paid', 'cfb-rem', 'cfb-notes', 'cfb-date'].forEach(i => { const e = document.getElementById(i); if (e) e.value = ''; });
+      await save(); renderCustomersFb(); showToast('✅ تم إضافة عميل فيسبوك');
+    }
+    async function delCustFb(id) { if (confirm('حذف هذه المعاملة؟')) { SD.customersFb = (SD.customersFb || []).filter(c => c.id !== id); await save(); renderCustomersFb(); showToast('🗑 تم الحذف'); } }
+
+    function toggleLog(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = el.style.display === 'none' ? 'table-row' : 'none';
+    }
+
+    function renderCustomersFb() {
+      const wrap = document.getElementById('cfb-table-wrap'); if (!wrap) return;
+      const s = document.getElementById('cfb-search')?.value.toLowerCase().trim() || '';
+      let c = SD.customersFb || [];
+      if (s) c = c.filter(x => (x.name || '').toLowerCase().includes(s) || (x.phone || '').toLowerCase().includes(s) || (x.fbid || '').toLowerCase().includes(s) || (x.link || '').toLowerCase().includes(s));
+
+      if (!c.length) { wrap.innerHTML = '<table><tr><td style="text-align:center;color:var(--muted);padding:20px">لا يوجد عملاء</td></tr></table>'; return; }
+
+      const grouped = {};
+      c.forEach(x => {
+        if (!grouped[x.name]) grouped[x.name] = { name: x.name, phone: x.phone, fbid: x.fbid, link: x.link, history: [], totalPaid: 0, totalRem: 0 };
+        grouped[x.name].history.push(x);
+        grouped[x.name].totalPaid += parseFloat(x.paid) || 0;
+        grouped[x.name].totalRem += parseFloat(x.rem) || 0;
+      });
+
+      let html = `<table><thead><tr><th>العميل</th><th>التليفون</th><th>الرابط/ID</th><th>المعاملات</th><th>إجمالي المدفوع</th><th>إجمالي المتبقي</th><th>السجل</th></tr></thead><tbody>`;
+      Object.values(grouped).forEach((g, idx) => {
+        const trId = `cfb-log-${idx}`;
+        html += `<tr style="background:var(--bg3)">
+          <td style="font-weight:700">${g.name}</td>
+          <td dir="ltr">${g.phone || '—'}</td>
+          <td dir="ltr"><div style="font-size:.75rem;color:var(--muted)">ID: ${g.fbid || '—'}</div><a href="${g.link || '#'}" target="_blank" style="color:#1877f2;text-decoration:none">${g.link ? 'رابط الصفحة ↗' : '—'}</a></td>
+          <td><span class="badge" style="background:var(--bg);color:var(--text)">${g.history.length}</span></td>
+          <td><span class="badge bgrn">${g.totalPaid} ج</span></td>
+          <td><span class="badge br">${g.totalRem} ج</span></td>
+          <td><button class="btn btn-sm btn-g" onclick="toggleLog('${trId}')">عرض السجل ▼</button></td>
+        </tr>`;
+        html += `<tr id="${trId}" style="display:none;background:var(--bg2)"><td colspan="7"><div style="padding:10px">
+          <table style="width:100%;font-size:.85rem;background:var(--bg);border-radius:8px"><thead><tr><th>المنتج</th><th>المساحة</th><th>المدفوع</th><th>المتبقي</th><th>التاريخ</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody>
+          ${g.history.map(x => `<tr><td>${x.choice || '—'}</td><td>${x.size ? x.size + ' جيجا' : '—'}</td><td>${x.paid} ج</td><td>${x.rem} ج</td><td>${x.date}</td><td>${x.notes || '—'}</td><td><button class="btn btn-r btn-sm" onclick="delCustFb(${x.id})">🗑</button></td></tr>`).join('')}
+          </tbody></table></div></td></tr>`;
+      });
+      html += `</tbody></table>`;
+      wrap.innerHTML = html;
+    }
+
     /* CUSTOMERS WHATSAPP */
     async function addCustWa() {
       const name = document.getElementById('cwa-name').value.trim(); if (!name) { showToast('❌ أدخل الاسم', true); return; }
@@ -2803,20 +2810,49 @@
       const paid = document.getElementById('cwa-paid').value.trim() || '0';
       const rem = document.getElementById('cwa-rem').value.trim() || '0';
       const notes = document.getElementById('cwa-notes').value.trim();
-      const date = new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG');
+      let date = document.getElementById('cwa-date')?.value;
+      if (!date) date = new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG');
       if (!SD.nextCustWaId) SD.nextCustWaId = 1;
       SD.customersWa = [...(SD.customersWa || []), { id: SD.nextCustWaId++, name, phone, choice, size, paid, rem, notes, date }];
-      ['cwa-name', 'cwa-phone', 'cwa-choice', 'cwa-size', 'cwa-paid', 'cwa-rem', 'cwa-notes'].forEach(i => { const e = document.getElementById(i); if (e) e.value = ''; });
+      ['cwa-name', 'cwa-phone', 'cwa-choice', 'cwa-size', 'cwa-paid', 'cwa-rem', 'cwa-notes', 'cwa-date'].forEach(i => { const e = document.getElementById(i); if (e) e.value = ''; });
       await save(); renderCustomersWa(); showToast('✅ تم إضافة عميل واتساب');
     }
-    async function delCustWa(id) { if (confirm('حذف هذا العميل؟')) { SD.customersWa = (SD.customersWa || []).filter(c => c.id !== id); await save(); renderCustomersWa(); showToast('🗑 تم الحذف'); } }
+    async function delCustWa(id) { if (confirm('حذف هذه المعاملة؟')) { SD.customersWa = (SD.customersWa || []).filter(c => c.id !== id); await save(); renderCustomersWa(); showToast('🗑 تم الحذف'); } }
+
     function renderCustomersWa() {
-      const tb = document.getElementById('cwa-tbody'); if (!tb) return;
+      const wrap = document.getElementById('cwa-table-wrap'); if (!wrap) return;
       const s = document.getElementById('cwa-search')?.value.toLowerCase().trim() || '';
       let c = SD.customersWa || [];
       if (s) c = c.filter(x => (x.name || '').toLowerCase().includes(s) || (x.phone || '').toLowerCase().includes(s));
-      if (!c.length) { tb.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px">لا يوجد عملاء</td></tr>'; return; }
-      tb.innerHTML = c.map(x => `<tr><td style="font-weight:700">${x.name}</td><td dir="ltr">${x.phone || '—'}</td><td><span class="badge bgrn">${x.paid} ج</span></td><td><span class="badge br">${x.rem} ج</span></td><td><span class="badge bb">${x.choice || '—'}</span></td><td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${x.size ? x.size + ' جيجا' : '—'}</span></td><td style="font-size:.78rem;color:var(--muted)">${x.date}</td><td style="font-size:.75rem">${x.notes || '—'}</td><td><button class="btn btn-r btn-sm" onclick="delCustWa(${x.id})">🗑</button></td></tr>`).join('');
+
+      if (!c.length) { wrap.innerHTML = '<table><tr><td style="text-align:center;color:var(--muted);padding:20px">لا يوجد عملاء</td></tr></table>'; return; }
+
+      const grouped = {};
+      c.forEach(x => {
+        if (!grouped[x.name]) grouped[x.name] = { name: x.name, phone: x.phone, history: [], totalPaid: 0, totalRem: 0 };
+        grouped[x.name].history.push(x);
+        grouped[x.name].totalPaid += parseFloat(x.paid) || 0;
+        grouped[x.name].totalRem += parseFloat(x.rem) || 0;
+      });
+
+      let html = `<table><thead><tr><th>العميل</th><th>التليفون</th><th>المعاملات</th><th>إجمالي المدفوع</th><th>إجمالي المتبقي</th><th>السجل</th></tr></thead><tbody>`;
+      Object.values(grouped).forEach((g, idx) => {
+        const trId = `cwa-log-${idx}`;
+        html += `<tr style="background:var(--bg3)">
+          <td style="font-weight:700">${g.name}</td>
+          <td dir="ltr">${g.phone || '—'}</td>
+          <td><span class="badge" style="background:var(--bg);color:var(--text)">${g.history.length}</span></td>
+          <td><span class="badge bgrn">${g.totalPaid} ج</span></td>
+          <td><span class="badge br">${g.totalRem} ج</span></td>
+          <td><button class="btn btn-sm btn-g" onclick="toggleLog('${trId}')">عرض السجل ▼</button></td>
+        </tr>`;
+        html += `<tr id="${trId}" style="display:none;background:var(--bg2)"><td colspan="6"><div style="padding:10px">
+          <table style="width:100%;font-size:.85rem;background:var(--bg);border-radius:8px"><thead><tr><th>المنتج</th><th>المساحة</th><th>المدفوع</th><th>المتبقي</th><th>التاريخ</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody>
+          ${g.history.map(x => `<tr><td>${x.choice || '—'}</td><td>${x.size ? x.size + ' جيجا' : '—'}</td><td>${x.paid} ج</td><td>${x.rem} ج</td><td>${x.date}</td><td>${x.notes || '—'}</td><td><button class="btn btn-r btn-sm" onclick="delCustWa(${x.id})">🗑</button></td></tr>`).join('')}
+          </tbody></table></div></td></tr>`;
+      });
+      html += `</tbody></table>`;
+      wrap.innerHTML = html;
     }
 
     /* OWNER */

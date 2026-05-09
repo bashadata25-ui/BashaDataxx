@@ -3212,6 +3212,7 @@
         transform: translateY(-2px);
       }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.0"></script>
 </head>
 
 <body>
@@ -3495,9 +3496,17 @@
     /* ══ CONFIG — Appwrite ══ */
     const APP_ENDPOINT = 'https://cloud.appwrite.io/v1';
     const APP_PROJECT = '69f667fb002691943837';
-    const BUCKET_ID = 'site-bucket';
-    const CFG_PATH = 'config';
+    const DATABASE_ID = '69f73074000298d16d3f';
+    const COLLECTION_ID = 'products';
+    const BUCKET_ID = '69f669c70024b22f32dd';
+    const CFG_PATH = 'site_json';
     const CFG_URL = `${APP_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${CFG_PATH}/view?project=${APP_PROJECT}`;
+
+    const client = new Appwrite.Client()
+        .setEndpoint(APP_ENDPOINT)
+        .setProject(APP_PROJECT);
+
+    const databases = new Appwrite.Databases(client);
 
     /* ══ DEFAULT DATA ══ */
     let SD = {
@@ -3518,12 +3527,41 @@
     /* ══ LOAD LOCAL ══ */
     try { const s = localStorage.getItem('basha_v1'); if (s) SD = { ...SD, ...JSON.parse(s) }; } catch (e) { }
 
-    /* ══ FETCH FROM SUPABASE ══ */
+    /* ══ FETCH FROM APPWRITE ══ */
     async function fetchData() {
+      // 1. Fetch config from Appwrite Storage
       try {
-        const r = await fetch(CFG_URL + '?t=' + Date.now());
-        if (r.ok) { const d = await r.json(); SD = { ...SD, ...d }; localStorage.setItem('basha_v1', JSON.stringify(SD)); }
-      } catch (e) { console.warn('local fallback'); }
+        const r = await fetch(CFG_URL + '&t=' + Date.now());
+        if (r.ok) { 
+          const d = await r.json(); 
+          SD = { ...SD, ...d }; 
+        }
+      } catch (e) { console.warn('local fallback for config'); }
+
+      // 2. Fetch products from Appwrite Database
+      try {
+        const prodRes = await databases.listDocuments(DATABASE_ID, COLLECTION_ID, [Appwrite.Query.limit(5000)]);
+        const prods = prodRes.documents.map(d => {
+          let metadata = {};
+          if (d.metadata) {
+            try { metadata = JSON.parse(d.metadata); } catch (e) { }
+          }
+          let imageUrl = d.image || metadata.posterUrl || metadata.poster;
+          if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('data:')) {
+              imageUrl = `${APP_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${imageUrl}/view?project=${APP_PROJECT}`;
+          }
+          return {
+            ...metadata,
+            id: d.$id,
+            name: d.name || metadata.name,
+            price: d.price || metadata.price || 'غير محدد',
+            posterUrl: imageUrl,
+            poster: imageUrl
+          };
+        });
+        SD.products = prods;
+        localStorage.setItem('basha_v1', JSON.stringify(SD));
+      } catch (e) { console.warn('local fallback for products', e); }
     }
 
     async function start() {

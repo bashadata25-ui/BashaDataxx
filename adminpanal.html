@@ -2284,10 +2284,28 @@
       await save(); renderCatTable(); updateCatSelects(); renderDash(); showToast('✅ تم إضافة القسم');
     }
     async function delCat(id) {
-      if (!confirm('حذف هذا القسم؟')) return;
-      const cat = (SD.categories || []).find(c => c.id === id); if (cat && cat.posterImg) await delFile(cat.posterImg);
+      if (!confirm('حذف هذا القسم؟ سيتم حذف جميع المنتجات المرتبطة به!')) return;
+      
+      const cat = (SD.categories || []).find(c => c.id === id); 
+      if (cat && cat.posterImg) await delFile(cat.posterImg);
+      
+      const linkedProds = (SD.products || []).filter(p => (p.categoryId || p.catId) === id);
+      for (const p of linkedProds) {
+        if (p.posterUrl || p.poster) await delFile(p.posterUrl || p.poster);
+        try {
+          await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, p.id);
+        } catch (e) { console.error('Error deleting linked product', e); }
+      }
+      
+      SD.products = (SD.products || []).filter(p => (p.categoryId || p.catId) !== id);
       SD.categories = (SD.categories || []).filter(c => c.id !== id);
-      await save(); renderCatTable(); updateCatSelects(); renderDash(); showToast('🗑 تم الحذف');
+      
+      await save(); 
+      renderCatTable(); 
+      updateCatSelects(); 
+      renderProdTable();
+      renderDash(); 
+      showToast('🗑 تم الحذف مع المنتجات المرتبطة');
     }
     let _catEditFile = null;
     function handleCatImgEdit(inp) {
@@ -2390,6 +2408,34 @@
         console.error(e);
         showToast('❌ فشل الحذف من قاعدة البيانات', true);
       }
+    }
+    function toggleSelectAllProds(checked) {
+      document.querySelectorAll('.prod-checkbox').forEach(cb => cb.checked = checked);
+    }
+    async function deleteSelectedProducts() {
+      const selected = Array.from(document.querySelectorAll('.prod-checkbox:checked')).map(cb => cb.value);
+      if (!selected.length) { showToast('❌ لم تقم بتحديد أي منتجات', true); return; }
+      if (!confirm('هل أنت متأكد من حذف ' + selected.length + ' منتجات؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
+      
+      showToast('⏳ جاري الحذف...');
+      let errCount = 0;
+      for (const id of selected) {
+        const p = (SD.products || []).find(x => x.id === id); 
+        if (p && (p.posterUrl || p.poster)) await delFile(p.posterUrl || p.poster);
+        try {
+          await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+        } catch (e) {
+          errCount++;
+          console.error(e);
+        }
+      }
+      
+      SD.products = (SD.products || []).filter(p => !selected.includes(p.id));
+      renderProdTable(); renderCatTable(); renderHardsTable(); renderDataTable(); renderDash();
+      
+      if (errCount > 0) showToast('⚠️ تم الحذف مع وجود بعض الأخطاء');
+      else showToast('🗑 تم حذف المنتجات المحددة بنجاح');
+      document.getElementById('selectAllProds').checked = false;
     }
     function openEditModal(id) {
       const p = (SD.products || []).find(x => x.id === id); if (!p) return;

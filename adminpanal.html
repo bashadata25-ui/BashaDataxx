@@ -1175,24 +1175,10 @@
             <label class="tgl tgl-g"><input type="checkbox" id="promo-tgl"><span class="tgl-s"></span></label>
             <span style="font-weight:bold">تفعيل الإعلان للموقع</span>
           </label>
+          <div class="ff"><label>عنوان الإعلان أو اسم المنتج</label><input id="promo-name" placeholder="مثال: اشتراك فليكس" /></div>
           <div class="row2">
-            <div class="ff"><label>عنوان الإعلان أو اسم المنتج</label><input id="promo-name"
-                placeholder="مثال: اشتراك فليكس" /></div>
-            <div class="ff"><label style="color:var(--gold);font-weight:bold">رسالة العرض الجذابة</label><input
-                id="promo-msg" placeholder="مثال: خصم 50% لفترة محدودة!" /></div>
-          </div>
-          <div class="row3">
-            <div class="ff"><label>السعر الأساسي (اختياري)</label><input id="promo-old-price"
-                placeholder="مثال: 100 ج.م" /></div>
-            <div class="ff"><label style="color:var(--green);font-weight:bold">سعر العرض (اختياري)</label><input
-                id="promo-price" placeholder="مثال: 50 ج.م" /></div>
-            <div></div>
-          </div>
-          <div class="row2">
-            <div class="ff"><label style="color:#4599ff;font-weight:bold">بداية العرض (اختياري)</label><input
-                id="promo-start" type="date" /></div>
-            <div class="ff"><label style="color:var(--red);font-weight:bold">انتهاء العرض (اختياري)</label><input
-                id="promo-exp" type="date" /></div>
+            <div class="ff"><label>السعر الأساسي (اختياري)</label><input id="promo-old-price" placeholder="مثال: 100 ج.م" /></div>
+            <div class="ff"><label style="color:var(--green);font-weight:bold">سعر العرض (اختياري)</label><input id="promo-price" placeholder="مثال: 50 ج.م" /></div>
           </div>
           <div class="ff"><label>صورة الإعلان</label>
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
@@ -1279,21 +1265,22 @@
               </select></div>
           </div>
           <div class="row3">
-            <div class="ff"><label>السعر</label><input id="pp" placeholder="50 ج.م أو فارغ للمجاني" /></div>
+            <div class="ff"><label>السعر</label><input id="pp" placeholder="مثال: 50" /></div>
             <div class="ff"><label>الموسم (اختياري)</label><input id="pseason" placeholder="مثال: الموسم الأول" /></div>
             <div class="ff"><label>الحجم (جيجا/ميجا)</label><input id="pgb" type="number" min="0.01" max="10000"
                 step="0.01" placeholder="مثال: 1.82" /></div>
-          </div>
-          <div class="row3">
-            <div class="ff"><label>سعر العرض (اختياري)</label><input id="poffer-price" placeholder="مثال: 30" /></div>
           </div>
           <div class="ff"><label>صورة البوستر</label>
             <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
               <div class="prev-box" id="prod-add-prev">🎬</div>
               <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:7px">
-                <label class="file-btn"><input type="file"
-                    accept="image/png,image/jpeg,image/jpg,image/gif,image/webp,image/svg+xml,image/x-icon,image/ico,image/bmp,.png,.jpg,.jpeg,.gif,.webp,.svg,.ico,.bmp"
-                    onchange="handleProdImg(this,'prod-add-prev','pu')">📁 رفع صورة بوستر</label>
+                <div style="display:flex;gap:5px">
+                  <label class="file-btn"><input type="file"
+                      accept="image/png,image/jpeg,image/jpg,image/gif,image/webp,image/svg+xml,image/x-icon,image/ico,image/bmp,.png,.jpg,.jpeg,.gif,.webp,.svg,.ico,.bmp"
+                      onchange="handleProdImg(this,'prod-add-prev','pu')">📁 رفع صورة بوستر</label>
+                  <button class="btn btn-r btn-sm"
+                    onclick="document.getElementById('pu').value=''; document.getElementById('prod-add-prev').innerHTML='🎬'; delete _prodFiles['pu'];">🗑 حذف الصورة</button>
+                </div>
                 <input type="text" id="pu" placeholder="أو رابط الصورة https://..." dir="ltr"
                   style="background:var(--bg4);border:1px solid var(--line2);border-radius:7px;padding:7px 10px;color:var(--text);font-size:.82rem;outline:none"
                   onchange="prevFromUrl(this.value,'prod-add-prev')" />
@@ -1333,8 +1320,7 @@
                   <th>الاسم</th>
                   <th>القسم</th>
                   <th>جيجا</th>
-                  <th>السعر الأساسي</th>
-                  <th>سعر العرض</th>
+                  <th>السعر</th>
                   <th>إجراءات</th>
                 </tr>
               </thead>
@@ -1355,11 +1341,7 @@
             </div>
             <div class="ff"><label>السعر (ج.م)</label><input id="hd-price" placeholder="مثال: 350" /></div>
           </div>
-          <div class="row2">
-            <div class="ff"><label>سعر العرض الخاص (ج.م) - اختياري</label><input id="hd-offer-price"
-                placeholder="مثال: 250" /></div>
-            <div class="ff"><label>تاريخ انتهاء العرض (اختياري)</label><input id="hd-offer-exp" type="date" /></div>
-          </div>
+          <div class="ff"><label>سعر العرض الخاص (ج.م) - اختياري</label><input id="hd-offer-price" placeholder="مثال: 250" /></div>
           <div class="row2">
             <div class="ff"><label>الحجم (جيجا/ميجا)</label><input id="hd-gb" type="number" min="0.01" max="10000"
                 step="0.01" placeholder="مثال: 1.82" /></div>
@@ -1402,7 +1384,6 @@
                   <th>الاسم</th>
                   <th>السعر الأساسي</th>
                   <th>سعر العرض</th>
-                  <th>انتهاء العرض</th>
                   <th>إجراءات</th>
                 </tr>
               </thead>
@@ -1422,11 +1403,7 @@
             <div class="ff"><label>اسم الباقة</label><input id="dt-name" placeholder="مثال: باقة 50 جيجا أفلام" /></div>
             <div class="ff"><label>السعر (ج.م)</label><input id="dt-price" placeholder="مثال: 100" /></div>
           </div>
-          <div class="row2">
-            <div class="ff"><label>سعر العرض الخاص (ج.م) - اختياري</label><input id="dt-offer-price"
-                placeholder="مثال: 75" /></div>
-            <div class="ff"><label>تاريخ انتهاء العرض (اختياري)</label><input id="dt-offer-exp" type="date" /></div>
-          </div>
+          <div class="ff"><label>سعر العرض الخاص (ج.م) - اختياري</label><input id="dt-offer-price" placeholder="مثال: 75" /></div>
           <div class="row2">
             <div class="ff"><label>الحجم (جيجا/ميجا)</label><input id="dt-gb" type="number" min="0.01" max="10000"
                 step="0.01" placeholder="مثال: 1.82" /></div>
@@ -1469,7 +1446,6 @@
                   <th>الاسم</th>
                   <th>السعر الأساسي</th>
                   <th>سعر العرض</th>
-                  <th>انتهاء العرض</th>
                   <th>إجراءات</th>
                 </tr>
               </thead>
@@ -1591,7 +1567,7 @@
                 <option value="">-- اختر القسم --</option>
               </select></div>
             <div class="ff"><label>السعر الافتراضي لكل عنصر</label><input id="bulk-price"
-                placeholder="مثال: 50 ج.م أو اتركه فارغاً للمجاني" /></div>
+                placeholder="مثال: 50 ج.م أو اتركه فارغاً" /></div>
           </div>
           <div class="info-box">سيتم إضافة جميع الأسماء الموجودة في المربع النصي كمنتجات جديدة. الأيقونة الافتراضية
             ستكون 🎬.</div>
@@ -1621,11 +1597,12 @@
             <div class="ff"><label>رابط الصفحة</label><input id="cfb-link" dir="ltr"
                 placeholder="https://facebook.com/..." /></div>
           </div>
+          <div class="row2">
+            <div class="ff"><label>تاريخ التواصل والتسليم</label><input type="date" id="cfb-delivery-date" /></div>
+            <div class="ff"><label>تاريخ التعامل</label><input type="date" id="cfb-date" /></div>
+          </div>
           <div class="ff"><label>ملاحظات</label><textarea id="cfb-notes" rows="2"></textarea></div>
-          <div class="ff"><label>تاريخ التعامل</label><input type="date" id="cfb-date" /></div>
-          <button class="btn btn-blue" style="background:#1877f2;color:#fff;border:none" onclick="addCustFb()">➕ حفظ
-
-            بيانات عميل فيسبوك</button>
+          <button class="btn btn-blue" style="background:#1877f2;color:#fff;border:none" onclick="addCustFb()">➕ حفظ بيانات عميل فيسبوك</button>
         </div>
 
         <div class="card">
@@ -1655,10 +1632,12 @@
             <div class="ff"><label>الدفع بالتعامل (المدفوع)</label><input id="cwa-paid" type="number" /></div>
             <div class="ff"><label>المتبقي منه</label><input id="cwa-rem" type="number" /></div>
           </div>
+          <div class="row2">
+            <div class="ff"><label>تاريخ التواصل والتسليم</label><input type="date" id="cwa-delivery-date" /></div>
+            <div class="ff"><label>تاريخ التعامل</label><input type="date" id="cwa-date" /></div>
+          </div>
           <div class="ff"><label>ملاحظات</label><textarea id="cwa-notes" rows="2"></textarea></div>
-          <div class="ff"><label>تاريخ التعامل</label><input type="date" id="cwa-date" /></div>
-          <button class="btn btn-g" style="background:#25d366;color:#fff;border:none" onclick="addCustWa()">➕ حفظ بيانات
-            عميل واتساب</button>
+          <button class="btn btn-g" style="background:#25d366;color:#fff;border:none" onclick="addCustWa()">➕ حفظ بيانات عميل واتساب</button>
         </div>
 
         <div class="card">
@@ -1936,11 +1915,8 @@
         <div class="ff"><label>القسم</label><select id="ec"></select></div>
       </div>
       <div class="row2">
-        <div class="ff"><label>السعر (الأساسي)</label><input id="ep" /></div>
+        <div class="ff"><label>السعر</label><input id="ep" /></div>
         <div><input type="hidden" id="etype" /></div>
-      </div>
-      <div class="row3">
-        <div class="ff"><label>سعر العرض (اختياري)</label><input id="eoffer-price" placeholder="مثال: 50" /></div>
       </div>
       <div class="ff"><label>صورة البوستر</label>
         <div style="display:flex;gap:10px;align-items:flex-start">
@@ -2011,7 +1987,7 @@
      */
     const APP_ENDPOINT = 'https://cloud.appwrite.io/v1';
     const APP_PROJECT = '69f667fb002691943837'; // معرف مشروعك من
-    const BUCKET_ID = 'site-bucket';          // المخزن اللي هترفع فيه صورك
+    const BUCKET_ID = '69f669c70024b22f32dd';          // المخزن اللي هترفع فيه صورك
     const ADMIN_PW = '1939';                 // كلمة سر لوحة التحكم
 
     /**
@@ -2039,7 +2015,7 @@
      * ده اللي بيخلي الموقع يقرأ الصور والداتا من Appwrite Storage
      */
     function getFilePreview(fileId) {
-      if (!fileId || fileId.includes('://')) return fileId; // Return if already a full URL or data URI
+      if (!fileId || fileId.includes('://') || fileId.startsWith('data:')) return fileId; // Return if already a full URL or data URI
       return `${APP_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${fileId}/view?project=${APP_PROJECT}`;
     }
 
@@ -2151,7 +2127,7 @@
             ...metadata,
             id: d.$id,
             name: d.name || metadata.name,
-            price: d.price || metadata.price || 'مجاني',
+            price: d.price || metadata.price || '',
             posterUrl: d.image || metadata.posterUrl,
             poster: d.image || metadata.poster
           };
@@ -2192,7 +2168,7 @@
         const uploadedFile = await storage.createFile(BUCKET_ID, Appwrite.ID.unique(), file);
         clearInterval(iv); setUplProg(100);
         await new Promise(r => setTimeout(r, 300)); showUpl(false);
-        return getFilePreview(uploadedFile.$id);
+        return uploadedFile.$id;
       } catch (e) { clearInterval(iv); showUpl(false); showToast('❌ فشل الرفع: ' + e.message, true); return null; }
     }
     function showUpl(on, label = 'جاري الرفع...') { const ov = document.getElementById('upl-ov'); if (on) { ov.classList.add('on'); document.getElementById('upl-lbl').textContent = label; setUplProg(0); } else ov.classList.remove('on'); }
@@ -2228,11 +2204,8 @@
       const el = (id, val, isChk = false) => { const x = document.getElementById(id); if (!x) return; if (isChk) x.checked = val; else x.value = val || ''; };
       el('promo-tgl', !!p.enabled, true);
       el('promo-name', p.name);
-      el('promo-msg', p.msg);
       el('promo-old-price', p.oldPrice);
       el('promo-price', p.price);
-      el('promo-start', p.start);
-      el('promo-exp', p.exp);
       el('promo-isNew', !!p.isNew, true);
       el('promo-isFeatured', !!p.isFeatured, true);
       el('promo-isExclusive', p.isExclusive !== false, true);
@@ -2253,11 +2226,8 @@
       SD.promo = {
         enabled: document.getElementById('promo-tgl').checked,
         name: document.getElementById('promo-name').value.trim(),
-        msg: document.getElementById('promo-msg').value.trim(),
         oldPrice: document.getElementById('promo-old-price').value.trim(),
         price: document.getElementById('promo-price').value.trim(),
-        start: document.getElementById('promo-start').value,
-        exp: document.getElementById('promo-exp').value,
         isNew: document.getElementById('promo-isNew').checked,
         isFeatured: document.getElementById('promo-isFeatured').checked,
         isExclusive: document.getElementById('promo-isExclusive').checked,
@@ -2374,10 +2344,10 @@
       const catId = parseInt(document.getElementById('pc').value); if (!catId) { showToast('❌ اختر القسم', true); return; }
       const price = document.getElementById('pp').value.trim(); const icon = '🎬'; const productType = document.getElementById('ptype')?.value || '';
       const desc = document.getElementById('pd').value.trim(); const isNew = document.getElementById('pnew').checked; const isFeatured = document.getElementById('pfeatured')?.checked || false; const season = document.getElementById('pseason')?.value || ''; const gb = parseFloat(document.getElementById('pgb')?.value) || 0;
-      const offerPrice = document.getElementById('poffer-price')?.value.trim() || '';
+      const offerPrice = '';
       const posterUrl = await getPosterUrl('pu', '');
 
-      const newProd = { name: n, categoryId: catId, catId, price: price || 'مجاني', offerPrice, icon, posterUrl, poster: posterUrl, desc, isNew, isFeatured, season, productType, gb };
+      const newProd = { name: n, categoryId: catId, catId, price: price || '', offerPrice, icon, posterUrl, poster: posterUrl, desc, isNew, isFeatured, season, productType, gb };
 
       try {
         const doc = await databases.createDocument(DATABASE_ID, COLLECTION_ID, Appwrite.ID.unique(), {
@@ -2389,7 +2359,7 @@
         newProd.id = doc.$id;
         SD.products = [...(SD.products || []), newProd];
 
-        ['pn', 'pp', 'pi', 'pd', 'pu', 'poffer-price'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+        ['pn', 'pp', 'pi', 'pd', 'pu'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
         document.getElementById('pnew').checked = false; document.getElementById('pfeatured').checked = false; document.getElementById('pseason').value = ''; document.getElementById('ptype').value = ''; document.getElementById('pgb').value = ''; document.getElementById('prod-add-prev').innerHTML = '🎬';
         renderProdTable(); renderCatTable(); renderDash(); showToast('✅ تم إضافة المنتج');
       } catch (e) {
@@ -2440,9 +2410,8 @@
     function openEditModal(id) {
       const p = (SD.products || []).find(x => x.id === id); if (!p) return;
       document.getElementById('eid').value = id; document.getElementById('en').value = p.name || ''; document.getElementById('ep').value = p.price || ''; const etype = document.getElementById('etype'); if (etype) etype.value = p.productType || '';
-      document.getElementById('eoffer-price').value = p.offerPrice || '';
       document.getElementById('eu').value = p.posterUrl && !p.posterUrl.startsWith('data:') ? p.posterUrl : ''; document.getElementById('ed').value = p.desc || ''; document.getElementById('enew').checked = !!p.isNew; document.getElementById('efeatured').checked = !!p.isFeatured; const eseason = document.getElementById('eseason'); if (eseason) eseason.value = p.season || ''; const egb = document.getElementById('egb'); if (egb) egb.value = p.gb || '';
-      const pb = document.getElementById('prod-edit-prev'); if (pb) pb.innerHTML = p.posterUrl ? `<img src="${p.posterUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:6px" onerror="this.parentNode.innerHTML='🎬'"/>` : '🎬';
+      const pb = document.getElementById('prod-edit-prev'); if (pb) pb.innerHTML = p.posterUrl ? `<img src="${getFilePreview(p.posterUrl)}" style="width:100%;height:100%;object-fit:cover;border-radius:6px" onerror="this.parentNode.innerHTML='🎬'"/>` : '🎬';
       updateCatSelects(); document.getElementById('ec').value = p.categoryId || p.catId || '';
       document.getElementById('edit-modal').classList.add('on');
     }
@@ -2450,7 +2419,7 @@
     async function saveEdit() {
       const id = document.getElementById('eid').value; const idx = (SD.products || []).findIndex(p => p.id === id); if (idx === -1) return;
       const posterUrl = await getPosterUrl('eu', SD.products[idx].posterUrl);
-      const updatedProd = { ...SD.products[idx], name: document.getElementById('en').value.trim(), categoryId: parseInt(document.getElementById('ec').value), catId: parseInt(document.getElementById('ec').value), price: document.getElementById('ep').value.trim() || 'مجاني', offerPrice: document.getElementById('eoffer-price').value.trim(), icon: '🎬', productType: document.getElementById('etype')?.value || '', posterUrl, poster: posterUrl, desc: document.getElementById('ed').value.trim(), isNew: document.getElementById('enew').checked, isFeatured: document.getElementById('efeatured')?.checked || false, season: document.getElementById('eseason')?.value || '', gb: parseFloat(document.getElementById('egb')?.value) || 0 };
+      const updatedProd = { ...SD.products[idx], name: document.getElementById('en').value.trim(), categoryId: parseInt(document.getElementById('ec').value), catId: parseInt(document.getElementById('ec').value), price: document.getElementById('ep').value.trim() || '', offerPrice: '', icon: '🎬', productType: document.getElementById('etype')?.value || '', posterUrl, poster: posterUrl, desc: document.getElementById('ed').value.trim(), isNew: document.getElementById('enew').checked, isFeatured: document.getElementById('efeatured')?.checked || false, season: document.getElementById('eseason')?.value || '', gb: parseFloat(document.getElementById('egb')?.value) || 0 };
 
       try {
         await databases.updateDocument(DATABASE_ID, COLLECTION_ID, id, {
@@ -2486,12 +2455,11 @@
 
       const cats = SD.categories || [];
       tb.innerHTML = pageProds.map(p => {
-        const cat = cats.find(c => c.id === (p.categoryId || p.catId)); const poster = p.posterUrl || p.poster;
+        const cat = cats.find(c => c.id === (p.categoryId || p.catId)); const poster = getFilePreview(p.posterUrl || p.poster);
         const img = poster ? `<img src="${poster}" style="width:32px;height:46px;border-radius:5px;object-fit:cover" onerror="this.style.display='none'"/>` : `<span style="font-size:1.3rem">${p.icon || cat?.icon || '🎬'}</span>`;
         const typeLabel = p.productType === 'hard' ? '<span class="badge bb">💾 هارد</span>' : p.productType === 'data' ? '<span class="badge bg">📊 داتا</span>' : '<span class="badge bgrn">عادي</span>';
-        const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '_';
-        const offerPriceDisplay = p.offerPrice ? `<span class="badge br" style="background:var(--red)">${p.offerPrice}</span>` : '—';
-        return `<tr><td style="text-align:center"><input type="checkbox" class="prod-checkbox" value="${p.id}" /></td><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat ? cat.name : '—'}</span></td><td>${p.gb ? '<span class="badge bg">' + p.gb + ' جيجا</span>' : '—'}</td><td>${priceDisplay}</td><td>${offerPriceDisplay}</td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id})">🗑</button></div></td></tr>`;
+        const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '—';
+        return `<tr><td style="text-align:center"><input type="checkbox" class="prod-checkbox" value="${p.id}" /></td><td>${img}</td><td>${p.name}</td><td><span class="badge bb">${cat ? cat.name : '—'}</span></td><td>${p.gb ? '<span class="badge bg">' + p.gb + ' جيجا</span>' : '—'}</td><td>${priceDisplay}</td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id})">🗑</button></div></td></tr>`;
       }).join('');
 
       const pag = document.getElementById('prod-pagination');
@@ -2513,11 +2481,10 @@
       const n = document.getElementById('hd-name').value.trim(); if (!n) { showToast('❌ أدخل اسم الهارد', true); return; }
       const price = document.getElementById('hd-price').value.trim();
       const offerPrice = document.getElementById('hd-offer-price').value.trim();
-      const offerExp = document.getElementById('hd-offer-exp').value;
       const desc = document.getElementById('hd-desc').value.trim();
       const gb = parseFloat(document.getElementById('hd-gb')?.value) || 0;
       const posterUrl = await getPosterUrl('hd-url', '');
-      const newProd = { name: n, price: price || 'مجاني', offerPrice, offerExp, icon: '💾', posterUrl, poster: posterUrl, desc, isNew: false, isFeatured: false, productType: 'hard', gb };
+      const newProd = { name: n, price: price || '', offerPrice, icon: '💾', posterUrl, poster: posterUrl, desc, isNew: false, isFeatured: false, productType: 'hard', gb };
 
       try {
         const doc = await databases.createDocument(DATABASE_ID, COLLECTION_ID, Appwrite.ID.unique(), {
@@ -2529,7 +2496,7 @@
         newProd.id = doc.$id;
         SD.products = [...(SD.products || []), newProd];
 
-        ['hd-name', 'hd-price', 'hd-offer-price', 'hd-offer-exp', 'hd-url', 'hd-desc'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+        ['hd-name', 'hd-price', 'hd-offer-price', 'hd-url', 'hd-desc'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
         document.getElementById('hd-gb').value = ''; document.getElementById('hd-prev').innerHTML = '💾';
         renderHardsTable(); renderDash(); showToast('✅ تم إضافة الهارد');
       } catch (e) {
@@ -2553,10 +2520,10 @@
       const pageHards = hards.slice(start, start + HD_PER_PAGE);
 
       tb.innerHTML = pageHards.map(p => {
-        const poster = p.posterUrl || p.poster;
+        const poster = getFilePreview(p.posterUrl || p.poster);
         const img = poster ? `<img src="${poster}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'"/>` : '<span style="font-size:1.3rem">💾</span>';
-        const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '_';
-        return `<tr><td>${img}</td><td>${p.name}</td><td>${priceDisplay}</td><td><span class="badge bgrn">${p.offerPrice || '—'}</span></td><td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${p.offerExp || '—'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id});renderHardsTable()">🗑</button></div></td></tr>`;
+        const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '—';
+        return `<tr><td>${img}</td><td>${p.name}</td><td>${priceDisplay}</td><td><span class="badge bgrn">${p.offerPrice || '—'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id});renderHardsTable()">🗑</button></div></td></tr>`;
       }).join('');
 
       const pag = document.getElementById('hd-pagination');
@@ -2578,11 +2545,10 @@
       const n = document.getElementById('dt-name').value.trim(); if (!n) { showToast('❌ أدخل اسم الباقة', true); return; }
       const price = document.getElementById('dt-price').value.trim();
       const offerPrice = document.getElementById('dt-offer-price').value.trim();
-      const offerExp = document.getElementById('dt-offer-exp').value;
       const desc = document.getElementById('dt-desc').value.trim();
       const gb = parseFloat(document.getElementById('dt-gb')?.value) || 0;
       const posterUrl = await getPosterUrl('dt-url', '');
-      const newProd = { name: n, price: price || 'مجاني', offerPrice, offerExp, icon: '📊', posterUrl, poster: posterUrl, desc, isNew: false, isFeatured: false, productType: 'data', gb };
+      const newProd = { name: n, price: price || '', offerPrice, icon: '📊', posterUrl, poster: posterUrl, desc, isNew: false, isFeatured: false, productType: 'data', gb };
 
       try {
         const doc = await databases.createDocument(DATABASE_ID, COLLECTION_ID, Appwrite.ID.unique(), {
@@ -2594,7 +2560,7 @@
         newProd.id = doc.$id;
         SD.products = [...(SD.products || []), newProd];
 
-        ['dt-name', 'dt-price', 'dt-offer-price', 'dt-offer-exp', 'dt-url', 'dt-desc'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+        ['dt-name', 'dt-price', 'dt-offer-price', 'dt-url', 'dt-desc'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
         document.getElementById('dt-gb').value = ''; document.getElementById('dt-prev').innerHTML = '📊';
         renderDataTable(); renderDash(); showToast('✅ تم إضافة باقة الداتا');
       } catch (e) {
@@ -2618,10 +2584,10 @@
       const pageData = data.slice(start, start + DT_PER_PAGE);
 
       tb.innerHTML = pageData.map(p => {
-        const poster = p.posterUrl || p.poster;
+        const poster = getFilePreview(p.posterUrl || p.poster);
         const img = poster ? `<img src="${poster}" style="width:36px;height:36px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'"/>` : '<span style="font-size:1.3rem">📊</span>';
-        const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '_';
-        return `<tr><td>${img}</td><td>${p.name}</td><td>${priceDisplay}</td><td><span class="badge bgrn">${p.offerPrice || '—'}</span></td><td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${p.offerExp || '—'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id});renderDataTable()">🗑</button></div></td></tr>`;
+        const priceDisplay = (p.price && p.price !== 'مجاني' && p.price !== 'مجانا') ? `<span class="badge bg">${p.price}</span>` : '—';
+        return `<tr><td>${img}</td><td>${p.name}</td><td>${priceDisplay}</td><td><span class="badge bgrn">${p.offerPrice || '—'}</span></td><td><div style="display:flex;gap:5px"><button class="btn btn-b btn-sm" onclick="openEditModal(${p.id})">✏️</button><button class="btn btn-r btn-sm" onclick="delProd(${p.id});renderDataTable()">🗑</button></div></td></tr>`;
       }).join('');
 
       const pag = document.getElementById('dt-pagination');
@@ -2725,7 +2691,7 @@
       const text = document.getElementById('bulk-text').value;
       const catId = parseInt(document.getElementById('bulk-cat').value);
       if (!catId) { showToast('❌ يرجى اختيار القسم', true); return; }
-      const price = document.getElementById('bulk-price').value.trim() || 'مجاني';
+      const price = document.getElementById('bulk-price').value.trim() || '';
 
       const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 2);
       if (lines.length === 0) { showToast('❌ لا توجد أسماء للإضافة', true); return; }
@@ -2759,6 +2725,14 @@
     }
 
     /* CUSTOMERS FACEBOOK */
+    function prefillFb(name, phone, fbid, link) {
+      document.getElementById('cfb-name').value = name || '';
+      document.getElementById('cfb-phone').value = phone || '';
+      document.getElementById('cfb-id').value = fbid || '';
+      document.getElementById('cfb-link').value = link || '';
+      document.getElementById('pg-customers-fb').scrollIntoView({behavior: 'smooth'});
+      showToast('تم تجهيز بيانات العميل لإضافة طلب جديد');
+    }
     async function addCustFb() {
       const name = document.getElementById('cfb-name').value.trim(); if (!name) { showToast('❌ أدخل الاسم', true); return; }
       const phone = document.getElementById('cfb-phone').value.trim();
@@ -2769,39 +2743,13 @@
       const paid = document.getElementById('cfb-paid').value.trim() || '0';
       const rem = document.getElementById('cfb-rem').value.trim() || '0';
       const notes = document.getElementById('cfb-notes').value.trim();
-      const date = new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG');
-      if (!SD.nextCustFbId) SD.nextCustFbId = 1;
-      SD.customersFb = [...(SD.customersFb || []), { id: SD.nextCustFbId++, name, phone, fbid, link, choice, size, paid, rem, notes, date }];
-      ['cfb-name', 'cfb-phone', 'cfb-id', 'cfb-link', 'cfb-choice', 'cfb-size', 'cfb-paid', 'cfb-rem', 'cfb-notes'].forEach(i => { const e = document.getElementById(i); if (e) e.value = ''; });
-      await save(); renderCustomersFb(); showToast('✅ تم إضافة عميل فيسبوك');
-    }
-    async function delCustFb(id) { if (confirm('حذف هذا العميل؟')) { SD.customersFb = (SD.customersFb || []).filter(c => c.id !== id); await save(); renderCustomersFb(); showToast('🗑 تم الحذف'); } }
-    function renderCustomersFb() {
-      const tb = document.getElementById('cfb-tbody'); if (!tb) return;
-      const s = document.getElementById('cfb-search')?.value.toLowerCase().trim() || '';
-      let c = SD.customersFb || [];
-      if (s) c = c.filter(x => (x.name || '').toLowerCase().includes(s) || (x.phone || '').toLowerCase().includes(s) || (x.fbid || '').toLowerCase().includes(s) || (x.link || '').toLowerCase().includes(s));
-      if (!c.length) { tb.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:20px">لا يوجد عملاء</td></tr>'; return; }
-      tb.innerHTML = c.map(x => `<tr><td style="font-weight:700">${x.name}</td><td dir="ltr">${x.phone || '—'}</td><td dir="ltr"><div style="font-size:.75rem;color:var(--muted);margin-bottom:3px">ID: ${x.fbid || '—'}</div><a href="${x.link || '#'}" target="_blank" style="color:#1877f2;text-decoration:none">${x.link ? 'رابط الصفحة ↗' : '—'}</a></td><td><span class="badge bgrn">${x.paid} ج</span></td><td><span class="badge br">${x.rem} ج</span></td><td><span class="badge bb">${x.choice || '—'}</span></td><td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${x.size ? x.size + ' جيجا' : '—'}</span></td><td style="font-size:.78rem;color:var(--muted)">${x.date}</td><td style="font-size:.75rem">${x.notes || '—'}</td><td><button class="btn btn-r btn-sm" onclick="delCustFb(${x.id})">🗑</button></td></tr>`).join('');
-    }
-
-    /* CUSTOMERS FACEBOOK */
-    async function addCustFb() {
-      const name = document.getElementById('cfb-name').value.trim(); if (!name) { showToast('❌ أدخل الاسم', true); return; }
-      const phone = document.getElementById('cfb-phone').value.trim();
-      const fbid = document.getElementById('cfb-id').value.trim();
-      const link = document.getElementById('cfb-link').value.trim();
-      const choice = document.getElementById('cfb-choice').value.trim();
-      const size = document.getElementById('cfb-size').value.trim();
-      const paid = document.getElementById('cfb-paid').value.trim() || '0';
-      const rem = document.getElementById('cfb-rem').value.trim() || '0';
-      const notes = document.getElementById('cfb-notes').value.trim();
+      const deliveryDate = document.getElementById('cfb-delivery-date')?.value || '';
       let date = document.getElementById('cfb-date')?.value;
       if (!date) date = new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG');
       if (!SD.nextCustFbId) SD.nextCustFbId = 1;
-      SD.customersFb = [...(SD.customersFb || []), { id: SD.nextCustFbId++, name, phone, fbid, link, choice, size, paid, rem, notes, date }];
-      ['cfb-name', 'cfb-phone', 'cfb-id', 'cfb-link', 'cfb-choice', 'cfb-size', 'cfb-paid', 'cfb-rem', 'cfb-notes', 'cfb-date'].forEach(i => { const e = document.getElementById(i); if (e) e.value = ''; });
-      await save(); renderCustomersFb(); showToast('✅ تم إضافة عميل فيسبوك');
+      SD.customersFb = [...(SD.customersFb || []), { id: SD.nextCustFbId++, name, phone, fbid, link, choice, size, paid, rem, notes, date, deliveryDate }];
+      ['cfb-name', 'cfb-phone', 'cfb-id', 'cfb-link', 'cfb-choice', 'cfb-size', 'cfb-paid', 'cfb-rem', 'cfb-notes', 'cfb-date', 'cfb-delivery-date'].forEach(i => { const e = document.getElementById(i); if (e) e.value = ''; });
+      await save(); renderCustomersFb(); showToast('✅ تم إضافة/حفظ بيانات العميل (فيسبوك)');
     }
     async function delCustFb(id) { if (confirm('حذف هذه المعاملة؟')) { SD.customersFb = (SD.customersFb || []).filter(c => c.id !== id); await save(); renderCustomersFb(); showToast('🗑 تم الحذف'); } }
 
@@ -2826,9 +2774,10 @@
         grouped[x.name].totalRem += parseFloat(x.rem) || 0;
       });
 
-      let html = `<table><thead><tr><th>العميل</th><th>التليفون</th><th>الرابط/ID</th><th>المعاملات</th><th>إجمالي المدفوع</th><th>إجمالي المتبقي</th><th>السجل</th></tr></thead><tbody>`;
+      let html = `<table><thead><tr><th>العميل</th><th>التليفون</th><th>الرابط/ID</th><th>المعاملات</th><th>إجمالي المدفوع</th><th>إجمالي المتبقي</th><th>تاريخ التواصل</th><th>إجراءات</th></tr></thead><tbody>`;
       Object.values(grouped).forEach((g, idx) => {
         const trId = `cfb-log-${idx}`;
+        const lastDelivery = g.history[g.history.length-1].deliveryDate || '—';
         html += `<tr style="background:var(--bg3)">
           <td style="font-weight:700">${g.name}</td>
           <td dir="ltr">${g.phone || '—'}</td>
@@ -2836,11 +2785,12 @@
           <td><span class="badge" style="background:var(--bg);color:var(--text)">${g.history.length}</span></td>
           <td><span class="badge bgrn">${g.totalPaid} ج</span></td>
           <td><span class="badge br">${g.totalRem} ج</span></td>
-          <td><button class="btn btn-sm btn-g" onclick="toggleLog('${trId}')">عرض السجل ▼</button></td>
+          <td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${lastDelivery}</span></td>
+          <td><div style="display:flex;gap:5px"><button class="btn btn-sm btn-g" onclick="toggleLog('${trId}')">السجل ▼</button><button class="btn btn-sm btn-blue" onclick="prefillFb('${g.name}', '${g.phone}', '${g.fbid}', '${g.link}')">➕ طلب جديد</button></div></td>
         </tr>`;
-        html += `<tr id="${trId}" style="display:none;background:var(--bg2)"><td colspan="7"><div style="padding:10px">
-          <table style="width:100%;font-size:.85rem;background:var(--bg);border-radius:8px"><thead><tr><th>المنتج</th><th>المساحة</th><th>المدفوع</th><th>المتبقي</th><th>التاريخ</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody>
-          ${g.history.map(x => `<tr><td>${x.choice || '—'}</td><td>${x.size ? x.size + ' جيجا' : '—'}</td><td>${x.paid} ج</td><td>${x.rem} ج</td><td>${x.date}</td><td>${x.notes || '—'}</td><td><button class="btn btn-r btn-sm" onclick="delCustFb(${x.id})">🗑</button></td></tr>`).join('')}
+        html += `<tr id="${trId}" style="display:none;background:var(--bg2)"><td colspan="8"><div style="padding:10px">
+          <table style="width:100%;font-size:.85rem;background:var(--bg);border-radius:8px"><thead><tr><th>المنتج</th><th>المساحة</th><th>المدفوع</th><th>المتبقي</th><th>تاريخ التسليم</th><th>تاريخ المعاملة</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody>
+          ${g.history.map(x => `<tr><td>${x.choice || '—'}</td><td>${x.size ? x.size + ' جيجا' : '—'}</td><td>${x.paid} ج</td><td>${x.rem} ج</td><td>${x.deliveryDate || '—'}</td><td>${x.date}</td><td>${x.notes || '—'}</td><td><button class="btn btn-r btn-sm" onclick="delCustFb(${x.id})">🗑</button></td></tr>`).join('')}
           </tbody></table></div></td></tr>`;
       });
       html += `</tbody></table>`;
@@ -2848,6 +2798,12 @@
     }
 
     /* CUSTOMERS WHATSAPP */
+    function prefillWa(name, phone) {
+      document.getElementById('cwa-name').value = name || '';
+      document.getElementById('cwa-phone').value = phone || '';
+      document.getElementById('pg-customers-wa').scrollIntoView({behavior: 'smooth'});
+      showToast('تم تجهيز بيانات العميل لإضافة طلب جديد');
+    }
     async function addCustWa() {
       const name = document.getElementById('cwa-name').value.trim(); if (!name) { showToast('❌ أدخل الاسم', true); return; }
       const phone = document.getElementById('cwa-phone').value.trim();
@@ -2856,12 +2812,13 @@
       const paid = document.getElementById('cwa-paid').value.trim() || '0';
       const rem = document.getElementById('cwa-rem').value.trim() || '0';
       const notes = document.getElementById('cwa-notes').value.trim();
+      const deliveryDate = document.getElementById('cwa-delivery-date')?.value || '';
       let date = document.getElementById('cwa-date')?.value;
       if (!date) date = new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG');
       if (!SD.nextCustWaId) SD.nextCustWaId = 1;
-      SD.customersWa = [...(SD.customersWa || []), { id: SD.nextCustWaId++, name, phone, choice, size, paid, rem, notes, date }];
-      ['cwa-name', 'cwa-phone', 'cwa-choice', 'cwa-size', 'cwa-paid', 'cwa-rem', 'cwa-notes', 'cwa-date'].forEach(i => { const e = document.getElementById(i); if (e) e.value = ''; });
-      await save(); renderCustomersWa(); showToast('✅ تم إضافة عميل واتساب');
+      SD.customersWa = [...(SD.customersWa || []), { id: SD.nextCustWaId++, name, phone, choice, size, paid, rem, notes, date, deliveryDate }];
+      ['cwa-name', 'cwa-phone', 'cwa-choice', 'cwa-size', 'cwa-paid', 'cwa-rem', 'cwa-notes', 'cwa-date', 'cwa-delivery-date'].forEach(i => { const e = document.getElementById(i); if (e) e.value = ''; });
+      await save(); renderCustomersWa(); showToast('✅ تم إضافة/حفظ بيانات العميل (واتساب)');
     }
     async function delCustWa(id) { if (confirm('حذف هذه المعاملة؟')) { SD.customersWa = (SD.customersWa || []).filter(c => c.id !== id); await save(); renderCustomersWa(); showToast('🗑 تم الحذف'); } }
 
@@ -2881,20 +2838,22 @@
         grouped[x.name].totalRem += parseFloat(x.rem) || 0;
       });
 
-      let html = `<table><thead><tr><th>العميل</th><th>التليفون</th><th>المعاملات</th><th>إجمالي المدفوع</th><th>إجمالي المتبقي</th><th>السجل</th></tr></thead><tbody>`;
+      let html = `<table><thead><tr><th>العميل</th><th>التليفون</th><th>المعاملات</th><th>إجمالي المدفوع</th><th>إجمالي المتبقي</th><th>تاريخ التواصل</th><th>إجراءات</th></tr></thead><tbody>`;
       Object.values(grouped).forEach((g, idx) => {
         const trId = `cwa-log-${idx}`;
+        const lastDelivery = g.history[g.history.length-1].deliveryDate || '—';
         html += `<tr style="background:var(--bg3)">
           <td style="font-weight:700">${g.name}</td>
           <td dir="ltr">${g.phone || '—'}</td>
           <td><span class="badge" style="background:var(--bg);color:var(--text)">${g.history.length}</span></td>
           <td><span class="badge bgrn">${g.totalPaid} ج</span></td>
           <td><span class="badge br">${g.totalRem} ج</span></td>
-          <td><button class="btn btn-sm btn-g" onclick="toggleLog('${trId}')">عرض السجل ▼</button></td>
+          <td><span class="badge" style="background:var(--bg4);color:var(--text);border:1px solid var(--line2)">${lastDelivery}</span></td>
+          <td><div style="display:flex;gap:5px"><button class="btn btn-sm btn-g" onclick="toggleLog('${trId}')">السجل ▼</button><button class="btn btn-sm btn-blue" style="background:#25d366;border:none;color:#fff" onclick="prefillWa('${g.name}', '${g.phone}')">➕ طلب جديد</button></div></td>
         </tr>`;
-        html += `<tr id="${trId}" style="display:none;background:var(--bg2)"><td colspan="6"><div style="padding:10px">
-          <table style="width:100%;font-size:.85rem;background:var(--bg);border-radius:8px"><thead><tr><th>المنتج</th><th>المساحة</th><th>المدفوع</th><th>المتبقي</th><th>التاريخ</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody>
-          ${g.history.map(x => `<tr><td>${x.choice || '—'}</td><td>${x.size ? x.size + ' جيجا' : '—'}</td><td>${x.paid} ج</td><td>${x.rem} ج</td><td>${x.date}</td><td>${x.notes || '—'}</td><td><button class="btn btn-r btn-sm" onclick="delCustWa(${x.id})">🗑</button></td></tr>`).join('')}
+        html += `<tr id="${trId}" style="display:none;background:var(--bg2)"><td colspan="7"><div style="padding:10px">
+          <table style="width:100%;font-size:.85rem;background:var(--bg);border-radius:8px"><thead><tr><th>المنتج</th><th>المساحة</th><th>المدفوع</th><th>المتبقي</th><th>تاريخ التسليم</th><th>تاريخ المعاملة</th><th>ملاحظات</th><th>إجراء</th></tr></thead><tbody>
+          ${g.history.map(x => `<tr><td>${x.choice || '—'}</td><td>${x.size ? x.size + ' جيجا' : '—'}</td><td>${x.paid} ج</td><td>${x.rem} ج</td><td>${x.deliveryDate || '—'}</td><td>${x.date}</td><td>${x.notes || '—'}</td><td><button class="btn btn-r btn-sm" onclick="delCustWa(${x.id})">🗑</button></td></tr>`).join('')}
           </tbody></table></div></td></tr>`;
       });
       html += `</tbody></table>`;

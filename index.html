@@ -3554,7 +3554,7 @@
             ...metadata,
             id: d.$id,
             name: d.name || metadata.name,
-            price: d.price || metadata.price || 'غير محدد',
+            price: d.price || metadata.price || '',
             posterUrl: imageUrl,
             poster: imageUrl
           };
@@ -3728,7 +3728,7 @@
       <div class="pr-name" title="${p.name}">${p.name}${p.season ? ' - ' + p.season : ''}</div>
       ${p.desc ? '<div class="pr-desc" style="font-size:.7rem;color:var(--muted);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + p.desc + '</div>' : ''}
       ${p.gb ? '<div class="pr-size">' + formatSize(p.gb) + '</div>' : ''}
-      <div class="pr-meta"><span class="pr-price">${p.price || 'مجاني'}</span></div>
+      <div class="pr-meta"><span class="pr-price">${p.price || ''}</span></div>
     </div>`;
       }).join('');
 
@@ -3754,7 +3754,7 @@
       if (ex) ex.qty++;
       else {
         const catId = p.categoryId || p.catId; const cat = (SD.categories || []).find(c => c.id === catId);
-        cart.push({ id, name: p.name, price: p.price || 'مجاني', icon: p.icon || cat?.icon || '🎬', posterUrl: p.posterUrl || p.poster || '', qty: 1, gb: p.gb || 0 });
+        cart.push({ id, name: p.name, price: p.price || '', icon: p.icon || cat?.icon || '🎬', posterUrl: p.posterUrl || p.poster || '', qty: 1, gb: p.gb || 0 });
       }
       renderCart(); showToast(`✅ تم إضافة "${p.name}"`);
     }
@@ -3772,13 +3772,12 @@
     <button class="cir" onclick="removeFromCart(${i.id})">🗑</button>
   </div>`).join('');
       foot.style.display = 'block';
-      const paid = cart.filter(i => i.price && i.price !== 'مجاني');
+      const paid = cart.filter(i => i.price && i.price !== '');
       const totalGB = cart.reduce((s, i) => s + (i.gb || 0) * i.qty, 0);
       const totalPrice = cart.reduce((s, i) => { const n = parseFloat((i.price || '').replace(/[^0-9.]/g, '')); return s + (isNaN(n) ? 0 : n) * i.qty; }, 0);
       let summary = '';
       if (totalPrice > 0) summary += totalPrice + ' ج.م';
-      else summary += 'مجاني 🎁';
-      if (totalGB > 0) summary += ' | ' + formatSize(totalGB);
+      if (totalGB > 0) summary += (summary ? ' | ' : '') + formatSize(totalGB);
       document.getElementById('ctotal').textContent = summary;
     }
     function checkoutWa() {
@@ -3901,13 +3900,13 @@
         const poster = p.posterUrl || p.poster || '';
         const topBg = poster ? `<img src="${poster}" onerror="this.style.display='none'"/>` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a0f00,#2d1c00);display:flex;align-items:center;justify-content:center"><span class="hd-icon">💾</span></div>`;
 
-        let priceHtml = `<div class="hd-card-price">${p.price || 'مجاني'}</div>`;
+        let priceHtml = `<div class="hd-card-price">${p.price || ''}</div>`;
         let offerBadge = '';
         if (p.offerPrice) {
           const today = new Date().toISOString().split('T')[0];
           if (!p.offerExp || p.offerExp >= today) {
             priceHtml = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <div class="hd-card-price" style="text-decoration:line-through;color:var(--muted);font-size:0.9rem;margin:0">${p.price || 'مجاني'}</div>
+          <div class="hd-card-price" style="text-decoration:line-through;color:var(--muted);font-size:0.9rem;margin:0">${p.price || ''}</div>
           <div class="hd-card-price" style="color:#ff4757;font-size:1.1rem;margin:0">${p.offerPrice}</div>
         </div>`;
             offerBadge = `<div style="position:absolute;top:10px;right:10px;background:#ff4757;color:#fff;padding:4px 8px;border-radius:4px;font-size:0.75rem;font-weight:bold;z-index:2">عرض خاص ${p.offerExp ? 'ينتهي ' + p.offerExp : ''}</div>`;
@@ -3940,13 +3939,13 @@
         const poster = p.posterUrl || p.poster || '';
         const topBg = poster ? `<img src="${poster}" onerror="this.style.display='none'"/>` : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#000a1a,#001530);display:flex;align-items:center;justify-content:center"><span class="hd-icon">📊</span></div>`;
 
-        let priceHtml = `<div class="hd-card-price">${p.price || 'مجاني'}</div>`;
+        let priceHtml = `<div class="hd-card-price">${p.price || ''}</div>`;
         let offerBadge = '';
         if (p.offerPrice) {
           const today = new Date().toISOString().split('T')[0];
           if (!p.offerExp || p.offerExp >= today) {
             priceHtml = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-          <div class="hd-card-price" style="text-decoration:line-through;color:var(--muted);font-size:0.9rem;margin:0">${p.price || 'مجاني'}</div>
+          <div class="hd-card-price" style="text-decoration:line-through;color:var(--muted);font-size:0.9rem;margin:0">${p.price || ''}</div>
           <div class="hd-card-price" style="color:#ff4757;font-size:1.1rem;margin:0">${p.offerPrice}</div>
         </div>`;
             offerBadge = `<div style="position:absolute;top:10px;right:10px;background:#ff4757;color:#fff;padding:4px 8px;border-radius:4px;font-size:0.75rem;font-weight:bold;z-index:2">عرض خاص ${p.offerExp ? 'ينتهي ' + p.offerExp : ''}</div>`;
@@ -4088,7 +4087,7 @@
         const typeLabel = p.productType === 'hard' ? '💾 هارد' : p.productType === 'data' ? '📊 داتا' : '🎬';
         return `<div class="sr-item" onclick="goToProduct(${p.id},'${p.productType || ''}')">
       <div class="sr-img">${poster ? `<img src="${poster}" onerror="this.outerHTML='🎬'"/>` : typeLabel}</div>
-      <div class="sr-info"><div class="sr-name">${p.name}${p.season ? ' - ' + p.season : ''}</div><div class="sr-meta"><span>${cat ? cat.name : '—'}${p.gb ? ' · ' + p.gb + 'GB' : ''}</span><span class="sr-price">${p.price || 'مجاني'}</span></div></div>
+      <div class="sr-info"><div class="sr-name">${p.name}${p.season ? ' - ' + p.season : ''}</div><div class="sr-meta"><span>${cat ? cat.name : '—'}${p.gb ? ' · ' + p.gb + 'GB' : ''}</span><span class="sr-price">${p.price || ''}</span></div></div>
     </div>`;
       }).join('');
       box.classList.add('open');
@@ -4117,7 +4116,7 @@
       const typeLabel = p.productType === 'hard' ? '💾 هارد' : p.productType === 'data' ? '📊 داتا' : '🎬 محتوى';
       meta += `<span class="prod-modal-tag" style="background:rgba(255,255,255,.05);color:var(--muted)">${typeLabel}</span>`;
       document.getElementById('pm-meta').innerHTML = meta;
-      document.getElementById('pm-price').textContent = p.price || 'مجاني';
+      document.getElementById('pm-price').textContent = p.price || '';
       document.getElementById('pm-cart-btn').onclick = function () { addToCart(p.id); closeProdModal(); };
       document.getElementById('prod-modal-bg').classList.add('on');
     }
